@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - git clone https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git .
+      - git reset --hard $GITHUB_COMMIT
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  build:
+    commands:
+      - docker build -t $IMAGE_REPO_NAME:$GITHUB_COMMIT .
+  post_build:
+    commands:
+      - docker push $IMAGE_REPO_NAME:$GITHUB_COMMIT

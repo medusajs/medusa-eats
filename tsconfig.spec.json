@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*", "integration-tests/**/*"],
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "sourceMap": true
+  }
+}
