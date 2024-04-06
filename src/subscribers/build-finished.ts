@@ -43,7 +43,7 @@ export default async function buildStatusChanged({
         stepId: waitForBuildStartId,
         workflowId: buildProjectEnvironmentId,
       },
-      stepResponse: {},
+      stepResponse: { driver_id: 1234 },
     })
 
     return

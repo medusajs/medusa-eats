@@ -1,0 +1,25 @@
+export type RestaurantDTO = {
+  id: string
+  name: string
+  address: string
+  phone: string
+  email: string
+  image?: Buffer
+  created_at: Date
+  updated_at: Date
+}
+
+export type RestaurantAdminDTO = {
+  id: string
+  restaurant: RestaurantDTO
+  first_name: string
+  last_name: string
+  email: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type RestaurantProductDTO = {
+  restaurant_id: string
+  product_id: string
+}

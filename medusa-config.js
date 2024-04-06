@@ -1,21 +1,25 @@
-const { Modules } = require("@medusajs/modules-sdk");
-const dotenv = require("dotenv");
-dotenv.config();
+const { Modules } = require("@medusajs/modules-sdk")
+const dotenv = require("dotenv")
+dotenv.config()
 
-const ADMIN_CORS = process.env.ADMIN_CORS ||
-  "http://localhost:7000,http://localhost:7001";
+const ADMIN_CORS =
+  process.env.ADMIN_CORS || "http://localhost:7000,http://localhost:7001"
 
-const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
+const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000"
 
-const DATABASE_URL = process.env.DATABASE_URL || "";
+const DATABASE_URL =
+  process.env.DATABASE_URL || "postgres://postgres@localhost/medusa-food"
 
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
+const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
 
-const plugins = [];
+const plugins = []
 
 const modules = {
-  accountModuleService: {
-    resolve: "./dist/modules/account",
+  restaurantModuleService: {
+    resolve: "./dist/modules/restaurant",
+  },
+  deliveryModuleService: {
+    resolve: "./dist/modules/delivery",
   },
   eventBus: {
     resolve: "@medusajs/event-bus-redis",
@@ -34,6 +38,7 @@ const modules = {
           scopes: {
             admin: {},
             store: {},
+            restaurant: {},
           },
         },
       ],
@@ -96,7 +101,7 @@ const modules = {
       ],
     },
   },
-};
+}
 
 /** @type {import('@medusajs/medusa').ConfigModule["projectConfig"]} */
 const projectConfig = {
@@ -104,15 +109,17 @@ const projectConfig = {
   cookieSecret: process.env.COOKIE_SECRET,
   store_cors: STORE_CORS,
   database_url: DATABASE_URL,
-  database_driver_options: DATABASE_URL.includes("localhost") ? {} : {
-    connection: {
-      ssl: { rejectUnauthorized: false },
-    },
-    idle_in_transaction_session_timeout: 20000,
-  },
+  database_driver_options: DATABASE_URL.includes("localhost")
+    ? {}
+    : {
+        connection: {
+          ssl: { rejectUnauthorized: false },
+        },
+        idle_in_transaction_session_timeout: 20000,
+      },
   admin_cors: ADMIN_CORS,
   redis_url: REDIS_URL,
-};
+}
 
 /** @type {import('@medusajs/medusa').ConfigModule} */
 module.exports = {
@@ -122,4 +129,4 @@ module.exports = {
   featureFlags: {
     medusa_v2: true,
   },
-};
+}
