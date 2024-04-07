@@ -1,4 +1,3 @@
-import { Cart, Order } from "@medusajs/medusa"
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -7,29 +6,29 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { Restaurant } from "../../../modules/restaurant/models"
-import { OneToOne } from "typeorm"
-import Driver from "./driver"
 
 @Entity()
 export default class Delivery {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @OneToOne(() => Driver)
-  driver: Driver
+  @Property({ columnType: "text" })
+  transaction_id!: string
 
-  @OneToOne(() => Restaurant)
-  restaurant!: Restaurant
+  @Property({ columnType: "text", nullable: true })
+  driver_id: string
 
-  @OneToOne(() => Cart)
-  cart: Cart
+  @Property({ columnType: "text" })
+  restaurant_id!: string
 
-  @OneToOne(() => Order)
-  order: Order
+  @Property({ columnType: "text", nullable: true })
+  cart_id: string
 
-  @Property({ columnType: "timestamptz" })
-  delivered_at?: Date
+  @Property({ columnType: "text", nullable: true })
+  order_id: string
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  delivered_at: Date
 
   @Property({ columnType: "text" })
   delivery_address!: string
@@ -38,7 +37,8 @@ export default class Delivery {
     columnType: "enum",
     items: () => [
       "pending",
-      "preparing",
+      "declined",
+      "accepted",
       "ready_for_pickup",
       "in_transit",
       "delivered",
@@ -47,12 +47,13 @@ export default class Delivery {
   })
   delivery_status!:
     | "pending"
-    | "preparing"
+    | "declined"
+    | "accepted"
     | "ready_for_pickup"
     | "in_transit"
     | "delivered"
 
-  @Property({ columnType: "timestamptz", type: "date" })
+  @Property({ columnType: "timestamptz", type: "date", nullable: true })
   eta: Date
 
   @Property({ columnType: "timestamptz", defaultRaw: "now()", type: "date" })

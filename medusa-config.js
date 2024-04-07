@@ -81,6 +81,7 @@ const modules = {
     },
   },
   [Modules.REGION]: true,
+  [Modules.ORDER]: true,
   [Modules.API_KEY]: true,
   [Modules.STORE]: true,
   [Modules.TAX]: true,

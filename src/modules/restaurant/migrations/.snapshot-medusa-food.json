@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -21,7 +19,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -42,11 +40,7 @@
           "primary": false,
           "nullable": false,
           "default": "'pending'",
-          "enumItems": [
-            "pending",
-            "in_progress",
-            "delivered"
-          ],
+          "enumItems": ["pending", "in_progress", "delivered"],
           "mappedType": "enum"
         },
         "created_at": {
@@ -76,9 +70,7 @@
       "indexes": [
         {
           "keyName": "delivery_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -170,9 +162,7 @@
       "indexes": [
         {
           "keyName": "driver_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true

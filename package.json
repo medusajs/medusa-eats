@@ -43,6 +43,7 @@
     "@medusajs/medusa": "1.21.0-snapshot-20240403120107",
     "@medusajs/modules-sdk": "1.12.11-snapshot-20240403120107",
     "@medusajs/orchestration": "0.5.7-snapshot-20240403120107",
+    "@medusajs/order": "^0.1.1",
     "@medusajs/payment": "0.0.2",
     "@medusajs/pricing": "0.2.0-snapshot-20240403120107",
     "@medusajs/product": "0.4.0-snapshot-20240403120107",

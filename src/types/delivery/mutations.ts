@@ -1,17 +1,17 @@
-import { RestaurantDTO } from "../restaurant/common"
-import { CartDTO } from "@medusajs/types"
-
 export interface CreateDeliveryDTO {
-  restaurant: RestaurantDTO
-  cart: CartDTO
+  restaurant_id: string
+  cart_id: string
   delivery_address: string
 }
 
 export interface UpdateDeliveryDTO {
+  driver_id?: string
   order_id?: string
+  cart_id?: string | null
   delivery_status?:
     | "pending"
-    | "preparing"
+    | "declined"
+    | "accepted"
     | "ready_for_pickup"
     | "in_transit"
     | "delivered"
@@ -25,5 +25,7 @@ export interface CreateDriverDTO {
   last_name: string
   email: string
   phone: string
-  avatar?: string
+  avatar_url?: string
 }
+
+export type UpdateDriverDTO = Partial<CreateDriverDTO>

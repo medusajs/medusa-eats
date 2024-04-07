@@ -2539,6 +2539,21 @@
     awilix "^8.0.0"
     graphql "^16.6.0"
 
+"@medusajs/order@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@medusajs/order/-/order-0.1.1.tgz#a14aec6fec44d6f46f632c5de2aad2da2fac3299"
+  integrity sha512-0cyTQBAGc2fWYMcGbjlVQKQioywcb0/ifsQzrL0nSqSTHKUCgiMHwJ69Qw4DjOWyehaRfdFLjQ7XlFhy16pVsg==
+  dependencies:
+    "@medusajs/modules-sdk" "^1.12.9"
+    "@medusajs/types" "^1.11.14"
+    "@medusajs/utils" "^1.11.7"
+    "@mikro-orm/core" "5.9.7"
+    "@mikro-orm/migrations" "5.9.7"
+    "@mikro-orm/postgresql" "5.9.7"
+    awilix "^8.0.0"
+    dotenv "^16.4.5"
+    knex "2.4.2"
+
 "@medusajs/payment@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@medusajs/payment/-/payment-0.0.2.tgz#b023893b99c31692b85f045c493d57a96610e6e0"

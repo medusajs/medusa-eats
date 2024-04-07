@@ -82,6 +82,14 @@ export default class RestaurantModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
+  async deleteRestaurantAdmin(
+    adminId: string,
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    await this.restaurantAdminService_.delete(adminId, context)
+  }
+
+  @InjectTransactionManager("baseRepository_")
   async addProductToRestaurant(
     data: RestaurantProductDTO,
     @MedusaContext() context: Context = {}
@@ -95,6 +103,18 @@ export default class RestaurantModuleService<
       {
         populate: true,
       }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async removeProductFromRestaurant(
+    restaurantId: string,
+    productId: string,
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    await this.restaurantProductService_.delete(
+      { product_id: productId, restaurant_id: restaurantId },
+      context
     )
   }
 }

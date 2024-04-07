@@ -1,17 +1,16 @@
-import { CartDTO, OrderDTO } from "@medusajs/types"
-import { RestaurantDTO } from "../restaurant/common"
-
 export interface DeliveryDTO {
   id: string
-  driver?: DriverDTO
-  cart?: CartDTO
-  order?: OrderDTO
-  restaurant: RestaurantDTO
+  transaction_id: string
+  driver_id?: string
+  cart_id?: string
+  order_id?: string
+  restaurant_id: string
   delivered_at?: Date
   delivery_address: string
   delivery_status:
     | "pending"
-    | "preparing"
+    | "declined"
+    | "accepted"
     | "ready_for_pickup"
     | "in_transit"
     | "delivered"

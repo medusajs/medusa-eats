@@ -73,3 +73,33 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return res.status(500).json({ message: error.message })
   }
 }
+
+export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
+  const validatedBody = schema.parse(req.body)
+
+  if (!validatedBody) {
+    return res.status(400).json({ message: "Missing restaurant admin data" })
+  }
+
+  const restaurantId = req.params.id
+
+  if (!restaurantId) {
+    return res.status(400).json({ message: "Missing restaurant id" })
+  }
+
+  const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
+    "restaurantModuleService"
+  )
+
+  try {
+    const restaurantProduct =
+      await restaurantModuleService.removeProductFromRestaurant(
+        restaurantId,
+        validatedBody.product_id
+      )
+
+    return res.status(200)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}

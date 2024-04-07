@@ -1,4 +1,3 @@
-import { CartService, OrderService } from "@medusajs/medusa"
 import { Context, DAL, ModulesSdkTypes } from "@medusajs/types"
 import {
   InjectTransactionManager,
@@ -9,6 +8,8 @@ import { DeliveryDTO, DriverDTO } from "../../types/delivery/common"
 import {
   CreateDeliveryDTO,
   CreateDriverDTO,
+  UpdateDeliveryDTO,
+  UpdateDriverDTO,
 } from "../../types/delivery/mutations"
 import { Delivery, Driver } from "./models"
 
@@ -16,8 +17,6 @@ const generateMethodForModels = [Delivery, Driver]
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  cartService: CartService
-  orderService: OrderService
   deliveryService: ModulesSdkTypes.InternalModuleService<any>
   driverService: ModulesSdkTypes.InternalModuleService<any>
 }
@@ -53,9 +52,10 @@ export default class DeliveryModuleService<
   async createDelivery(
     data: CreateDeliveryDTO,
     @MedusaContext() context: Context = {}
-  ): Promise<DeliveryDTO> {
+  ): Promise<Delivery> {
+    console.log({ data })
     const delivery = this.deliveryService_.create(data, context)
-    return this.baseRepository_.serialize<DeliveryDTO>(delivery, {
+    return this.baseRepository_.serialize<Delivery>(delivery, {
       populate: true,
     })
   }
@@ -63,12 +63,11 @@ export default class DeliveryModuleService<
   @InjectTransactionManager("baseRepository_")
   async updateDelivery(
     deliveryId: string,
-    data: Partial<CreateDeliveryDTO>,
+    data: UpdateDeliveryDTO,
     @MedusaContext() context: Context = {}
   ): Promise<DeliveryDTO> {
-    const delivery = await this.deliveryService_.retrieve(deliveryId, {})
     const updatedDelivery = await this.deliveryService_.update({
-      ...delivery,
+      id: deliveryId,
       ...data,
     })
 
@@ -78,20 +77,11 @@ export default class DeliveryModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async addDriverToDelivery(
+  async deleteDelivery(
     deliveryId: string,
-    driverId: string,
     @MedusaContext() context: Context = {}
-  ): Promise<DeliveryDTO> {
-    const delivery = await this.deliveryService_.retrieve(deliveryId, {})
-    const driver = await this.driverService_.retrieve(driverId, {})
-
-    delivery.driver = driver
-    await this.deliveryService_.update({ ...delivery })
-
-    return this.baseRepository_.serialize<DeliveryDTO>(delivery, {
-      populate: true,
-    })
+  ) {
+    await this.deliveryService_.delete(deliveryId)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -103,5 +93,26 @@ export default class DeliveryModuleService<
     return this.baseRepository_.serialize<DriverDTO>(driver, {
       populate: true,
     })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async updateDriver(
+    driverId: string,
+    data: UpdateDriverDTO,
+    @MedusaContext() context: Context = {}
+  ): Promise<DriverDTO> {
+    const updatedDriver = await this.driverService_.update({
+      id: driverId,
+      ...data,
+    })
+
+    return this.baseRepository_.serialize<DriverDTO>(updatedDriver, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async deleteDriver(driverId: string, @MedusaContext() context: Context = {}) {
+    await this.driverService_.delete(driverId)
   }
 }
