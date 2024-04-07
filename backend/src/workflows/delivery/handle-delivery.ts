@@ -239,13 +239,13 @@ type WorkflowInput = {
   auth_user_id?: string
 }
 
-const FIFTEEN_MINUTES = 60 * 15
+const TWO_HOURS = 60 * 60 * 2
 export const handleDeliveryWorkflowId = "handle-delivery-workflow"
 export const handleDeliveryWorkflow = createWorkflow<WorkflowInput, Delivery>(
   {
     name: "handle-delivery-workflow",
     store: true,
-    retentionTime: FIFTEEN_MINUTES,
+    retentionTime: TWO_HOURS,
   },
   (input: WorkflowData<WorkflowInput>) => {
     const delivery = createDeliveryStep(input.delivery_input)
