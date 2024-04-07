@@ -1,22 +1,13 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import DeliveryModuleService from "src/modules/delivery/service"
-import { UpdateDeliveryDTO } from "src/types/delivery/mutations"
+import { DeliveryStatus } from "../../../types/delivery/common"
+import { UpdateDeliveryDTO } from "../../../types/delivery/mutations"
 import zod from "zod"
 
 const schema = zod.object({
   driver_id: zod.string().optional(),
   order_id: zod.string().optional(),
-  delivery_status: zod
-    .enum([
-      "pending",
-      "declined",
-      "accepted",
-      "ready_for_pickup",
-      "in_transit",
-      "delivered",
-    ])
-    .optional(),
-  delivery_address: zod.string().optional(),
+  delivery_status: zod.nativeEnum(DeliveryStatus).optional(),
   eta: zod.date().optional(),
 })
 
@@ -33,7 +24,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing restaurant id" })
   }
 
-  const deliveryId = req.params.deliveryId
+  const deliveryId = req.params.id
 
   if (!deliveryId) {
     return res.status(400).json({ message: "Missing delivery id" })
@@ -69,7 +60,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryId = req.params.deliveryId
+  const deliveryId = req.params.id
 
   if (!deliveryId) {
     return res.status(400).json({ message: "Missing delivery id" })

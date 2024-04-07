@@ -1,3 +1,14 @@
+export enum DeliveryStatus {
+  PENDING = "pending",
+  RESTAURANT_DECLINED = "restaurant_declined",
+  RESTAURANT_ACCEPTED = "restaurant_accepted",
+  PICKUP_CLAIMED = "pickup_claimed",
+  RESTAURANT_PREPARING = "restaurant_preparing",
+  READY_FOR_PICKUP = "ready_for_pickup",
+  IN_TRANSIT = "in_transit",
+  DELIVERED = "delivered",
+}
+
 export interface DeliveryDTO {
   id: string
   transaction_id: string
@@ -6,14 +17,7 @@ export interface DeliveryDTO {
   order_id?: string
   restaurant_id: string
   delivered_at?: Date
-  delivery_address: string
-  delivery_status:
-    | "pending"
-    | "declined"
-    | "accepted"
-    | "ready_for_pickup"
-    | "in_transit"
-    | "delivered"
+  delivery_status: DeliveryStatus
   created_at: Date
   updated_at: Date
 }

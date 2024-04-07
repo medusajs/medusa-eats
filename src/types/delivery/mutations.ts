@@ -1,21 +1,15 @@
+import { DeliveryStatus } from "./common"
+
 export interface CreateDeliveryDTO {
   restaurant_id: string
   cart_id: string
-  delivery_address: string
 }
 
 export interface UpdateDeliveryDTO {
   driver_id?: string
   order_id?: string
   cart_id?: string | null
-  delivery_status?:
-    | "pending"
-    | "declined"
-    | "accepted"
-    | "ready_for_pickup"
-    | "in_transit"
-    | "delivered"
-  delivery_address?: string
+  delivery_status?: DeliveryStatus
   eta?: Date
   delivered_at?: Date
 }

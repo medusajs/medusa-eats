@@ -1,11 +1,5 @@
 import { generateEntityId } from "@medusajs/utils"
-import {
-  BeforeCreate,
-  BlobType,
-  Entity,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core"
+import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
 
 @Entity()
 export default class Restaurant {

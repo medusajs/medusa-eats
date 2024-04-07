@@ -3,13 +3,14 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import DeliveryModuleService from "src/modules/delivery/service"
+import { DeliveryStatus } from "../../../../types/delivery/common"
 import {
-  awaitRestaurantResponseStepId,
-  createHandleDeliveryWorkflowId,
-} from "src/workflows/delivery/handle-delivery"
+  notifyRestaurantStepId,
+  handleDeliveryWorkflowId,
+} from "../../../../workflows/delivery/handle-delivery"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryId = req.params.deliveryId
+  const deliveryId = req.params.id
 
   if (!deliveryId) {
     return res.status(400).json({ message: "Missing delivery id" })
@@ -25,15 +26,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   try {
     const delivery = await deliveryModuleService.updateDelivery(deliveryId, {
-      delivery_status: "declined",
+      delivery_status: DeliveryStatus.RESTAURANT_DECLINED,
     })
 
     await engineService.setStepFailure({
       idempotencyKey: {
         action: TransactionHandlerType.COMPENSATE,
         transactionId: delivery.id,
-        stepId: awaitRestaurantResponseStepId,
-        workflowId: createHandleDeliveryWorkflowId,
+        stepId: notifyRestaurantStepId,
+        workflowId: handleDeliveryWorkflowId,
       },
       stepResponse: {
         delivery,

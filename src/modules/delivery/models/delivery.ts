@@ -1,11 +1,14 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
+  AfterCreate,
+  AfterUpdate,
   BeforeCreate,
   Entity,
   Enum,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { DeliveryStatus } from "../../../types/delivery/common"
 
 @Entity()
 export default class Delivery {
@@ -30,28 +33,12 @@ export default class Delivery {
   @Property({ columnType: "timestamptz", nullable: true })
   delivered_at: Date
 
-  @Property({ columnType: "text" })
-  delivery_address!: string
-
   @Enum({
     columnType: "enum",
-    items: () => [
-      "pending",
-      "declined",
-      "accepted",
-      "ready_for_pickup",
-      "in_transit",
-      "delivered",
-    ],
+    items: () => DeliveryStatus,
     default: "pending",
   })
-  delivery_status!:
-    | "pending"
-    | "declined"
-    | "accepted"
-    | "ready_for_pickup"
-    | "in_transit"
-    | "delivered"
+  delivery_status!: DeliveryStatus
 
   @Property({ columnType: "timestamptz", type: "date", nullable: true })
   eta: Date
@@ -65,5 +52,15 @@ export default class Delivery {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "del")
+  }
+
+  @AfterUpdate()
+  async onStatusUpdate() {
+    if (
+      this.delivery_status === DeliveryStatus.DELIVERED &&
+      !this.delivered_at
+    ) {
+      this.delivered_at = new Date()
+    }
   }
 }

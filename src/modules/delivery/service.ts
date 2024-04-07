@@ -71,9 +71,12 @@ export default class DeliveryModuleService<
       ...data,
     })
 
-    return this.baseRepository_.serialize<DeliveryDTO>(updatedDelivery, {
-      populate: true,
-    })
+    const serializedResponse =
+      await this.baseRepository_.serialize<DeliveryDTO>(updatedDelivery, {
+        populate: true,
+      })
+
+    return serializedResponse[0]
   }
 
   @InjectTransactionManager("baseRepository_")

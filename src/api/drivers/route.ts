@@ -31,3 +31,16 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(500).json({ message: error.message })
   }
 }
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+    "deliveryModuleService"
+  )
+
+  try {
+    const drivers = await deliveryModuleService.listDrivers()
+    return res.status(200).json({ drivers })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}

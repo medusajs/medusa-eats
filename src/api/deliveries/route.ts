@@ -1,12 +1,11 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { CartModuleService } from "@medusajs/cart/dist/services"
 import DeliveryModuleService from "src/modules/delivery/service"
-import RestaurantModuleService from "src/modules/restaurant/service"
+import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery"
 import zod from "zod"
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
-  delivery_address: zod.string(),
+  restaurant_id: zod.string(),
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -16,30 +15,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing delivery data" })
   }
 
-  const restaurantId = req.params.id
-
-  if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" })
-  }
-
-  const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
-    "restaurantModuleService"
-  )
-
-  const restaurant =
-    await restaurantModuleService.retrieveRestaurant(restaurantId)
-
-  if (!restaurant) {
-    return res.status(404).json({ message: "Restaurant not found" })
-  }
-
-  const cartModuleService =
-    req.scope.resolve<CartModuleService>("cartModuleService")
-
-  const cart = await cartModuleService.retrieve(validatedBody.cart_id)
-
-  if (!cart) {
-    return res.status(404).json({ message: "Cart not found" })
+  if (!validatedBody.cart_id) {
+    return res.status(400).json({ message: "Missing cart id" })
   }
 
   const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
@@ -47,13 +24,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   )
 
   try {
-    const restaurantDelivery = await deliveryModuleService.createDelivery({
-      restaurant_id: restaurantId,
-      cart_id: validatedBody.cart_id,
-      delivery_address: validatedBody.delivery_address,
+    const restaurantDelivery = await handleDeliveryWorkflow(req.scope).run({
+      input: {
+        delivery_input: {
+          restaurant_id: validatedBody.restaurant_id,
+          cart_id: validatedBody.cart_id,
+        },
+        auth_user_id: req.user?.id,
+      },
     })
-
-    console.log(restaurantDelivery)
 
     return res.status(200).json({ restaurant_delivery: restaurantDelivery })
   } catch (error) {
