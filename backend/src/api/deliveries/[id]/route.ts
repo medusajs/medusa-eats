@@ -1,6 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import DeliveryModuleService from "src/modules/delivery/service"
-import { DeliveryStatus } from "../../../types/delivery/common"
+import { DeliveryStatus, DeliveryItemDTO } from "../../../types/delivery/common"
 import { UpdateDeliveryDTO } from "../../../types/delivery/mutations"
 import zod from "zod"
 
@@ -70,8 +70,32 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     "deliveryModuleService"
   )
 
+  const delivery = await deliveryModuleService.retrieveDelivery(deliveryId)
+
+  if (!delivery) {
+    return res.status(404).json({ message: "Delivery not found" })
+  }
+
   try {
-    const delivery = await deliveryModuleService.retrieveDelivery(deliveryId)
+    const items = [] as DeliveryItemDTO[]
+
+    if (delivery.cart_id) {
+      const cartService = req.scope.resolve("cartModuleService")
+      const cart = await cartService.retrieve(delivery.cart_id, {
+        relations: ["items"],
+      })
+      items.push(...cart.items)
+    }
+
+    if (delivery.order_id) {
+      const orderService = req.scope.resolve("orderModuleService")
+      const order = await orderService.retrieve(delivery.order_id, {
+        relations: ["items"],
+      })
+      items.push(...order.items)
+    }
+
+    delivery.items = items
 
     return res.status(200).json({ delivery })
   } catch (error) {

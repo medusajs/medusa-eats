@@ -20,7 +20,7 @@
     "resolveJsonModule": true,
     "checkJs": false
   },
-  "include": ["src/"],
+  "include": ["src/", "migrations"],
   "exclude": [
     "**/__tests__",
     "**/__fixtures__",

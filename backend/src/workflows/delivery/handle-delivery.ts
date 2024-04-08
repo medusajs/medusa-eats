@@ -2,10 +2,9 @@ import { CartModuleService } from "@medusajs/cart/dist/services"
 import { FulfillmentModuleService } from "@medusajs/fulfillment"
 import {
   CreateOrderShippingMethodDTO,
-  Order,
   OrderModuleService,
-  OrderService,
 } from "@medusajs/order"
+import { OrderDTO } from "@medusajs/types"
 import {
   StepResponse,
   WorkflowData,
@@ -17,12 +16,6 @@ import { Delivery } from "src/modules/delivery/models"
 import DeliveryModuleService from "src/modules/delivery/service"
 import RestaurantModuleService from "src/modules/restaurant/service"
 import { DeliveryStatus, DriverDTO } from "../../types/delivery/common"
-import { OrderDTO } from "@medusajs/types"
-
-type AsyncResultType = {
-  id: string
-  message: string
-}
 
 type CreateDeliveryStepInput = {
   restaurant_id: string
@@ -94,6 +87,7 @@ const findDriverStep = createStep<string, DriverDTO, string>(
   { name: findDriverStepStepId, async: true },
   async (deliveryId: string, { container }) => {
     console.log("Notifying drivers...")
+    // Select a few drivers to notify
   }
 )
 
@@ -111,7 +105,7 @@ const createOrderStep = createStep(
     }
 
     if (
-      delivery.delivery_status !== DeliveryStatus.RESTAURANT_ACCEPTED ||
+      delivery.delivery_status !== DeliveryStatus.PICKUP_CLAIMED ||
       !delivery.driver_id
     ) {
       throw new Error("Delivery is not ready for order creation")
@@ -156,6 +150,14 @@ const createOrderStep = createStep(
   }
 )
 
+export const awaitStartPreparationStepId = "await-start-preparation-step"
+const awaitStartPreparationStep = createStep(
+  { name: awaitStartPreparationStepId, async: true },
+  async (_, { container }) => {
+    console.log("Awaiting start of preparation...")
+  }
+)
+
 export const awaitPreparationStepId = "await-preparation-step"
 const awaitPreparationStep = createStep(
   { name: awaitPreparationStepId, async: true },
@@ -163,21 +165,6 @@ const awaitPreparationStep = createStep(
     console.log("Awaiting preparation...")
   }
 )
-
-export interface CreateFulfillmentAddressDTO {
-  fulfillment_id: string
-  company?: string | null
-  first_name?: string | null
-  last_name?: string | null
-  address_1?: string | null
-  address_2?: string | null
-  city?: string | null
-  country_code?: string | null
-  province?: string | null
-  postal_code?: string | null
-  phone?: string | null
-  metadata?: Record<string, unknown> | null
-}
 
 const createFulfillmentStep = createStep(
   "create-fulfillment-step",
@@ -256,7 +243,11 @@ export const handleDeliveryWorkflow = createWorkflow<WorkflowInput, Delivery>(
 
     findDriverStep(deliveryId)
 
+    // updateEta
+
     const order = createOrderStep(deliveryId)
+
+    awaitStartPreparationStep()
 
     awaitPreparationStep()
 

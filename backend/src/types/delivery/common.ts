@@ -1,3 +1,5 @@
+import { CartLineItemDTO, OrderLineItemDTO } from "@medusajs/types"
+
 export enum DeliveryStatus {
   PENDING = "pending",
   RESTAURANT_DECLINED = "restaurant_declined",
@@ -20,6 +22,11 @@ export interface DeliveryDTO {
   delivery_status: DeliveryStatus
   created_at: Date
   updated_at: Date
+  items: DeliveryItemDTO[]
+}
+
+export type DeliveryItemDTO = (CartLineItemDTO | OrderLineItemDTO) & {
+  quantity: number
 }
 
 export interface DriverDTO {

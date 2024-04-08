@@ -55,6 +55,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       deliveryId,
       {
         driver_id: driver.id,
+        delivery_status: DeliveryStatus.PICKUP_CLAIMED,
       }
     )
 

@@ -2,6 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import DeliveryModuleService from "src/modules/delivery/service"
 import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery"
 import zod from "zod"
+import { DeliveryItemDTO } from "../../types/delivery/common"
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
@@ -18,10 +19,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   if (!validatedBody.cart_id) {
     return res.status(400).json({ message: "Missing cart id" })
   }
-
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
-    "deliveryModuleService"
-  )
 
   try {
     const restaurantDelivery = await handleDeliveryWorkflow(req.scope).run({
@@ -45,16 +42,37 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     "deliveryModuleService"
   )
 
-  const restaurantId = req.params.id
+  const restaurantId = req.query.restaurant_id as string
+  let filter = {}
 
-  if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" })
+  if (restaurantId) {
+    filter = { restaurant_id: restaurantId }
   }
 
   try {
-    const deliveries = await deliveryModuleService.listDeliveries({
-      // restaurant_id: restaurantId,
-    })
+    const deliveries = await deliveryModuleService.listDeliveries(filter)
+
+    for (const delivery of deliveries) {
+      const items = [] as DeliveryItemDTO[]
+
+      if (delivery.cart_id) {
+        const cartService = req.scope.resolve("cartModuleService")
+        const cart = await cartService.retrieve(delivery.cart_id, {
+          relations: ["items"],
+        })
+        items.push(...cart.items)
+      }
+
+      if (delivery.order_id) {
+        const orderService = req.scope.resolve("orderModuleService")
+        const order = await orderService.retrieve(delivery.order_id, {
+          relations: ["items"],
+        })
+        items.push(...order.items)
+      }
+
+      delivery.items = items
+    }
 
     return res.status(200).json({ deliveries })
   } catch (error) {

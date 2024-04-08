@@ -24,7 +24,8 @@
     "migration:create:restaurant": " MIKRO_ORM_CLI=./src/modules/restaurant/mikro-orm.config.dev.ts mikro-orm migration:create",
     "migration:create:delivery": " MIKRO_ORM_CLI=./src/modules/delivery/mikro-orm.config.dev.ts mikro-orm migration:create",
     "test:integration": "cross-env TEST_TYPE=integration jest --runInBand --forceExit",
-    "test:integration:modules": "cross-env TEST_TYPE=integration:modules jest --runInBand --forceExit"
+    "test:integration:modules": "cross-env TEST_TYPE=integration:modules jest --runInBand --forceExit",
+    "product:seed": "medusa-product-seed ./seed-data.js"
   },
   "dependencies": {
     "@medusajs/admin": "^7.1.12",
