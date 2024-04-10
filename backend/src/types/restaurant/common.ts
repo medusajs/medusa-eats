@@ -1,5 +1,6 @@
 export type RestaurantDTO = {
   id: string
+  is_open: boolean
   name: string
   address: string
   phone: string

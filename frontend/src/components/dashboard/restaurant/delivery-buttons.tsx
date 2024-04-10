@@ -8,10 +8,10 @@ import {
 import {
   declineDelivery,
   proceedDelivery,
-} from "@frontend/app/restaurant/dashboard/actions";
+} from "@frontend/app/dashboard/restaurant/actions";
 import { useState } from "react";
 
-export default function DeliveryButtons({
+export default function RestaurantDeliveryButtons({
   delivery,
 }: {
   delivery: DeliveryDTO;

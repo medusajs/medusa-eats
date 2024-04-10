@@ -6,6 +6,7 @@ import zod from "zod"
 
 const schema = zod.object({
   driver_id: zod.string().optional(),
+  notified_driver_ids: zod.array(zod.string()).optional(),
   order_id: zod.string().optional(),
   delivery_status: zod.nativeEnum(DeliveryStatus).optional(),
   eta: zod.date().optional(),

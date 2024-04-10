@@ -1,13 +1,11 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
-  AfterCreate,
   AfterUpdate,
   BeforeCreate,
   Entity,
   Enum,
   PrimaryKey,
   Property,
-  ManyToOne,
 } from "@mikro-orm/core"
 import { DeliveryStatus } from "../../../types/delivery/common"
 
@@ -20,11 +18,6 @@ export default class Delivery {
   transaction_id!: string
 
   @Property({ columnType: "text", nullable: true })
-  // @ManyToOne({
-  //   entity: () => "Driver",
-  //   primary: true,
-  //   onDelete: "CASCADE",
-  // })
   driver_id: string
 
   @Property({ columnType: "text" })

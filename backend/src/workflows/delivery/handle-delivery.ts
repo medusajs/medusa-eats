@@ -4,7 +4,7 @@ import {
   CreateOrderShippingMethodDTO,
   OrderModuleService,
 } from "@medusajs/order"
-import { OrderDTO } from "@medusajs/types"
+import { IEventBusModuleService, OrderDTO } from "@medusajs/types"
 import {
   StepResponse,
   WorkflowData,
@@ -16,6 +16,7 @@ import { Delivery } from "src/modules/delivery/models"
 import DeliveryModuleService from "src/modules/delivery/service"
 import RestaurantModuleService from "src/modules/restaurant/service"
 import { DeliveryStatus, DriverDTO } from "../../types/delivery/common"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type CreateDeliveryStepInput = {
   restaurant_id: string
@@ -75,6 +76,15 @@ const notifyRestaurantStep = createStep(
 
     // To do: Notify restaurant
     console.log("Notifying restaurant...")
+
+    const eventBus = container.resolve<IEventBusModuleService>(
+      ModuleRegistrationName.EVENT_BUS
+    )
+
+    eventBus.emit("notify.restaurant", {
+      restaurant_id,
+      delivery_id: delivery.id,
+    })
   },
   (input: string, { container }) => {
     // To do: Handle error
@@ -86,8 +96,29 @@ export const findDriverStepStepId = "await-driver-response-step"
 const findDriverStep = createStep<string, DriverDTO, string>(
   { name: findDriverStepStepId, async: true },
   async (deliveryId: string, { container }) => {
-    console.log("Notifying drivers...")
-    // Select a few drivers to notify
+    const deliveryModuleService = container.resolve<DeliveryModuleService>(
+      "deliveryModuleService"
+    )
+
+    const eventBus = container.resolve<IEventBusModuleService>(
+      ModuleRegistrationName.EVENT_BUS
+    )
+
+    const driversToNotify = await deliveryModuleService.listDrivers(
+      {},
+      { take: 5 }
+    )
+
+    const promises = driversToNotify.map((d) =>
+      deliveryModuleService.createDeliveryDriver(deliveryId, d.id)
+    )
+
+    await Promise.all(promises)
+
+    eventBus.emit("notify.drivers", {
+      drivers: driversToNotify.map((d) => d.id),
+      delivery_id: deliveryId,
+    })
   }
 )
 
@@ -137,7 +168,6 @@ const createOrderStep = createStep(
     })
 
     delivery.order_id = order.id
-    delivery.delivery_status = DeliveryStatus.RESTAURANT_PREPARING
 
     console.log("Order created", order)
 

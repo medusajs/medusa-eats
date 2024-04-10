@@ -1,10 +1,14 @@
 import { generateEntityId } from "@medusajs/utils"
 import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
+import { boolean } from "zod"
 
 @Entity()
 export default class Restaurant {
   @PrimaryKey({ columnType: "text" })
   id!: string
+
+  @Property({ columnType: "boolean", default: false })
+  is_open!: boolean
 
   @Property({ columnType: "text" })
   name!: string

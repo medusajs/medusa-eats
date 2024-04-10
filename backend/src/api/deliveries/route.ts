@@ -2,7 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import DeliveryModuleService from "src/modules/delivery/service"
 import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery"
 import zod from "zod"
-import { DeliveryItemDTO } from "../../types/delivery/common"
+import { DeliveryItemDTO, DeliveryStatus } from "../../types/delivery/common"
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
@@ -42,15 +42,32 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     "deliveryModuleService"
   )
 
-  const restaurantId = req.query.restaurant_id as string
-  let filter = {}
+  const filter = {}
 
-  if (restaurantId) {
-    filter = { restaurant_id: restaurantId }
+  for (const key in req.query) {
+    filter[key] = req.query[key]
   }
 
+  console.log({ filter })
+  console.log(filter.hasOwnProperty("driver_id"))
+
   try {
-    const deliveries = await deliveryModuleService.listDeliveries(filter)
+    const deliveries = await deliveryModuleService.listDeliveries(filter, {
+      take: 100,
+    })
+
+    if (filter.hasOwnProperty("driver_id")) {
+      const availableDeliveriesIds =
+        await deliveryModuleService.listDeliveryDrivers({
+          driver_id: filter["driver_id"],
+        })
+
+      const availableDeliveries = await deliveryModuleService.listDeliveries({
+        id: availableDeliveriesIds.map((d) => d.delivery_id),
+      })
+
+      deliveries.push(...availableDeliveries)
+    }
 
     for (const delivery of deliveries) {
       const items = [] as DeliveryItemDTO[]

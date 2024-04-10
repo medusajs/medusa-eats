@@ -6,25 +6,19 @@ import {
   DeliveryStatus,
 } from "@backend/src/types/delivery/common";
 
-export async function DeliveryStatusBadge({
+export async function DriverDeliveryStatusBadge({
   delivery,
 }: {
   delivery: DeliveryDTO;
 }) {
   switch (delivery.delivery_status) {
-    case DeliveryStatus.PENDING:
-      return <Badge color="green">New order</Badge>;
     case DeliveryStatus.RESTAURANT_ACCEPTED:
+      return <Badge color="green">Available</Badge>;
+    case DeliveryStatus.PICKUP_CLAIMED:
       return (
         <Badge color="purple" className="flex gap-1">
           <CircleQuarterSolid className="animate-spin" />
-          Looking for driver
-        </Badge>
-      );
-    case DeliveryStatus.PICKUP_CLAIMED:
-      return (
-        <Badge size="small" color="blue">
-          Driver found
+          Queued
         </Badge>
       );
     case DeliveryStatus.RESTAURANT_PREPARING:
@@ -36,8 +30,7 @@ export async function DeliveryStatusBadge({
       );
     case DeliveryStatus.READY_FOR_PICKUP:
       return (
-        <Badge color="purple" className="flex gap-1">
-          <CircleQuarterSolid className="animate-spin" />
+        <Badge color="green" className="flex gap-1">
           Waiting for pickup
         </Badge>
       );
@@ -50,8 +43,6 @@ export async function DeliveryStatusBadge({
       );
     case DeliveryStatus.DELIVERED:
       return <Badge color="green">Delivered</Badge>;
-    case DeliveryStatus.RESTAURANT_DECLINED:
-      return <Badge color="red">Declined by restaurant</Badge>;
     default:
       return <Badge>{delivery.delivery_status}</Badge>;
   }

@@ -1,6 +1,6 @@
 import { RestaurantDTO } from "./common"
 
-export type CreateRestaurantDTO = {
+export interface CreateRestaurantDTO {
   name: string
   address: string
   phone: string
@@ -8,7 +8,10 @@ export type CreateRestaurantDTO = {
   image?: Buffer
   admin?: CreateRestaurantAdminDTO
 }
-export type CreateRestaurantAdminDTO = {
+
+export type UpdateRestaurantDTO = Partial<CreateRestaurantDTO>
+
+export interface CreateRestaurantAdminDTO {
   email: string
   first_name: string
   last_name: string

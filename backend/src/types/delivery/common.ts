@@ -35,7 +35,12 @@ export interface DriverDTO {
   last_name: string
   email: string
   phone: string
-  avatar?: string
+  avatar_url?: string
   created_at: Date
   updated_at: Date
+}
+
+export interface DeliveryDriverDTO {
+  delivery_id: string
+  driver_id: string
 }

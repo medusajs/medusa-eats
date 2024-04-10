@@ -23,3 +23,8 @@ export interface CreateDriverDTO {
 }
 
 export type UpdateDriverDTO = Partial<CreateDriverDTO>
+
+export interface CreateDeliveryDriverDTO {
+  delivery_id: string
+  driver_id: string
+}

@@ -15,7 +15,8 @@ const schema = zod.object({
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body)
+  const parsedBody = JSON.parse(req.body)
+  const validatedBody = schema.parse(parsedBody)
   const deliveryId = req.params.id
 
   if (!deliveryId) {
@@ -59,10 +60,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       }
     )
 
-    console.log(
-      `Driver ${driver.first_name} ${driver.last_name} claimed delivery no`,
-      deliveryId
-    )
+    await deliveryModuleService.deleteDeliveryDriver({
+      delivery_id: claimedDelivery.id,
+    })
 
     await engineService.setStepSuccess({
       idempotencyKey: {

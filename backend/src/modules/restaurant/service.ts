@@ -68,6 +68,19 @@ export default class RestaurantModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
+  async updateRestaurant(
+    id: string,
+    data: Partial<RestaurantDTO>,
+    @MedusaContext() context: Context = {}
+  ): Promise<RestaurantDTO> {
+    data.id = id
+    const restaurant = this.restaurantService_.update(data, context)
+    return this.baseRepository_.serialize<RestaurantDTO>(restaurant, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
   async createRestaurantAdmin(
     restaurantId: string,
     data: Partial<CreateRestaurantAdminDTO>,

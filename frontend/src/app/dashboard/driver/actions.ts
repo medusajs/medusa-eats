@@ -8,17 +8,23 @@ import { revalidateTag } from "next/cache";
 
 const BACKEND_URL = "http://localhost:9000";
 
-export async function proceedDelivery(delivery: DeliveryDTO) {
-  if (delivery.delivery_status === DeliveryStatus.PENDING) {
-    await acceptDelivery(delivery.id);
+export async function proceedDelivery(
+  delivery: DeliveryDTO,
+  driverId?: string
+) {
+  if (
+    delivery.delivery_status === DeliveryStatus.RESTAURANT_ACCEPTED &&
+    driverId
+  ) {
+    return await claimDelivery(delivery.id, driverId);
   }
 
-  if (delivery.delivery_status === DeliveryStatus.PICKUP_CLAIMED) {
-    return await prepareDelivery(delivery.id);
+  if (delivery.delivery_status === DeliveryStatus.READY_FOR_PICKUP) {
+    return await pickUpDelivery(delivery.id);
   }
 
-  if (delivery.delivery_status === DeliveryStatus.RESTAURANT_PREPARING) {
-    return await preparationReady(delivery.id);
+  if (delivery.delivery_status === DeliveryStatus.IN_TRANSIT) {
+    return await completeDelivery(delivery.id);
   }
 
   console.log("Invalid delivery status", delivery.delivery_status);
@@ -26,13 +32,15 @@ export async function proceedDelivery(delivery: DeliveryDTO) {
   return null;
 }
 
-export async function acceptDelivery(
-  deliveryId: string
+export async function claimDelivery(
+  deliveryId: string,
+  driverId: string
 ): Promise<DeliveryDTO | null> {
   try {
     const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/accept`,
+      `${BACKEND_URL}/deliveries/${deliveryId}/claim`,
       {
+        body: JSON.stringify({ driver_id: driverId }),
         method: "POST",
         next: {
           tags: ["deliveries"],
@@ -40,7 +48,7 @@ export async function acceptDelivery(
       }
     ).then((res) => res.json());
 
-    console.log("Delivery accepted", deliveryId);
+    console.log("Delivery claimed by", delivery);
 
     revalidateTag("deliveries");
 
@@ -51,12 +59,36 @@ export async function acceptDelivery(
   }
 }
 
-export async function declineDelivery(
+export async function passDelivery(
+  deliveryId: string,
+  driverId: string
+): Promise<string | null> {
+  try {
+    await fetch(`${BACKEND_URL}/deliveries/${deliveryId}/pass`, {
+      body: JSON.stringify({
+        driver_id: driverId,
+      }),
+      method: "DELETE",
+      next: {
+        tags: ["deliveries"],
+      },
+    }).then((res) => res.json());
+
+    revalidateTag("deliveries");
+
+    return "Delivery passed";
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export async function pickUpDelivery(
   deliveryId: string
 ): Promise<DeliveryDTO | null> {
   try {
     const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/decline`,
+      `${BACKEND_URL}/deliveries/${deliveryId}/pick-up`,
       {
         method: "POST",
         next: {
@@ -65,8 +97,9 @@ export async function declineDelivery(
       }
     ).then((res) => res.json());
 
-    console.log("Delivery declined", deliveryId);
     revalidateTag("deliveries");
+
+    console.log("Order is picked up", deliveryId);
 
     return delivery;
   } catch (error) {
@@ -75,12 +108,12 @@ export async function declineDelivery(
   }
 }
 
-export async function prepareDelivery(
+export async function completeDelivery(
   deliveryId: string
 ): Promise<DeliveryDTO | null> {
   try {
     const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/prepare`,
+      `${BACKEND_URL}/deliveries/${deliveryId}/complete`,
       {
         method: "POST",
         next: {
@@ -89,32 +122,7 @@ export async function prepareDelivery(
       }
     ).then((res) => res.json());
 
-    revalidateTag("deliveries");
-
-    console.log("Restarant is preparing order", deliveryId);
-
-    return delivery;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-}
-
-export async function preparationReady(
-  deliveryId: string
-): Promise<DeliveryDTO | null> {
-  try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/ready`,
-      {
-        method: "POST",
-        next: {
-          tags: ["deliveries"],
-        },
-      }
-    ).then((res) => res.json());
-
-    console.log("Delivery is ready for pickup", deliveryId);
+    console.log("Order delivered at ", delivery);
 
     revalidateTag("deliveries");
 

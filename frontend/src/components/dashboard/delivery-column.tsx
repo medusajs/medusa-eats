@@ -1,0 +1,47 @@
+import { Heading, Text, Container } from "@medusajs/ui";
+import {
+  DeliveryDTO,
+  DeliveryStatus,
+  DriverDTO,
+} from "@backend/src/types/delivery/common";
+import DeliveryCard from "./delivery-card";
+
+export default async function DeliveryColumn({
+  title,
+  deliveries,
+  statusFilters,
+  driver,
+  type,
+}: {
+  title: string;
+  deliveries: DeliveryDTO[];
+  statusFilters?: DeliveryStatus[];
+  driver?: DriverDTO;
+  type: "restaurant" | "driver";
+}) {
+  const columnDeliveries = deliveries.filter((d) =>
+    statusFilters?.includes(d.delivery_status)
+  );
+
+  return (
+    <div className="inline-block">
+      <div className="flex flex-col gap-4">
+        <Heading className="text-lg text-center">{title}</Heading>
+        {columnDeliveries.length > 0 ? (
+          columnDeliveries.map((delivery) => (
+            <DeliveryCard
+              delivery={delivery}
+              type={type}
+              driver={driver}
+              key={delivery.id}
+            />
+          ))
+        ) : (
+          <Container className="p-4 text-center">
+            <Text>{title} will show up here.</Text>
+          </Container>
+        )}
+      </div>
+    </div>
+  );
+}
