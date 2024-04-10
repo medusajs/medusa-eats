@@ -154,3 +154,42 @@ export async function setRestaurantStatus(
     return null;
   }
 }
+
+export async function createProduct(
+  prevState: any,
+  createProductData: FormData
+) {
+  const restaurantId = createProductData.get("restaurant_id");
+  const productData = {} as Record<string, any>;
+
+  Array.from(createProductData.entries()).forEach(([key, value]) => {
+    if (key === "restaurant_id") {
+      return;
+    }
+    productData[key] = value;
+  });
+
+  console.log("Creating product", productData);
+
+  try {
+    const { restaurant_product } = await fetch(
+      `${BACKEND_URL}/restaurants/${restaurantId}/products`,
+      {
+        method: "POST",
+        body: JSON.stringify(productData),
+        next: {
+          tags: ["products"],
+        },
+      }
+    ).then((res) => res.json());
+
+    console.log("Product created", restaurant_product);
+
+    revalidateTag("products");
+
+    return restaurant_product;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

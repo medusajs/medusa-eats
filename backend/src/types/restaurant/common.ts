@@ -1,3 +1,5 @@
+import { ProductDTO } from "@medusajs/types"
+
 export type RestaurantDTO = {
   id: string
   is_open: boolean
@@ -8,6 +10,7 @@ export type RestaurantDTO = {
   image?: Buffer
   created_at: Date
   updated_at: Date
+  products?: ProductDTO[]
 }
 
 export type RestaurantAdminDTO = {
