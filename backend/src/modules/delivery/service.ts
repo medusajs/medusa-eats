@@ -1,22 +1,18 @@
 import { Context, DAL, ModulesSdkTypes } from "@medusajs/types"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import {
   DeliveryDTO,
-  DriverDTO,
   DeliveryDriverDTO,
+  DriverDTO,
 } from "../../types/delivery/common"
 import {
   CreateDeliveryDTO,
+  CreateDeliveryDriverDTO,
   CreateDriverDTO,
   UpdateDeliveryDTO,
   UpdateDriverDTO,
-  CreateDeliveryDriverDTO,
 } from "../../types/delivery/mutations"
-import { Delivery, Driver, DeliveryDriver } from "./models"
+import { Delivery, DeliveryDriver, Driver } from "./models"
 
 const generateMethodForModels = [Delivery, Driver, DeliveryDriver]
 
@@ -59,7 +55,6 @@ export default class DeliveryModuleService<
     this.deliveryDriverService_ = deliveryDriverService
   }
 
-  @InjectTransactionManager("baseRepository_")
   async createDelivery(
     data: CreateDeliveryDTO,
     @MedusaContext() context: Context = {}
@@ -70,7 +65,6 @@ export default class DeliveryModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
   async updateDelivery(
     deliveryId: string,
     data: UpdateDeliveryDTO,
@@ -89,7 +83,6 @@ export default class DeliveryModuleService<
     return serializedResponse[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
   async deleteDelivery(
     deliveryId: string,
     @MedusaContext() context: Context = {}
@@ -97,7 +90,6 @@ export default class DeliveryModuleService<
     await this.deliveryService_.delete(deliveryId)
   }
 
-  @InjectTransactionManager("baseRepository_")
   async createDriver(
     data: CreateDriverDTO,
     @MedusaContext() context: Context = {}
@@ -108,7 +100,6 @@ export default class DeliveryModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
   async updateDriver(
     driverId: string,
     data: UpdateDriverDTO,
@@ -124,12 +115,10 @@ export default class DeliveryModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
   async deleteDriver(driverId: string, @MedusaContext() context: Context = {}) {
     await this.driverService_.delete(driverId)
   }
 
-  @InjectTransactionManager("baseRepository_")
   async createDeliveryDriver(
     deliveryId: string,
     driverId: string,
@@ -147,7 +136,6 @@ export default class DeliveryModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
   async deleteDeliveryDriver(
     data: Partial<CreateDeliveryDriverDTO>,
     @MedusaContext() context: Context = {}
