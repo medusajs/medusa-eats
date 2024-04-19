@@ -2269,15 +2269,15 @@
     dotenv "^16.4.5"
     knex "2.4.2"
 
-"@medusajs/core-flows@0.0.9-snapshot-20240403120107":
-  version "0.0.9-snapshot-20240403120107"
-  resolved "https://registry.yarnpkg.com/@medusajs/core-flows/-/core-flows-0.0.9-snapshot-20240403120107.tgz#2ef25e139e1e5ab0fb3a8a5f6d395f6deccc4cc4"
-  integrity sha512-PiP87o9H647lzIDARXeM+o/qLgWk+c6eIWqi0UhQ5xL8Qx3sQpAuiCuGu1uv8FmapWYecq0RKPA7MBd0H722HQ==
+"@medusajs/core-flows@0.0.9-snapshot-20240406075900":
+  version "0.0.9-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/core-flows/-/core-flows-0.0.9-snapshot-20240406075900.tgz#feb77010972e90debb615eedd6f6dd1b911b500e"
+  integrity sha512-p+2wwN8XH6Lnwanih3SEC1xpKqT/oNhjGE4XQASjJ6dh/R2vhwPuZdExpvTbZaQCR8UdYMiDWR7DMULPj6XGtQ==
   dependencies:
-    "@medusajs/modules-sdk" "1.12.11-snapshot-20240403120107"
-    "@medusajs/orchestration" "0.5.7-snapshot-20240403120107"
-    "@medusajs/utils" "1.12.0-snapshot-20240403120107"
-    "@medusajs/workflows-sdk" "0.1.6-snapshot-20240403120107"
+    "@medusajs/modules-sdk" "1.12.11-snapshot-20240406075900"
+    "@medusajs/orchestration" "0.5.7-snapshot-20240406075900"
+    "@medusajs/utils" "1.12.0-snapshot-20240406075900"
+    "@medusajs/workflows-sdk" "0.1.6-snapshot-20240406075900"
     awilix "^8.0.1"
     ulid "^2.3.0"
 
@@ -2374,14 +2374,14 @@
     dotenv "^16.4.5"
     knex "2.4.2"
 
-"@medusajs/link-modules@0.2.11-snapshot-20240403120107":
-  version "0.2.11-snapshot-20240403120107"
-  resolved "https://registry.yarnpkg.com/@medusajs/link-modules/-/link-modules-0.2.11-snapshot-20240403120107.tgz#80d8a61d8ff2402e3310d9b69d8007ceb0875b9b"
-  integrity sha512-lBLrLiuM+2y3f2hMuPcL2cLUJQCtR/lgpikJTt9sya0MZINZOcEE/+xBx2c3T+41VK+41NlVc8g2OsBpctpYvw==
+"@medusajs/link-modules@0.2.11-snapshot-20240406075900":
+  version "0.2.11-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/link-modules/-/link-modules-0.2.11-snapshot-20240406075900.tgz#29554885379fc65aa3d2e4f9ca9131210efdb519"
+  integrity sha512-j3Ev87V2EpIchGA6QuprR6YgpSZ17hJF2Pl3KfhS9pcv/NNc/RHdtRTW39serfZ58cRuGPRICht2662T5tql2Q==
   dependencies:
-    "@medusajs/modules-sdk" "1.12.11-snapshot-20240403120107"
-    "@medusajs/types" "1.12.0-snapshot-20240403120107"
-    "@medusajs/utils" "1.12.0-snapshot-20240403120107"
+    "@medusajs/modules-sdk" "1.12.11-snapshot-20240406075900"
+    "@medusajs/types" "1.12.0-snapshot-20240406075900"
+    "@medusajs/utils" "1.12.0-snapshot-20240406075900"
     "@mikro-orm/core" "5.9.7"
     "@mikro-orm/postgresql" "5.9.7"
     awilix "^8.0.0"
@@ -2431,18 +2431,18 @@
     retry-axios "^2.6.0"
     uuid "^9.0.0"
 
-"@medusajs/medusa@1.21.0-snapshot-20240403120107":
-  version "1.21.0-snapshot-20240403120107"
-  resolved "https://registry.yarnpkg.com/@medusajs/medusa/-/medusa-1.21.0-snapshot-20240403120107.tgz#bd492eb8b74a5c14911971dbff5b5a843919d6d1"
-  integrity sha512-6H1h/z4oE9pnUSYcFrZLLsFGfVZicvtBgdELEZ21ugO8tdFB9KTLIp/rdIOZky1A3n21BmctK+BalMVlIX7bUQ==
+"@medusajs/medusa@1.21.0-snapshot-20240406075900":
+  version "1.21.0-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/medusa/-/medusa-1.21.0-snapshot-20240406075900.tgz#9eabc7bd90e9e35cf1cd172611da31e07856f594"
+  integrity sha512-2HwfPUJ54dInRUpZq0XfXvww2678jOV7GCiUc8jTuF5mBJqyfW6tt4p2xeyyAgRzroEjpr8q3bFmX5kWIlgjwg==
   dependencies:
-    "@medusajs/core-flows" "0.0.9-snapshot-20240403120107"
-    "@medusajs/link-modules" "0.2.11-snapshot-20240403120107"
+    "@medusajs/core-flows" "0.0.9-snapshot-20240406075900"
+    "@medusajs/link-modules" "0.2.11-snapshot-20240406075900"
     "@medusajs/medusa-cli" "^1.3.22"
-    "@medusajs/modules-sdk" "1.12.11-snapshot-20240403120107"
-    "@medusajs/orchestration" "0.5.7-snapshot-20240403120107"
-    "@medusajs/utils" "1.12.0-snapshot-20240403120107"
-    "@medusajs/workflows-sdk" "0.1.6-snapshot-20240403120107"
+    "@medusajs/modules-sdk" "1.12.11-snapshot-20240406075900"
+    "@medusajs/orchestration" "0.5.7-snapshot-20240406075900"
+    "@medusajs/utils" "1.12.0-snapshot-20240406075900"
+    "@medusajs/workflows-sdk" "0.1.6-snapshot-20240406075900"
     awilix "^8.0.0"
     body-parser "^1.19.0"
     boxen "^5.0.1"
@@ -2486,6 +2486,7 @@
     ulid "^2.3.0"
     uuid "^9.0.0"
     winston "^3.8.2"
+    zod "^3.22.4"
 
 "@medusajs/modules-sdk@1.12.11-snapshot-20240403120107":
   version "1.12.11-snapshot-20240403120107"
@@ -2497,6 +2498,22 @@
     "@medusajs/orchestration" "0.5.7-snapshot-20240403120107"
     "@medusajs/types" "1.12.0-snapshot-20240403120107"
     "@medusajs/utils" "1.12.0-snapshot-20240403120107"
+    awilix "^8.0.0"
+    graphql "^16.6.0"
+    knex "2.4.2"
+    pg "^8.11.2"
+    resolve-cwd "^3.0.0"
+
+"@medusajs/modules-sdk@1.12.11-snapshot-20240406075900":
+  version "1.12.11-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/modules-sdk/-/modules-sdk-1.12.11-snapshot-20240406075900.tgz#438ed83f8962d07d5b441c5c5746a7b436f661d0"
+  integrity sha512-s7/vLjr/ptfezrJJEY0AmFdsXzfHpf9Llm1/R995upQUEiU7gA1fCg8bXInksbmnB6AXpjBeTSJM6ow7W8chxg==
+  dependencies:
+    "@graphql-tools/merge" "^9.0.0"
+    "@graphql-tools/schema" "^10.0.0"
+    "@medusajs/orchestration" "0.5.7-snapshot-20240406075900"
+    "@medusajs/types" "1.12.0-snapshot-20240406075900"
+    "@medusajs/utils" "1.12.0-snapshot-20240406075900"
     awilix "^8.0.0"
     graphql "^16.6.0"
     knex "2.4.2"
@@ -2526,6 +2543,16 @@
   dependencies:
     "@medusajs/types" "1.12.0-snapshot-20240403120107"
     "@medusajs/utils" "1.12.0-snapshot-20240403120107"
+    awilix "^8.0.0"
+    graphql "^16.6.0"
+
+"@medusajs/orchestration@0.5.7-snapshot-20240406075900":
+  version "0.5.7-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/orchestration/-/orchestration-0.5.7-snapshot-20240406075900.tgz#b796879ed45ee233f45b9eadc703f6643a783919"
+  integrity sha512-VDbJ/DcwU6m5c+c5d1pFbIK8lqixXyqb6h+Mn40PYC2UfsL9RfllrKyO92+nhYBMtIcm2WkvtCtura8OeD3GRA==
+  dependencies:
+    "@medusajs/types" "1.12.0-snapshot-20240406075900"
+    "@medusajs/utils" "1.12.0-snapshot-20240406075900"
     awilix "^8.0.0"
     graphql "^16.6.0"
 
@@ -2696,6 +2723,11 @@
   resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.12.0-snapshot-20240403120107.tgz#a9767e8024bd857e69a9af16e3c644bb76488b12"
   integrity sha512-AXLxdnDSCsn864oUrwDznLG98RNDUlMnP4fb7Oln4prqsmnUF4uoy+7N7fPnd4CH8eZOcapBu4QDnCyR9obEFA==
 
+"@medusajs/types@1.12.0-snapshot-20240406075900":
+  version "1.12.0-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.12.0-snapshot-20240406075900.tgz#4d204990b95458d388ac8194d5e5d959eb40a86f"
+  integrity sha512-hcV/ZjrUMemROeebmilYgkIPG+OQ1q9GFDbkNHvtHNXD5nKgvKwYoFlrbV48xUAFwJqnQiziRo9PY2Bqy7QgOg==
+
 "@medusajs/types@^1.11.14", "@medusajs/types@^1.11.15":
   version "1.11.15"
   resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.11.15.tgz#d02450737a7f0c2a3bbdef078d81252055eb76c9"
@@ -2788,6 +2820,20 @@
     knex "2.4.2"
     ulid "^2.3.0"
 
+"@medusajs/utils@1.12.0-snapshot-20240406075900":
+  version "1.12.0-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/utils/-/utils-1.12.0-snapshot-20240406075900.tgz#3edad2284bc04a439652f57c6030e8d7c0d5c0fe"
+  integrity sha512-/ruzUlCnMR3ceV4mUInVZgXFUZUxfW+f/+LYhjcN1eD3uj4WCqP+LTlGek4baF0praWjVKmHr2Ub/rmExeUYCQ==
+  dependencies:
+    "@medusajs/types" "1.12.0-snapshot-20240406075900"
+    "@mikro-orm/core" "5.9.7"
+    "@mikro-orm/migrations" "5.9.7"
+    "@mikro-orm/postgresql" "5.9.7"
+    awilix "^8.0.1"
+    bignumber.js "^9.1.2"
+    knex "2.4.2"
+    ulid "^2.3.0"
+
 "@medusajs/workflow-engine-redis@0.0.4-snapshot-20240403120107":
   version "0.0.4-snapshot-20240403120107"
   resolved "https://registry.yarnpkg.com/@medusajs/workflow-engine-redis/-/workflow-engine-redis-0.0.4-snapshot-20240403120107.tgz#6de35c1dd5e24849869270a802ab460ef51face8"
@@ -2814,6 +2860,17 @@
     "@medusajs/modules-sdk" "1.12.11-snapshot-20240403120107"
     "@medusajs/orchestration" "0.5.7-snapshot-20240403120107"
     "@medusajs/utils" "1.12.0-snapshot-20240403120107"
+    awilix "^8.0.1"
+    ulid "^2.3.0"
+
+"@medusajs/workflows-sdk@0.1.6-snapshot-20240406075900":
+  version "0.1.6-snapshot-20240406075900"
+  resolved "https://registry.yarnpkg.com/@medusajs/workflows-sdk/-/workflows-sdk-0.1.6-snapshot-20240406075900.tgz#6b18041be81b033d51af3d8bded3057d586f8a7b"
+  integrity sha512-H69MLlc0WaovrFUrgZY7V6vGjDG8UMZsdvUNjnm3ND/2xxcJ6bWiN5ysyNx0apHW0cIrahvfUerhoF5Lt69Lbw==
+  dependencies:
+    "@medusajs/modules-sdk" "1.12.11-snapshot-20240406075900"
+    "@medusajs/orchestration" "0.5.7-snapshot-20240406075900"
+    "@medusajs/utils" "1.12.0-snapshot-20240406075900"
     awilix "^8.0.1"
     ulid "^2.3.0"
 
