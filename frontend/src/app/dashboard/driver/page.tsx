@@ -19,7 +19,7 @@ export default async function RestaurantDashboardPage() {
   });
 
   return (
-    <div className="flex flex-col gap-20 p-10">
+    <div className="flex flex-col gap-20">
       <Container className="flex justify-between p-8">
         <div className="flex flex-col justify-between">
           <Heading level="h1" className="text-2xl">

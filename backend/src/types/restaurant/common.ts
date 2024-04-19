@@ -2,12 +2,14 @@ import { ProductDTO } from "@medusajs/types"
 
 export type RestaurantDTO = {
   id: string
+  handle: string
   is_open: boolean
   name: string
+  description?: string
   address: string
   phone: string
   email: string
-  image?: Buffer
+  image_url?: string
   created_at: Date
   updated_at: Date
   products?: ProductDTO[]

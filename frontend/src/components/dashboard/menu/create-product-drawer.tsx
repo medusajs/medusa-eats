@@ -2,6 +2,7 @@
 
 import { Button, Drawer, Text } from "@medusajs/ui";
 import { Plus } from "@medusajs/icons";
+import { ProductCategoryDTO } from "@medusajs/types";
 import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { CreateProductForm } from "./create-product-form";
 
@@ -10,16 +11,12 @@ export function CreateProductDrawer({
   categories,
 }: {
   restaurant: RestaurantDTO;
-  categories: { id: string; name: string }[];
+  categories: ProductCategoryDTO[];
 }) {
   return (
     <Drawer>
       <Drawer.Trigger asChild>
-        <Button
-          variant="primary"
-          size="large"
-          onClick={() => console.log("Create product")}
-        >
+        <Button variant="primary" size="large">
           <Plus />
           Create Menu Item
         </Button>

@@ -1,17 +1,22 @@
 import { generateEntityId } from "@medusajs/utils"
 import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
-import { boolean } from "zod"
 
 @Entity()
 export default class Restaurant {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Property({ columnType: "text" })
+  handle!: string
+
   @Property({ columnType: "boolean", default: false })
   is_open!: boolean
 
   @Property({ columnType: "text" })
   name!: string
+
+  @Property({ columnType: "text", nullable: true })
+  description: string
 
   @Property({ columnType: "text" })
   address!: string
@@ -34,5 +39,6 @@ export default class Restaurant {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "res")
+    this.handle = this.handle || this.name.toLowerCase().replace(/\s/g, "-")
   }
 }

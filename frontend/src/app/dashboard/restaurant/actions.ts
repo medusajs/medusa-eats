@@ -5,6 +5,7 @@ import {
   DeliveryStatus,
 } from "@backend/src/types/delivery/common";
 import { revalidateTag } from "next/cache";
+import { promises as fs } from "fs";
 
 const BACKEND_URL = "http://localhost:9000";
 
@@ -159,7 +160,18 @@ export async function createProduct(
   prevState: any,
   createProductData: FormData
 ) {
-  const restaurantId = createProductData.get("restaurant_id");
+  const restaurantId = createProductData.get("restaurant_id") as string;
+  const image = createProductData.get("image") as File;
+  const fileName = image?.name;
+
+  if (image) {
+    await saveFile(image, fileName as string);
+  }
+
+  createProductData.set("thumbnail", `http://localhost:3000/${fileName}`);
+
+  createProductData.delete("image");
+
   const productData = {} as Record<string, any>;
 
   Array.from(createProductData.entries()).forEach(([key, value]) => {
@@ -191,5 +203,33 @@ export async function createProduct(
   } catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+async function saveFile(file: File, fileName: string) {
+  const data = await file.arrayBuffer();
+  await fs.appendFile(`./public/${fileName}`, Buffer.from(data));
+  return;
+}
+
+export async function deleteProduct(productId: string, restaurantId: string) {
+  try {
+    await fetch(`${BACKEND_URL}/restaurants/${restaurantId}/products`, {
+      method: "DELETE",
+      body: JSON.stringify({ product_id: productId }),
+      next: {
+        tags: ["products"],
+      },
+    });
+
+    revalidateTag("products");
+    revalidateTag("restaurants");
+
+    console.log("Product deleted", productId);
+
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
 }

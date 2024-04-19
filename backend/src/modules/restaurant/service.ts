@@ -1,9 +1,5 @@
 import { Context, DAL, ModulesSdkTypes } from "@medusajs/types"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import {
   RestaurantAdminDTO,
   RestaurantDTO,
@@ -56,7 +52,6 @@ export default class RestaurantModuleService<
     this.restaurantProductService_ = restaurantProductService
   }
 
-  @InjectTransactionManager("baseRepository_")
   async createRestaurant(
     data: CreateRestaurantDTO,
     @MedusaContext() context: Context = {}
@@ -67,7 +62,6 @@ export default class RestaurantModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
   async updateRestaurant(
     id: string,
     data: Partial<RestaurantDTO>,
@@ -80,7 +74,6 @@ export default class RestaurantModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
   async createRestaurantAdmin(
     restaurantId: string,
     data: Partial<CreateRestaurantAdminDTO>,
@@ -94,7 +87,6 @@ export default class RestaurantModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
   async deleteRestaurantAdmin(
     adminId: string,
     @MedusaContext() context: Context = {}
@@ -102,7 +94,6 @@ export default class RestaurantModuleService<
     await this.restaurantAdminService_.delete(adminId, context)
   }
 
-  @InjectTransactionManager("baseRepository_")
   async addProductToRestaurant(
     data: RestaurantProductDTO,
     @MedusaContext() context: Context = {}
@@ -119,7 +110,6 @@ export default class RestaurantModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
   async removeProductFromRestaurant(
     restaurantId: string,
     productId: string,

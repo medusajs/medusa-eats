@@ -38,3 +38,36 @@ export async function listDeliveries(
   }).then((res) => res.json());
   return deliveries;
 }
+
+export async function listCategories() {
+  const { categories } = await fetch(`${BACKEND_URL}/categories`, {
+    next: {
+      tags: ["restaurants"],
+    },
+  }).then((res) => res.json());
+
+  return categories;
+}
+
+export async function retrieveRestaurantByHandle(
+  handle: string
+): Promise<RestaurantDTO> {
+  const { restaurants } = await fetch(
+    `${BACKEND_URL}/restaurants?handle=${handle}`,
+    {
+      next: {
+        tags: ["restaurants"],
+      },
+    }
+  ).then((res) => res.json());
+  return restaurants[0];
+}
+
+export async function retrieveCart(cartId: string) {
+  const { cart } = await fetch(`${BACKEND_URL}/carts/${cartId}`, {
+    next: {
+      tags: ["cart"],
+    },
+  }).then((res) => res.json());
+  return cart;
+}

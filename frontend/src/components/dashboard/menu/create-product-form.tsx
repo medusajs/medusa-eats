@@ -2,7 +2,8 @@
 
 import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { createProduct } from "@frontend/app/dashboard/restaurant/actions";
-import { Input, Select, Textarea } from "@medusajs/ui";
+import { ProductCategoryDTO } from "@medusajs/types";
+import { Container, Input, Label, Select, Textarea } from "@medusajs/ui";
 import { useFormState } from "react-dom";
 
 export function CreateProductForm({
@@ -10,10 +11,7 @@ export function CreateProductForm({
   categories,
 }: {
   restaurant: RestaurantDTO;
-  categories: {
-    id: string;
-    name: string;
-  }[];
+  categories: ProductCategoryDTO[];
 }) {
   const [state, formAction] = useFormState(createProduct, null);
 
@@ -32,7 +30,7 @@ export function CreateProductForm({
           <Select.Value placeholder="Select a category" />
         </Select.Trigger>
         <Select.Content className="z-[50]">
-          {categories.map((category) => (
+          {categories?.map((category) => (
             <Select.Item key={category.id} value={category.id}>
               {category.name}
             </Select.Item>
@@ -40,6 +38,14 @@ export function CreateProductForm({
         </Select.Content>
       </Select>
       <Input placeholder="Price" name="price" type="number" />
+      <Label htmlFor="image">Upload image:</Label>
+      <Input
+        className="p-2 h-fit"
+        type="file"
+        name="image"
+        id="image"
+        accept="image/png, image/jpeg, image/jpg"
+      />
     </form>
   );
 }

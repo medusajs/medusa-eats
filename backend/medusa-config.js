@@ -129,6 +129,5 @@ module.exports = {
   modules,
   featureFlags: {
     medusa_v2: true,
-    product_categories: true,
   },
 }
