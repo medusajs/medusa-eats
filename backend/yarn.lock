@@ -2688,7 +2688,7 @@
     dotenv "^16.4.5"
     knex "2.4.2"
 
-"@medusajs/store@0.1.1":
+"@medusajs/store@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@medusajs/store/-/store-0.1.1.tgz#4bdb5f21f6b5425e5656698eb792e96a5683bc9d"
   integrity sha512-GzDmCM9VQxxBIFXkrGLD0yWqTl40Lbj+Dw5zOMVhbNg2ukfp/6FOHn734q+7KqF2qM5yU5nFR67H7QsJfwIvPg==

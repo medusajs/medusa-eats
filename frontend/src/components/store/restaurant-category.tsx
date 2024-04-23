@@ -1,4 +1,4 @@
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { RestaurantDTO } from "../../../../backend/src/types/restaurant/common";
 import { Badge } from "@medusajs/ui";
 import { ClockSolidMini } from "@medusajs/icons";
 import Link from "next/link";

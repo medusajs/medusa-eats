@@ -3,8 +3,8 @@
 import {
   DeliveryDTO,
   DeliveryStatus,
-} from "@backend/src/types/delivery/common";
-import { revalidateTag } from "next/cache";
+} from "../../../../../backend/src/types/delivery/common";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { promises as fs } from "fs";
 
 const BACKEND_URL = "http://localhost:9000";
@@ -44,6 +44,8 @@ export async function acceptDelivery(
     console.log("Delivery accepted", deliveryId);
 
     revalidateTag("deliveries");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     return delivery;
   } catch (error) {
@@ -68,6 +70,8 @@ export async function declineDelivery(
 
     console.log("Delivery declined", deliveryId);
     revalidateTag("deliveries");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     return delivery;
   } catch (error) {
@@ -91,6 +95,8 @@ export async function prepareDelivery(
     ).then((res) => res.json());
 
     revalidateTag("deliveries");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     console.log("Restarant is preparing order", deliveryId);
 
@@ -118,6 +124,8 @@ export async function preparationReady(
     console.log("Delivery is ready for pickup", deliveryId);
 
     revalidateTag("deliveries");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     return delivery;
   } catch (error) {
@@ -148,6 +156,8 @@ export async function setRestaurantStatus(
     console.log("Restaurant status updated", status);
 
     revalidateTag("restaurants");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     return restaurant;
   } catch (error) {

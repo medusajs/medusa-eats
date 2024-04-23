@@ -1,5 +1,5 @@
 import { MedusaResponse } from "@medusajs/medusa"
-import { AccountScopedMedusaRequest } from "src/api/v1/types"
+import { AccountScopedMedusaRequest } from "../../../types"
 import ProjectModuleService from "../../../../../modules/project/service"
 import PulumiService from "../../../../../modules/pulumi/service"
 

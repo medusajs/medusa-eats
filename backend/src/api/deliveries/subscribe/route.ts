@@ -1,11 +1,11 @@
 import { MedusaResponse } from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
-import { AccountScopedMedusaRequest } from "src/api/v1/types"
-import DeliveryModuleService from "src/modules/delivery/service"
+import { AccountScopedMedusaRequest } from "../../v1/types"
+import DeliveryModuleService from "../../../modules/delivery/service"
 import { handleDeliveryWorkflowId } from "../../../workflows/delivery/handle-delivery"
 import { IEventBusModuleService } from "@medusajs/types"
-import { DeliveryStatus } from "src/types/delivery/common"
+import { DeliveryStatus } from "../../../types/delivery/common"
 
 type RestaurantNotificationData = {
   restaurant_id: string

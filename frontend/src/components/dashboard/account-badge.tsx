@@ -2,8 +2,8 @@ import {
   DeliveryDTO,
   DeliveryStatus,
   DriverDTO,
-} from "@backend/src/types/delivery/common";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+} from "../../../../backend/src/types/delivery/common";
+import { RestaurantDTO } from "../../../../backend/src/types/restaurant/common";
 import { Badge, Text } from "@medusajs/ui";
 
 async function getDeliveries(query: string) {

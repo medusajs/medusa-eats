@@ -1,6 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { ProductModuleService } from "@medusajs/product"
-import RestaurantModuleService from "src/modules/restaurant/service"
+import RestaurantModuleService from "../../../modules/restaurant/service"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(

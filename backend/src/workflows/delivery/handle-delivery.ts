@@ -12,9 +12,9 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { Delivery } from "src/modules/delivery/models"
-import DeliveryModuleService from "src/modules/delivery/service"
-import RestaurantModuleService from "src/modules/restaurant/service"
+import { Delivery } from "../../modules/delivery/models"
+import DeliveryModuleService from "../../modules/delivery/service"
+import RestaurantModuleService from "../../modules/restaurant/service"
 import { DeliveryStatus, DriverDTO } from "../../types/delivery/common"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
@@ -25,7 +25,7 @@ type CreateDeliveryStepInput = {
 
 const createDeliveryStep = createStep(
   "create-delivery-step",
-  async (input: CreateDeliveryStepInput, { container, context }) => {
+  async function (input: CreateDeliveryStepInput, { container, context }) {
     const service = container.resolve<DeliveryModuleService>(
       "deliveryModuleService"
     )
@@ -55,7 +55,7 @@ const createDeliveryStep = createStep(
 export const notifyRestaurantStepId = "notify-restaurant-step"
 const notifyRestaurantStep = createStep(
   { name: notifyRestaurantStepId, async: true },
-  async (deliveryId: string, { container }) => {
+  async function (deliveryId: string, { container }) {
     const deliveryService = container.resolve<DeliveryModuleService>(
       "deliveryModuleService"
     )
@@ -74,7 +74,6 @@ const notifyRestaurantStep = createStep(
       throw new Error("Restaurant not found")
     }
 
-    // To do: Notify restaurant
     console.log("Notifying restaurant...")
 
     const eventBus = container.resolve<IEventBusModuleService>(
@@ -95,7 +94,7 @@ const notifyRestaurantStep = createStep(
 export const findDriverStepStepId = "await-driver-response-step"
 const findDriverStep = createStep<string, DriverDTO, string>(
   { name: findDriverStepStepId, async: true },
-  async (deliveryId: string, { container }) => {
+  async function (deliveryId: string, { container }) {
     const deliveryModuleService = container.resolve<DeliveryModuleService>(
       "deliveryModuleService"
     )
@@ -183,7 +182,7 @@ const createOrderStep = createStep(
 export const awaitStartPreparationStepId = "await-start-preparation-step"
 const awaitStartPreparationStep = createStep(
   { name: awaitStartPreparationStepId, async: true },
-  async (_, { container }) => {
+  async function () {
     console.log("Awaiting start of preparation...")
   }
 )
@@ -191,14 +190,14 @@ const awaitStartPreparationStep = createStep(
 export const awaitPreparationStepId = "await-preparation-step"
 const awaitPreparationStep = createStep(
   { name: awaitPreparationStepId, async: true },
-  async (_, { container }) => {
+  async function () {
     console.log("Awaiting preparation...")
   }
 )
 
 const createFulfillmentStep = createStep(
   "create-fulfillment-step",
-  async (order: OrderDTO, { container }) => {
+  async function (order: OrderDTO, { container }) {
     const fulfillmentModuleService =
       container.resolve<FulfillmentModuleService>("fulfillmentModuleService")
 
@@ -225,7 +224,7 @@ const createFulfillmentStep = createStep(
 
     return new StepResponse(fulfillment, fulfillment.id)
   },
-  (input: string, { container }) => {
+  function (input: string, { container }) {
     console.log("Error creating fulfillment", input)
 
     const fulfillmentModuleService =
@@ -238,7 +237,7 @@ const createFulfillmentStep = createStep(
 export const awaitPickUpStepId = "await-pick-up-step"
 const awaitPickUpStep = createStep(
   { name: awaitPickUpStepId, async: true },
-  async (_, { container }) => {
+  async function () {
     console.log("Awaiting pick up...")
   }
 )
@@ -246,7 +245,7 @@ const awaitPickUpStep = createStep(
 export const awaitDeliveryStepId = "await-delivery-step"
 const awaitDeliveryStep = createStep(
   { name: awaitDeliveryStepId, async: true },
-  async (_, { container }) => {
+  async function () {
     console.log("Awaiting delivery...")
   }
 )
@@ -260,11 +259,11 @@ const TWO_HOURS = 60 * 60 * 2
 export const handleDeliveryWorkflowId = "handle-delivery-workflow"
 export const handleDeliveryWorkflow = createWorkflow<WorkflowInput, Delivery>(
   {
-    name: "handle-delivery-workflow",
+    name: handleDeliveryWorkflowId,
     store: true,
     retentionTime: TWO_HOURS,
   },
-  (input: WorkflowData<WorkflowInput>) => {
+  function (input: WorkflowData<WorkflowInput>) {
     const delivery = createDeliveryStep(input.delivery_input)
 
     const deliveryId = transform(delivery, (d) => d.id)

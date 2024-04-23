@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import DeliveryModuleService from "src/modules/delivery/service"
+import DeliveryModuleService from "../../modules/delivery/service"
 import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery"
 import zod from "zod"
 import { DeliveryItemDTO, DeliveryStatus } from "../../types/delivery/common"

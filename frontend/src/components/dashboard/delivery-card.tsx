@@ -1,5 +1,8 @@
 import { Container, Heading, Table } from "@medusajs/ui";
-import { DeliveryDTO, DriverDTO } from "@backend/src/types/delivery/common";
+import {
+  DeliveryDTO,
+  DriverDTO,
+} from "../../../../backend/src/types/delivery/common";
 import DriverDeliveryButtons from "./driver/delivery-buttons";
 import RestaurantDeliveryButtons from "./restaurant/delivery-buttons";
 import { DriverDeliveryStatusBadge } from "./driver/delivery-status-badge";

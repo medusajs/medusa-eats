@@ -4,7 +4,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import zod from "zod"
 import ProjectModuleService from "../../../../../../modules/project/service"
 import { updateProjectEnvironmentId } from "../../../../../../workflows/project/update-environment"
-import { AccountScopedMedusaRequest } from "src/api/v1/types"
+import { AccountScopedMedusaRequest } from "../../../../types"
 
 const schema = zod
   .object({

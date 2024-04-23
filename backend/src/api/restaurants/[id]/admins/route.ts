@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import RestaurantModuleService from "src/modules/restaurant/service"
+import RestaurantModuleService from "../../../../modules/restaurant/service"
 import zod from "zod"
 
 const schema = zod.object({

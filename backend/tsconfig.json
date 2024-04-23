@@ -11,21 +11,21 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "declaration": true,
-    "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "sourceMap"../backend/dist,
+    "outDir": ".../backend/src",
+    "rootDir": "../backend/src",
     "baseUrl": ".",
     "jsx": "react-jsx",
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "checkJs": false
-  },
+  },../backend/src
   "include": ["src/", "migrations"],
-  "exclude": [
-    "**/__tests__",
-    "**/__fixtures__",
-    "node_modules",
-    "build",
+  "ex../backend/**/__tests__
+    "../backend/**/__fixtures__
+    "../backend/node_moduless__",
+    "../backend/buildmodules",
+    "../backend/.cache,
     ".cache"
   ]
 }

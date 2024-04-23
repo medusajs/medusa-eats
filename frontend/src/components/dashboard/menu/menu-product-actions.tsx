@@ -8,7 +8,7 @@ import {
 } from "@medusajs/icons";
 import { DropdownMenu, IconButton } from "@medusajs/ui";
 import { ProductDTO } from "@medusajs/types";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { RestaurantDTO } from "../../../../../backend/src/types/restaurant/common";
 import { deleteProduct } from "@frontend/app/dashboard/restaurant/actions";
 import { useState } from "react";
 

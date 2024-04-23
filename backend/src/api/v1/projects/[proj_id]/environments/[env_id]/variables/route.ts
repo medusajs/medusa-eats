@@ -4,7 +4,7 @@ import zod from "zod"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { setEnvironmentVariableWorkflowId } from "../../../../../../../workflows/project/set-environment-variable"
 import ProjectModuleService from "../../../../../../../modules/project/service"
-import { AccountScopedMedusaRequest } from "src/api/v1/types"
+import { AccountScopedMedusaRequest } from "../../../../../types"
 
 const schema = zod
   .object({

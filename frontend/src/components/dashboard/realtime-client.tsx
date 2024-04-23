@@ -41,9 +41,9 @@ export default function RealtimeClient({
       });
     };
 
-    return () => {
-      source.close();
-    };
+    // return () => {
+    //   source.close();
+    // };
   }, []);
 
   if (isPending) {

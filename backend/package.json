@@ -52,7 +52,7 @@
     "@medusajs/region": "^0.1.1",
     "@medusajs/sales-channel": "0.1.1",
     "@medusajs/stock-location-next": "^0.0.2",
-    "@medusajs/store": "0.1.1",
+    "@medusajs/store": "^0.1.1",
     "@medusajs/tax": "0.1.1",
     "@medusajs/types": "1.12.0-snapshot-20240403120107",
     "@medusajs/user": "0.0.2",

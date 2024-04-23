@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import RestaurantModuleService from "src/modules/restaurant/service"
+import RestaurantModuleService from "../../modules/restaurant/service"
 import { MedusaApp, Modules, RemoteQuery } from "@medusajs/modules-sdk"
 import zod from "zod"
 import { getPricesByPriceSetId } from "../../utils/get-prices-by-price-set-id"
@@ -98,19 +98,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
         const products = await query(productsQuery, filters)
 
-        console.log({
-          products: JSON.stringify(products),
-        })
-
         const productsWithPrices = await getPricesByPriceSetId({
           products,
           currency_code: "usd",
           pricingService:
             modules.pricingService as unknown as IPricingModuleService,
-        })
-
-        console.log({
-          productsWithPrices: JSON.stringify(productsWithPrices),
         })
 
         restaurant.products = productsWithPrices

@@ -2,7 +2,7 @@ import { MedusaResponse } from "@medusajs/medusa"
 import { buildStackName } from "../../../../../../../utils"
 import ProjectModuleService from "../../../../../../../modules/project/service"
 import PulumiService from "../../../../../../../modules/pulumi/service"
-import { AccountScopedMedusaRequest } from "src/api/v1/types"
+import { AccountScopedMedusaRequest } from "../../../../../types"
 
 export const GET = async (
   req: AccountScopedMedusaRequest,

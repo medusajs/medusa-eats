@@ -3,7 +3,7 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { MedusaResponse } from "@medusajs/medusa"
 import { buildProjectEnvironmentId } from "../../../../../../../workflows/project/trigger-build"
 import ProjectModuleService from "../../../../../../../modules/project/service"
-import { AccountScopedMedusaRequest } from "src/api/v1/types"
+import { AccountScopedMedusaRequest } from "../../../../../types"
 
 export const POST = async (
   req: AccountScopedMedusaRequest,

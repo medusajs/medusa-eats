@@ -2,7 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
-import DeliveryModuleService from "src/modules/delivery/service"
+import DeliveryModuleService from "../../../../modules/delivery/service"
 import { DeliveryStatus } from "../../../../types/delivery/common"
 import {
   awaitDeliveryStepId,

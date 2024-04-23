@@ -2,7 +2,7 @@
 
 import { Button, Drawer, Text } from "@medusajs/ui";
 import { Plus } from "@medusajs/icons";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { RestaurantDTO } from "../../../../../backend/src/types/restaurant/common";
 
 export function CreateCategoryDrawer({
   restaurant,

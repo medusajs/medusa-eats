@@ -7,7 +7,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import ProjectModuleService from "../../modules/project/service"
 import PulumiService from "../../modules/pulumi/service"
-import { ProjectDTO, ProjectEnvironmentDTO } from "src/types/project/common"
+import { ProjectDTO, ProjectEnvironmentDTO } from "../../types/project/common"
 
 function buildPulumiStackName(
   project: ProjectDTO,

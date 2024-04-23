@@ -1,5 +1,8 @@
-import { DeliveryDTO, DriverDTO } from "@backend/src/types/delivery/common";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import {
+  DeliveryDTO,
+  DriverDTO,
+} from "../../../backend/src/types/delivery/common";
+import { RestaurantDTO } from "../../../backend/src/types/restaurant/common";
 
 const BACKEND_URL = "http://localhost:9000";
 
@@ -64,7 +67,7 @@ export async function retrieveRestaurantByHandle(
 }
 
 export async function retrieveCart(cartId: string) {
-  const { cart } = await fetch(`${BACKEND_URL}/carts/${cartId}`, {
+  const { cart } = await fetch(`${BACKEND_URL}/store/carts/${cartId}`, {
     next: {
       tags: ["cart"],
     },

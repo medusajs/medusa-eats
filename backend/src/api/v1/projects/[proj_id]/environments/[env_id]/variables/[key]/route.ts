@@ -3,7 +3,7 @@ import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import ProjectModuleService from "../../../../../../../../modules/project/service"
 import { deleteEnvironmentVariableWorkflowId } from "../../../../../../../../workflows/project/delete-environment-variable"
-import { AccountScopedMedusaRequest } from "src/api/v1/types"
+import { AccountScopedMedusaRequest } from "../../../../../../types"
 
 export const GET = async (
   req: AccountScopedMedusaRequest,

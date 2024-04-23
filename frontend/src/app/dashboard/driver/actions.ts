@@ -3,8 +3,8 @@
 import {
   DeliveryDTO,
   DeliveryStatus,
-} from "@backend/src/types/delivery/common";
-import { revalidateTag } from "next/cache";
+} from "../../../../../backend/src/types/delivery/common";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const BACKEND_URL = "http://localhost:9000";
 
@@ -75,6 +75,8 @@ export async function passDelivery(
     }).then((res) => res.json());
 
     revalidateTag("deliveries");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     return "Delivery passed";
   } catch (error) {
@@ -98,6 +100,8 @@ export async function pickUpDelivery(
     ).then((res) => res.json());
 
     revalidateTag("deliveries");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     console.log("Order is picked up", deliveryId);
 
@@ -125,6 +129,8 @@ export async function completeDelivery(
     console.log("Order delivered at ", delivery);
 
     revalidateTag("deliveries");
+    revalidatePath("/dashboard/driver");
+    revalidatePath("/dashboard/restaurant");
 
     return delivery;
   } catch (error) {
