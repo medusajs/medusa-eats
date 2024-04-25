@@ -2,7 +2,7 @@ import NavCart from "@frontend/components/store/cart/nav-cart";
 import { FlyingBox, ShoppingBag } from "@medusajs/icons";
 import { Avatar, IconButton, Text } from "@medusajs/ui";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {

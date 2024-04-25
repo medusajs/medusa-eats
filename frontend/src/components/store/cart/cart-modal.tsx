@@ -2,7 +2,7 @@
 
 import { Button, Container, Heading, Text } from "@medusajs/ui";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export default function CartModal({ cart }: { cart: Record<string, any> }) {
   return (

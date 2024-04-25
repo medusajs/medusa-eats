@@ -7,6 +7,7 @@ import { RestaurantDTO } from "../../../../backend/src/types/restaurant/common";
 import { Badge, Text } from "@medusajs/ui";
 
 async function getDeliveries(query: string) {
+  console.log("Fetching deliveries with query", query);
   const { deliveries } = await fetch(
     `http://localhost:9000/deliveries?${query}&delivery_status=${DeliveryStatus.DELIVERED}`,
     {
@@ -40,7 +41,7 @@ export default async function AccountBadge({
     query = "restaurant_id=" + restaurant.id;
   }
 
-  const deliveries = (await getDeliveries(query)) as DeliveryDTO[];
+  // const deliveries = (await getDeliveries(query)) as DeliveryDTO[];
 
   return (
     <div className="flex flex-col justify-between">
@@ -51,7 +52,7 @@ export default async function AccountBadge({
           <Text>{data.phone}</Text>
           <Badge size="small" className="w-fit self-end">
             Completed deliveries:{" "}
-            <span className="font-bold">{deliveries.length}</span>
+            {/* <span className="font-bold">{deliveries.length}</span> */}
           </Badge>
         </div>
         <img

@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import {
   DeliveryDTO,
   DriverDTO,
@@ -72,5 +73,45 @@ export async function retrieveCart(cartId: string) {
       tags: ["cart"],
     },
   }).then((res) => res.json());
+  console.log("retrieveCart", cart);
   return cart;
+}
+
+export async function retrieveUser() {
+  const token = cookies().get("_medusa_jwt")?.value;
+
+  if (!token) {
+    return null;
+  }
+
+  const { user } = await fetch(`${BACKEND_URL}/users/me`, {
+    headers: {
+      Authorization: `Bearer ${cookies().get("_medusa_jwt")?.value}`,
+    },
+    next: {
+      tags: ["user"],
+    },
+  }).then((res) => res.json());
+  return user;
+}
+
+export async function getToken({
+  email,
+  password,
+  scope,
+  provider,
+}: {
+  email: string;
+  password: string;
+  scope: "customer" | "restaurant" | "driver";
+  provider: "emailpass";
+}) {
+  const { token } = await fetch(`${BACKEND_URL}/auth/${scope}/${provider}`, {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+    next: {
+      tags: ["user"],
+    },
+  }).then((res) => res.json());
+  return token;
 }

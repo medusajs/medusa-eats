@@ -1,7 +1,7 @@
 import { FlyingBox } from "@medusajs/icons";
 import { Avatar, Text } from "@medusajs/ui";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export const metadata: Metadata = {
   title: "Medusa Eats",

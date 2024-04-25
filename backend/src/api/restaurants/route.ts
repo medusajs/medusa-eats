@@ -10,11 +10,17 @@ const schema = zod.object({
   address: zod.string(),
   phone: zod.string(),
   email: zod.string(),
-  image: zod.instanceof(Buffer).optional(),
+  image_url: zod.string(),
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body)
+  const validatedBody = schema.parse(req.body) as {
+    name: string
+    address: string
+    phone: string
+    email: string
+    image_url: string
+  }
 
   if (!validatedBody) {
     return res.status(400).json({ message: "Missing restaurant data" })

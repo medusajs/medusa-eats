@@ -13,8 +13,8 @@ export default function DishCard({ product }: { product: ProductDTO }) {
 
   const handleAdd = async () => {
     setIsAdding(true);
-    console.log("Adding to cart", product.id);
-    await addToCart(product.id);
+    console.log("Adding to cart", product.variants[0].id);
+    await addToCart(product.variants[0].id);
     setIsAdding(false);
   };
 

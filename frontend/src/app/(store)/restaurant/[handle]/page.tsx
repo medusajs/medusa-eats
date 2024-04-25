@@ -2,7 +2,7 @@ import DishCard from "@frontend/components/store/restaurant/dish-card";
 import { retrieveRestaurantByHandle } from "@frontend/lib/data";
 import { ProductDTO } from "@medusajs/types";
 import { Button, Heading, Text } from "@medusajs/ui";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { notFound } from "next/navigation";
 
 export default async function RestaurantPage({

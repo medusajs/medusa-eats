@@ -8,10 +8,8 @@ import { cookies } from "next/headers";
 const BACKEND_URL = "http://localhost:9000";
 
 export async function createCart(data: CreateCartDTO): Promise<CartDTO> {
-  data.regionId = "reg_01H9T2TK25TG2M26Q01EP62ZVP";
-
   try {
-    const cart = await fetch(`${BACKEND_URL}/store/carts`, {
+    const { cart } = await fetch(`${BACKEND_URL}/store/carts`, {
       method: "POST",
       body: JSON.stringify(data),
       next: {
@@ -32,11 +30,13 @@ export async function createCart(data: CreateCartDTO): Promise<CartDTO> {
   }
 }
 
-export async function addToCart(productId: string): Promise<void> {
+export async function addToCart(variantId: string): Promise<CartDTO> {
+  console.log("variantId", variantId);
   let cartId = cookies().get("_medusa_cart_id")?.value;
+  let cart;
 
   if (!cartId) {
-    const cart = await createCart({});
+    cart = await createCart({});
     console.log("cart", cart);
     cartId = cart.id;
   }
@@ -46,15 +46,27 @@ export async function addToCart(productId: string): Promise<void> {
   }
 
   try {
-    await fetch(`${BACKEND_URL}/store/carts/${cartId}`, {
+    cart = await fetch(`${BACKEND_URL}/store/carts/${cartId}/line-items`, {
       method: "POST",
-      body: JSON.stringify({ product_id: productId, quantity: 1 }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ variant_id: variantId, quantity: 1 }),
       next: {
         tags: ["cart"],
       },
-    });
+    })
+      .then((res) => res.json())
+      .then((res) => console.log("res", res))
+      .catch((error) => {
+        console.log("Error from addToCart");
+        console.log(error);
+      });
+
+    console.log("addToCart", cart);
 
     revalidateTag("cart");
+    return cart;
   } catch (error) {
     console.log(error);
   }

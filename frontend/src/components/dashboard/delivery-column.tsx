@@ -37,8 +37,8 @@ export default async function DeliveryColumn({
             />
           ))
         ) : (
-          <Container className="p-4 text-center">
-            <Text>{title} will show up here.</Text>
+          <Container className="p-4 whitespace-pre-wrap">
+            <Text className="break-words">{title} will show up here</Text>
           </Container>
         )}
       </div>
