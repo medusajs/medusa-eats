@@ -44,7 +44,7 @@ export default async function RestaurantPage({
       <div className="flex gap-4">
         <div className="flex flex-col gap-2 min-w-64">
           {Array.from(categoryProductMap).map(([_, category], idx) => (
-            <Link href={`#cat_${idx}`}>
+            <Link href={`#cat_${idx}`} key={category.id}>
               <Button variant="transparent">{category.category_name}</Button>
             </Link>
           ))}
@@ -61,7 +61,7 @@ export default async function RestaurantPage({
               </Heading>
               <div className="grid lg:grid-cols-2 2xl:grid-cols-3 gap-4">
                 {category.products?.map((product: ProductDTO) => (
-                  <DishCard product={product} />
+                  <DishCard product={product} key={product.id} />
                 ))}
               </div>
             </div>

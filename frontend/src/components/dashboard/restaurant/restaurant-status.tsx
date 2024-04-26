@@ -1,8 +1,8 @@
 "use client";
 
-import { RestaurantDTO } from "../../../../../backend/src/types/restaurant/common";
+import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { setRestaurantStatus } from "@frontend/app/dashboard/restaurant/actions";
-import { Label, Switch } from "@medusajs/ui";
+import { Switch } from "@medusajs/ui";
 import { useState } from "react";
 
 export default function RestaurantStatus({

@@ -31,9 +31,11 @@ export default function RealtimeClient({
     const audio = new Audio("/notification.mp3");
 
     source.onmessage = (message: Record<string, any>) => {
-      revalidate("deliveries");
-
       const data = JSON.parse(message.data);
+
+      console.log("Realtime event", data);
+
+      revalidate("deliveries");
       data.new && audio.play();
 
       startTransition(() => {
@@ -41,9 +43,9 @@ export default function RealtimeClient({
       });
     };
 
-    // return () => {
-    //   source.close();
-    // };
+    return () => {
+      source.close();
+    };
   }, []);
 
   if (isPending) {

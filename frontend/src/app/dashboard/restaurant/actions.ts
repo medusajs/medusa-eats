@@ -44,8 +44,8 @@ export async function acceptDelivery(
     console.log("Delivery accepted", deliveryId);
 
     revalidateTag("deliveries");
-    revalidatePath("/dashboard/driver");
-    revalidatePath("/dashboard/restaurant");
+    // revalidatePath("/dashboard/driver");
+    // revalidatePath("/dashboard/restaurant");
 
     return delivery;
   } catch (error) {
@@ -70,8 +70,8 @@ export async function declineDelivery(
 
     console.log("Delivery declined", deliveryId);
     revalidateTag("deliveries");
-    revalidatePath("/dashboard/driver");
-    revalidatePath("/dashboard/restaurant");
+    // revalidatePath("/dashboard/driver");
+    // revalidatePath("/dashboard/restaurant");
 
     return delivery;
   } catch (error) {
@@ -95,8 +95,8 @@ export async function prepareDelivery(
     ).then((res) => res.json());
 
     revalidateTag("deliveries");
-    revalidatePath("/dashboard/driver");
-    revalidatePath("/dashboard/restaurant");
+    // revalidatePath("/dashboard/driver");
+    // revalidatePath("/dashboard/restaurant");
 
     console.log("Restarant is preparing order", deliveryId);
 
@@ -124,8 +124,8 @@ export async function preparationReady(
     console.log("Delivery is ready for pickup", deliveryId);
 
     revalidateTag("deliveries");
-    revalidatePath("/dashboard/driver");
-    revalidatePath("/dashboard/restaurant");
+    // revalidatePath("/dashboard/driver");
+    // revalidatePath("/dashboard/restaurant");
 
     return delivery;
   } catch (error) {

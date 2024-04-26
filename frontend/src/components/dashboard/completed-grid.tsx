@@ -3,7 +3,7 @@ import {
   DeliveryDTO,
   DeliveryStatus,
   DriverDTO,
-} from "../../../../backend/src/types/delivery/common";
+} from "@backend/src/types/delivery/common";
 import DeliveryCard from "./delivery-card";
 
 export default async function CompletedGrid({
@@ -29,7 +29,12 @@ export default async function CompletedGrid({
             new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         )
         .map((delivery) => (
-          <DeliveryCard delivery={delivery} type={type} driver={driver} />
+          <DeliveryCard
+            delivery={delivery}
+            type={type}
+            driver={driver}
+            key={delivery.id}
+          />
         ))}
     </div>
   );

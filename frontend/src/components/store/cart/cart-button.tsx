@@ -6,11 +6,6 @@ import { CartCounter } from "./cart-counter";
 import CartModal from "./cart-modal";
 
 export default function CartButton({ cart }: { cart: any }) {
-  const handleBlur = (isOpen: boolean) => {
-    window.document.getElementsByTagName("main")[0].style.backgroundColor =
-      "white";
-  };
-
   return (
     <div className="relative">
       <DropdownMenu

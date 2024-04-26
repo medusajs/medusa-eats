@@ -80,7 +80,7 @@ const notifyRestaurantStep = createStep(
       ModuleRegistrationName.EVENT_BUS
     )
 
-    eventBus.emit("notify.restaurant", {
+    await eventBus.emit("notify.restaurant", {
       restaurant_id,
       delivery_id: delivery.id,
     })
@@ -108,13 +108,15 @@ const findDriverStep = createStep<string, DriverDTO, string>(
       { take: 5 }
     )
 
+    console.log("Notifying drivers...", driversToNotify)
+
     const promises = driversToNotify.map((d) =>
       deliveryModuleService.createDeliveryDriver(deliveryId, d.id)
     )
 
     await Promise.all(promises)
 
-    eventBus.emit("notify.drivers", {
+    await eventBus.emit("notify.drivers", {
       drivers: driversToNotify.map((d) => d.id),
       delivery_id: deliveryId,
     })

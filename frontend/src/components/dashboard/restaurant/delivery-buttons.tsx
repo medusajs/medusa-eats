@@ -4,7 +4,7 @@ import { Button } from "@medusajs/ui";
 import {
   DeliveryDTO,
   DeliveryStatus,
-} from "../../../../../backend/src/types/delivery/common";
+} from "@backend/src/types/delivery/common";
 import {
   declineDelivery,
   proceedDelivery,

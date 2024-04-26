@@ -1,6 +1,6 @@
 import { ProductDTO } from "@medusajs/types"
 
-export type RestaurantDTO = {
+export interface RestaurantDTO {
   id: string
   handle: string
   is_open: boolean
@@ -15,7 +15,7 @@ export type RestaurantDTO = {
   products?: ProductDTO[]
 }
 
-export type RestaurantAdminDTO = {
+export interface RestaurantAdminDTO {
   id: string
   restaurant: RestaurantDTO
   first_name: string
@@ -25,7 +25,7 @@ export type RestaurantAdminDTO = {
   updated_at: Date
 }
 
-export type RestaurantProductDTO = {
+export interface RestaurantProductDTO {
   restaurant_id: string
   product_id: string
 }

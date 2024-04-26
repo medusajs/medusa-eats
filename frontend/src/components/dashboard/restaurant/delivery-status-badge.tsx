@@ -4,7 +4,7 @@ import React from "react";
 import {
   DeliveryDTO,
   DeliveryStatus,
-} from "../../../../../backend/src/types/delivery/common";
+} from "@backend/src/types/delivery/common";
 
 export async function RestaurantDeliveryStatusBadge({
   delivery,

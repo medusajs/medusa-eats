@@ -1,5 +1,6 @@
+import { ProfileBadge } from "@frontend/components/common/profile-badge";
+import { retrieveUser } from "@frontend/lib/data";
 import { FlyingBox } from "@medusajs/icons";
-import { Avatar, Text } from "@medusajs/ui";
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 
@@ -8,11 +9,15 @@ export const metadata: Metadata = {
   description: "Order food from your favorite restaurants",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await retrieveUser();
+
+  console.log("user", user);
+
   return (
     <>
       <nav className="flex px-12 py-4 h-16 bg-ui-fg-base text-ui-fg-on-inverted justify-between items-center sticky top-0 z-40">
@@ -23,13 +28,7 @@ export default function RootLayout({
           <FlyingBox /> Medusa Eats
         </Link>
         <div className="flex gap-2 items-center">
-          <Text className="text-sm">Victor</Text>
-
-          <Avatar
-            src="https://robohash.org/medusa-eats"
-            fallback="V"
-            className="bg-ui-bg-base cursor-pointer"
-          />
+          <ProfileBadge user={user} />
         </div>
       </nav>
       <main className="min-h-screen flex flex-col gap-20 p-10">{children}</main>

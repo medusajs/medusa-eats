@@ -1,11 +1,8 @@
-import { cookies } from "next/headers";
-import {
-  DeliveryDTO,
-  DriverDTO,
-} from "../../../backend/src/types/delivery/common";
-import { RestaurantDTO } from "../../../backend/src/types/restaurant/common";
+import { DeliveryDTO, DriverDTO } from "@backend/src/types/delivery/common";
+import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { createSession, retrieveSession } from "./sessions";
 
-const BACKEND_URL = "http://localhost:9000";
+export const BACKEND_URL = "http://localhost:9000";
 
 export async function retrieveRestaurant(
   restaurantId: string
@@ -78,7 +75,7 @@ export async function retrieveCart(cartId: string) {
 }
 
 export async function retrieveUser() {
-  const token = cookies().get("_medusa_jwt")?.value;
+  const token = await retrieveSession();
 
   if (!token) {
     return null;
@@ -86,16 +83,18 @@ export async function retrieveUser() {
 
   const { user } = await fetch(`${BACKEND_URL}/users/me`, {
     headers: {
-      Authorization: `Bearer ${cookies().get("_medusa_jwt")?.value}`,
+      Authorization: `Bearer ${token}`,
     },
     next: {
       tags: ["user"],
     },
   }).then((res) => res.json());
+  console.log("retrieveUser", user);
+
   return user;
 }
 
-export async function getToken({
+export async function getAndSetToken({
   email,
   password,
   scope,
@@ -106,12 +105,24 @@ export async function getToken({
   scope: "customer" | "restaurant" | "driver";
   provider: "emailpass";
 }) {
+  console.log({ email, password, scope, provider });
+
   const { token } = await fetch(`${BACKEND_URL}/auth/${scope}/${provider}`, {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password: password.toString() }),
     next: {
       tags: ["user"],
     },
   }).then((res) => res.json());
+
+  if (!token) {
+    throw new Error("Invalid email or password");
+  }
+
+  await createSession(token);
+
   return token;
 }

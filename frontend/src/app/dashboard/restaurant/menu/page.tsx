@@ -34,7 +34,7 @@ export default async function MenuPage() {
           <Heading level="h1" className="text-2xl">
             {restaurant.name} | Menu Dashboard
           </Heading>
-          <Text>View and manage your restaurant's menu</Text>
+          <Text>View and manage your restaurant&apos;s menu</Text>
         </div>
         <MenuActions restaurant={restaurant} categories={categories} />
       </div>

@@ -6,17 +6,18 @@ import { listDeliveries, retrieveDriver } from "@frontend/lib/data";
 import { Container, Heading, Text } from "@medusajs/ui";
 import { revalidateTag } from "next/cache";
 
-async function revalidateCacheTag(tag: string) {
-  "use server";
-  revalidateTag(tag);
-}
-
 export default async function RestaurantDashboardPage() {
   const driverId = "drv_01HTWA9HAFANF85QP26TC3E6C1";
   const driver = await retrieveDriver(driverId);
   const deliveries = await listDeliveries({
     driver_id: driverId,
   });
+
+  async function revalidateCacheTag(tag: string) {
+    "use server";
+    console.log("revalidating cache tag", tag);
+    revalidateTag(tag);
+  }
 
   return (
     <div className="flex flex-col gap-20">

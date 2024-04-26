@@ -1,42 +1,15 @@
 "use server";
 
-import { getToken, retrieveUser } from "@frontend/lib/data";
-import { cookies } from "next/headers";
-import { revalidateCacheTag } from "./restaurant/page";
+import { getAndSetToken } from "@frontend/lib/data";
 import { revalidateTag } from "next/cache";
+import { retrieveSession } from "../../lib/sessions";
 
 type FormState = {
-  message: string;
+  message?: string;
 };
 
-export async function getAndSetToken({
-  email,
-  password,
-  scope,
-  provider,
-}: {
-  email: string;
-  password: string;
-  scope: "customer" | "restaurant" | "driver";
-  provider: "emailpass";
-}) {
-  try {
-    const token = await getToken({ email, password, scope, provider });
-
-    cookies().set("_medusa_jwt", token, {
-      expires: 1,
-      path: "/",
-    });
-
-    return token;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
-export async function logIn(prevState: FormState, data: FormData) {
-  let token = cookies().get("_medusa_jwt")?.value;
+export async function login(prevState: FormState, data: FormData) {
+  let token = await retrieveSession();
 
   if (!token) {
     const email = data.get("email") as string;
@@ -46,9 +19,13 @@ export async function logIn(prevState: FormState, data: FormData) {
       token = await getAndSetToken({
         email,
         password,
-        scope: "customer",
+        scope: "restaurant",
         provider: "emailpass",
       });
+      revalidateTag("user");
+      return {
+        message: "User logged in successfully",
+      };
     } catch (error) {
       console.error(error);
       return {
@@ -57,13 +34,7 @@ export async function logIn(prevState: FormState, data: FormData) {
     }
   }
 
-  try {
-    const user = await retrieveUser();
-    return user;
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Failed to retrieve user",
-    };
-  }
+  return {
+    message: "User already logged in",
+  };
 }

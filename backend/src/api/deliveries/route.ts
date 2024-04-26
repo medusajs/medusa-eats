@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import DeliveryModuleService from "../../modules/delivery/service"
-import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery"
 import zod from "zod"
-import { DeliveryItemDTO, DeliveryStatus } from "../../types/delivery/common"
+import DeliveryModuleService from "../../modules/delivery/service"
+import { DeliveryItemDTO } from "../../types/delivery/common"
+import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery"
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
@@ -47,9 +47,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   for (const key in req.query) {
     filter[key] = req.query[key]
   }
-
-  console.log({ filter })
-  console.log(filter.hasOwnProperty("driver_id"))
 
   try {
     const deliveries = await deliveryModuleService.listDeliveries(filter, {

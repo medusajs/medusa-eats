@@ -3,7 +3,7 @@ import {
   DeliveryDTO,
   DeliveryStatus,
   DriverDTO,
-} from "../../../../backend/src/types/delivery/common";
+} from "@backend/src/types/delivery/common";
 import DeliveryCard from "./delivery-card";
 
 export default async function DeliveryColumn({

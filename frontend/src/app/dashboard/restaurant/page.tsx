@@ -1,4 +1,4 @@
-import { DeliveryStatus } from "../../../../../backend/src/types/delivery/common";
+import { DeliveryStatus } from "@backend/src/types/delivery/common";
 import AccountBadge from "@frontend/components/dashboard/account-badge";
 import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
@@ -6,12 +6,7 @@ import RestaurantStatus from "@frontend/components/dashboard/restaurant/restaura
 import { listDeliveries, retrieveRestaurant } from "@frontend/lib/data";
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui";
 import { revalidateTag } from "next/cache";
-import Link from "next/link";
-
-export async function revalidateCacheTag(tag: string) {
-  "use server";
-  revalidateTag(tag);
-}
+import { Link } from "next-view-transitions";
 
 export default async function RestaurantDashboardPage() {
   const restaurantId = "res_01HTPT6ATT6J2CBJ1C3A7D18YJ";
@@ -19,7 +14,13 @@ export default async function RestaurantDashboardPage() {
   const deliveries = await listDeliveries({
     restaurant_id: restaurantId,
   });
-  const orderStatus = restaurant.is_open;
+  const openStatus = restaurant.is_open;
+
+  async function revalidateCacheTag(tag: string) {
+    "use server";
+    console.log("revalidating cache tag", tag);
+    revalidateTag(tag);
+  }
 
   return (
     <>
@@ -28,7 +29,7 @@ export default async function RestaurantDashboardPage() {
           <Heading level="h1" className="text-2xl">
             {restaurant.name} | Restaurant Dashboard
           </Heading>
-          <Text>View and manage your restaurant's orders</Text>
+          <Text>View and manage your restaurant&apos;s orders</Text>
         </div>
         <Container className="grid grid-cols-3 p-8">
           <div className="flex flex-col justify-between">
@@ -36,10 +37,10 @@ export default async function RestaurantDashboardPage() {
             <div className="flex gap-2">
               <Text>Restaurant status: </Text>{" "}
               <StatusBadge
-                color={orderStatus ? "green" : "red"}
+                color={openStatus ? "green" : "red"}
                 className="flex pl-1 pr-2 py-1 gap-1 w-fit"
               >
-                {orderStatus ? "Taking orders" : "Closed"}
+                {openStatus ? "Taking orders" : "Closed"}
               </StatusBadge>
               <RestaurantStatus restaurant={restaurant} />
             </div>

@@ -2,9 +2,9 @@ import { MedusaResponse } from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IEventBusModuleService } from "@medusajs/types"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
-import DeliveryModuleService from "../../../modules/delivery/service"
-import { handleDeliveryWorkflowId } from "../../../workflows/delivery/handle-delivery"
-import { AccountScopedMedusaRequest } from "../../v1/types"
+import DeliveryModuleService from "../../../../modules/delivery/service"
+import { handleDeliveryWorkflowId } from "../../../../workflows/delivery/handle-delivery"
+import { AccountScopedMedusaRequest } from "../../../v1/types"
 
 type RestaurantNotificationData = {
   restaurant_id: string
@@ -20,6 +20,7 @@ export const GET = async (
   req: AccountScopedMedusaRequest,
   res: MedusaResponse
 ) => {
+  const deliveryId = req.params.id
   const restaurantId = req.query.restaurant_id as string
   const driverId = req.query.driver_id as string
 
@@ -27,21 +28,9 @@ export const GET = async (
     "deliveryModuleService"
   )
 
-  const filters = {}
+  const delivery = await deliveryService.retrieveDelivery(deliveryId)
 
-  if (restaurantId) {
-    filters["restaurant_id"] = restaurantId
-  }
-
-  if (driverId) {
-    filters["driver_id"] = driverId
-  }
-
-  const deliveries = await deliveryService.listDeliveries(filters, {
-    take: 100,
-  })
-
-  if (!deliveries) {
+  if (!delivery) {
     return res.status(404).json({ message: "No deliveries found" })
   }
 
@@ -62,22 +51,20 @@ export const GET = async (
     res.write("data: " + JSON.stringify(data) + "\n\n")
   }
 
-  for (const delivery of deliveries) {
-    await workflowEngine.subscribe({
-      workflowId: handleDeliveryWorkflowId,
-      transactionId: delivery.transaction_id,
-      subscriber: workflowSubHandler,
-    })
+  await workflowEngine.subscribe({
+    workflowId: handleDeliveryWorkflowId,
+    transactionId: delivery.transaction_id,
+    subscriber: workflowSubHandler,
+  })
 
-    res.write(
-      "data: " +
-        JSON.stringify({
-          message: "Subscribed to workflow",
-          transactionId: delivery.transaction_id,
-        }) +
-        "\n\n"
-    )
-  }
+  res.write(
+    "data: " +
+      JSON.stringify({
+        message: "Subscribed to workflow",
+        transactionId: delivery.transaction_id,
+      }) +
+      "\n\n"
+  )
 
   const eventBus = req.scope.resolve<IEventBusModuleService>(
     ModuleRegistrationName.EVENT_BUS
