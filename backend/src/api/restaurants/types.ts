@@ -1,6 +1,6 @@
 import { AuthenticatedMedusaRequest } from "@medusajs/medusa"
 
-export interface ResAdminScopedMedusaRequest
+export interface AuthUserScopedMedusaRequest
   extends AuthenticatedMedusaRequest {
-  restaurant_admin_id: string
+  auth_user_id: string
 }

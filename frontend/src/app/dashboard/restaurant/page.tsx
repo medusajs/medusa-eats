@@ -3,13 +3,26 @@ import AccountBadge from "@frontend/components/dashboard/account-badge";
 import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
 import RestaurantStatus from "@frontend/components/dashboard/restaurant/restaurant-status";
-import { listDeliveries, retrieveRestaurant } from "@frontend/lib/data";
+import {
+  listDeliveries,
+  retrieveRestaurant,
+  retrieveUser,
+} from "@frontend/lib/data";
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui";
 import { revalidateTag } from "next/cache";
 import { Link } from "next-view-transitions";
+import { notFound } from "next/navigation";
 
 export default async function RestaurantDashboardPage() {
-  const restaurantId = "res_01HTPT6ATT6J2CBJ1C3A7D18YJ";
+  const user = await retrieveUser();
+
+  console.log("user", user);
+
+  if (!user.restaurant) {
+    return notFound();
+  }
+
+  const restaurantId = user.restaurant.id;
   const restaurant = await retrieveRestaurant(restaurantId);
   const deliveries = await listDeliveries({
     restaurant_id: restaurantId,

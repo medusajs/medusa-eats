@@ -41,7 +41,7 @@ export default async function AccountBadge({
     query = "restaurant_id=" + restaurant.id;
   }
 
-  // const deliveries = (await getDeliveries(query)) as DeliveryDTO[];
+  const deliveries = (await getDeliveries(query)) as DeliveryDTO[];
 
   return (
     <div className="flex flex-col justify-between">
@@ -52,7 +52,7 @@ export default async function AccountBadge({
           <Text>{data.phone}</Text>
           <Badge size="small" className="w-fit self-end">
             Completed deliveries:{" "}
-            {/* <span className="font-bold">{deliveries.length}</span> */}
+            <span className="font-bold">{deliveries?.length}</span>
           </Badge>
         </div>
         <img

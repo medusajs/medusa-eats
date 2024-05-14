@@ -1,5 +1,6 @@
 "use server";
 
+import { retrieveUser } from "@frontend/lib/data";
 //@ts-ignore
 import { CartDTO, CreateCartDTO } from "@medusajs/medusa/dist/types";
 import { revalidateTag } from "next/cache";
@@ -8,10 +9,20 @@ import { cookies } from "next/headers";
 const BACKEND_URL = "http://localhost:9000";
 
 export async function createCart(data: CreateCartDTO): Promise<CartDTO> {
+  const user = await retrieveUser();
+
+  const body = {
+    email: user.email || null,
+    ...data,
+  };
+
   try {
     const { cart } = await fetch(`${BACKEND_URL}/store/carts`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
       next: {
         tags: ["cart"],
       },
@@ -36,7 +47,9 @@ export async function addToCart(variantId: string): Promise<CartDTO> {
   let cart;
 
   if (!cartId) {
-    cart = await createCart({});
+    cart = await createCart({
+      currency_code: "usd",
+    });
     console.log("cart", cart);
     cartId = cart.id;
   }
@@ -51,7 +64,10 @@ export async function addToCart(variantId: string): Promise<CartDTO> {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ variant_id: variantId, quantity: 1 }),
+      body: JSON.stringify({
+        variant_id: variantId,
+        quantity: 1,
+      }),
       next: {
         tags: ["cart"],
       },

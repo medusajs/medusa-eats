@@ -1,7 +1,11 @@
-import "server-only";
+import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import "server-only";
 
-export async function createSession(token: string) {
+const jwtSecret = process.env.JWT_SECRET;
+const encodedKey = new TextEncoder().encode(jwtSecret);
+
+export function createSession(token: string) {
   if (!token) {
     return;
   }
@@ -17,16 +21,30 @@ export async function createSession(token: string) {
   });
 }
 
-export async function retrieveSession() {
+export function retrieveSession() {
   const token = cookies().get("_medusa_jwt")?.value;
 
+  console.log("retrieveSession", token);
+
   if (!token) {
+    console.log("No token found");
     return null;
   }
 
   return token;
 }
 
-export async function destroySession() {
+export function destroySession() {
   cookies().delete("_medusa_jwt");
+}
+
+export async function decrypt(session: string | undefined = "") {
+  try {
+    const { payload } = await jwtVerify(session, encodedKey, {
+      algorithms: ["HS256"],
+    });
+    return payload;
+  } catch (error) {
+    console.log("Failed to verify session");
+  }
 }

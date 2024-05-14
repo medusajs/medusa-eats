@@ -1,6 +1,6 @@
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import zod from "zod"
-import AccountModuleService from "../../../modules/account/service"
+import AccountModuleService from "../../../../modules/account/service"
 
 const schema = zod
   .object({

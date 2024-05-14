@@ -27,7 +27,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
           restaurant_id: validatedBody.restaurant_id,
           cart_id: validatedBody.cart_id,
         },
-        auth_user_id: req.user?.id,
+        auth_user_id: req.user?.userId,
       },
     })
 
@@ -77,19 +77,20 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         items.push(...cart.items)
       }
 
-      if (delivery.order_id) {
-        const orderService = req.scope.resolve("orderModuleService")
-        const order = await orderService.retrieve(delivery.order_id, {
-          relations: ["items"],
-        })
-        items.push(...order.items)
-      }
+      // if (delivery.order_id) {
+      //   const orderService = req.scope.resolve("orderModuleService")
+      //   const order = await orderService.retrieve(delivery.order_id, {
+      //     relations: ["items"],
+      //   })
+      //   items.push(...order.items)
+      // }
 
       delivery.items = items
     }
 
     return res.status(200).json({ deliveries })
   } catch (error) {
+    console.log({ error })
     return res.status(500).json({ message: error.message })
   }
 }

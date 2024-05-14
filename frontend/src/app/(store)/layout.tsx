@@ -2,7 +2,7 @@ import { ProfileBadge } from "@frontend/components/common/profile-badge";
 import NavCart from "@frontend/components/store/cart/nav-cart";
 import { retrieveUser } from "@frontend/lib/data";
 import { FlyingBox, ShoppingBag } from "@medusajs/icons";
-import { Avatar, IconButton, Text } from "@medusajs/ui";
+import { IconButton } from "@medusajs/ui";
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import { Suspense } from "react";

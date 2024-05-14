@@ -1,10 +1,10 @@
 import { authenticate } from "@medusajs/medusa/dist/utils/authenticate-middleware"
-import { ResAdminScopedMedusaRequest } from "./types"
+import { AuthUserScopedMedusaRequest } from "./types"
 import { NextFunction, Response } from "express"
 import { MiddlewareRoute } from "@medusajs/medusa"
 
 const isAdmin = (
-  req: ResAdminScopedMedusaRequest,
+  req: AuthUserScopedMedusaRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -14,7 +14,7 @@ const isAdmin = (
     return res.status(403).json({ message: "Unauthorized" })
   }
 
-  req.restaurant_admin_id = resAdmId
+  req.auth_user_id = resAdmId
 
   console.log("isAdmin middleware", resAdmId)
 
@@ -25,6 +25,6 @@ export const restaurantAdminMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/restaurants/:id/products",
-    middlewares: [authenticate("restaurant", ["bearer"]), isAdmin],
+    middlewares: [authenticate("restaurant", "bearer"), isAdmin],
   },
 ]

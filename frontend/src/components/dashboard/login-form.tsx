@@ -1,8 +1,24 @@
 "use client";
 
 import { login } from "@frontend/app/dashboard/actions";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { Label, Input, Button, Badge } from "@medusajs/ui";
+import { Link } from "next-view-transitions";
+
+function Submit() {
+  const status = useFormStatus();
+
+  return (
+    <Button
+      type="submit"
+      size="large"
+      className="self-end"
+      isLoading={status.pending}
+    >
+      Login
+    </Button>
+  );
+}
 
 export function LoginForm() {
   const [state, action] = useFormState(login, { message: "" });
@@ -19,9 +35,14 @@ export function LoginForm() {
           <Input id="password" name="password" type="password" />
         </div>
       </div>
-      <Button type="submit" size="large" className="self-end">
-        Login
-      </Button>
+      <div className="flex flex-row justify-between">
+        <Link href="/signup">
+          <Button variant="transparent" size="large">
+            Create account
+          </Button>
+        </Link>
+        <Submit />
+      </div>
       {state.message && (
         <Badge className="justify-center text-center">{state.message}</Badge>
       )}

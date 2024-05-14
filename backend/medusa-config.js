@@ -39,6 +39,8 @@ const modules = {
             admin: {},
             store: {},
             restaurant: {},
+            driver: {},
+            customer: {},
           },
         },
       ],
@@ -49,7 +51,7 @@ const modules = {
     resources: "shared",
     resolve: "@medusajs/user",
     options: {
-      jwt_secret: "test",
+      jwt_secret: process.env.JWT_SECRET,
     },
   },
   [Modules.CACHE]: {

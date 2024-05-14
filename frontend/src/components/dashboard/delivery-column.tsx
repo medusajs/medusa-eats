@@ -19,7 +19,7 @@ export default async function DeliveryColumn({
   driver?: DriverDTO;
   type: "restaurant" | "driver";
 }) {
-  const columnDeliveries = deliveries.filter((d) =>
+  const columnDeliveries = deliveries?.filter((d) =>
     statusFilters?.includes(d.delivery_status)
   );
 
@@ -27,7 +27,7 @@ export default async function DeliveryColumn({
     <div className="inline-block">
       <div className="flex flex-col gap-4">
         <Heading className="text-lg text-center">{title}</Heading>
-        {columnDeliveries.length > 0 ? (
+        {columnDeliveries?.length > 0 ? (
           columnDeliveries.map((delivery) => (
             <DeliveryCard
               delivery={delivery}

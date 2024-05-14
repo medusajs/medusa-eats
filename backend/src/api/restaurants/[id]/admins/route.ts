@@ -8,7 +8,7 @@ import zod from "zod"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IAuthModuleService } from "@medusajs/types"
 import jwt from "jsonwebtoken"
-import { createRestaurantAdminWorkflow } from "../../../../workflows/account/create-resadm"
+import { createUserWorkflow } from "../../../../workflows/account/create-user"
 
 const schema = zod
   .object({
@@ -31,18 +31,17 @@ export const POST = async (
     last_name?: string
   }
 
-  const { result, errors } = await createRestaurantAdminWorkflow(req.scope).run(
-    {
-      input: {
-        user: {
-          ...validatedBody,
-          restaurant_id: restaurantId,
-        },
-        auth_user_id: authUserId,
+  const { result, errors } = await createUserWorkflow(req.scope).run({
+    input: {
+      user: {
+        ...validatedBody,
+        scope: "restaurant",
+        restaurant_id: restaurantId,
       },
-      throwOnError: false,
-    }
-  )
+      auth_user_id: authUserId,
+    },
+    throwOnError: false,
+  })
 
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error

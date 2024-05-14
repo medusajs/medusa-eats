@@ -37,6 +37,8 @@ export async function listDeliveries(
       tags: ["deliveries"],
     },
   }).then((res) => res.json());
+
+  console.log("listDeliveries", deliveries);
   return deliveries;
 }
 
@@ -75,7 +77,9 @@ export async function retrieveCart(cartId: string) {
 }
 
 export async function retrieveUser() {
-  const token = await retrieveSession();
+  const token = retrieveSession();
+
+  console.log("retrieveUser", token);
 
   if (!token) {
     return null;
@@ -88,41 +92,11 @@ export async function retrieveUser() {
     next: {
       tags: ["user"],
     },
-  }).then((res) => res.json());
+  }).then((res) => {
+    return res.json();
+  });
+
   console.log("retrieveUser", user);
 
   return user;
-}
-
-export async function getAndSetToken({
-  email,
-  password,
-  scope,
-  provider,
-}: {
-  email: string;
-  password: string;
-  scope: "customer" | "restaurant" | "driver";
-  provider: "emailpass";
-}) {
-  console.log({ email, password, scope, provider });
-
-  const { token } = await fetch(`${BACKEND_URL}/auth/${scope}/${provider}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password: password.toString() }),
-    next: {
-      tags: ["user"],
-    },
-  }).then((res) => res.json());
-
-  if (!token) {
-    throw new Error("Invalid email or password");
-  }
-
-  await createSession(token);
-
-  return token;
 }

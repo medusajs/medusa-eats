@@ -10,13 +10,14 @@
   },
   "dependencies": {
     "@medusajs/ui": "^2.4.3",
+    "jose": "^5.2.4",
     "next": "14.1.4",
     "next-view-transitions": "^0.1.1",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@medusajs/medusa": "^1.20.4",
+    "@medusajs/medusa": "preview",
     "@medusajs/ui-preset": "^1.1.3",
     "@types/node": "^20",
     "@types/react": "^18",
