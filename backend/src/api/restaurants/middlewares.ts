@@ -21,10 +21,20 @@ const isAdmin = (
   return next()
 }
 
+const logger = (
+  req: AuthUserScopedMedusaRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("restaurant admin middleware", req)
+
+  return next()
+}
+
 export const restaurantAdminMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/restaurants/:id/products",
-    middlewares: [authenticate("restaurant", "bearer"), isAdmin],
+    middlewares: [authenticate("restaurant", "bearer")],
   },
 ]

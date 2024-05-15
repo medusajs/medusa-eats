@@ -6,6 +6,7 @@ import {
 } from "../../../../../backend/src/types/delivery/common";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { promises as fs } from "fs";
+import { retrieveSession } from "@frontend/lib/sessions";
 
 const BACKEND_URL = "http://localhost:9000";
 
@@ -170,6 +171,7 @@ export async function createProduct(
   prevState: any,
   createProductData: FormData
 ) {
+  const token = retrieveSession();
   const restaurantId = createProductData.get("restaurant_id") as string;
   const image = createProductData.get("image") as File;
   const fileName = image?.name;
@@ -199,9 +201,11 @@ export async function createProduct(
       {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(productData),
+        credentials: "include",
         next: {
           tags: ["products"],
         },

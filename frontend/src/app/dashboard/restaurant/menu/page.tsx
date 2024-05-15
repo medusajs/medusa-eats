@@ -1,18 +1,24 @@
 import { MenuActions } from "@frontend/components/dashboard/menu/menu-actions";
 import { MenuProductActions } from "@frontend/components/dashboard/menu/menu-product-actions";
-import { listCategories, retrieveRestaurant } from "@frontend/lib/data";
+import {
+  listCategories,
+  retrieveRestaurant,
+  retrieveUser,
+} from "@frontend/lib/data";
 import { ProductDTO, ProductVariantDTO } from "@medusajs/types";
 import { Heading, Table, Text } from "@medusajs/ui";
 import Image from "next/image";
 
 export default async function MenuPage() {
-  const restaurantId = "res_01HTPT6ATT6J2CBJ1C3A7D18YJ";
+  const user = await retrieveUser();
+  const restaurantId = user.restaurant.id;
   const restaurant = await retrieveRestaurant(restaurantId);
   const categories = await listCategories();
 
   const categoryProductMap = new Map();
 
   restaurant.products?.forEach((product) => {
+    console.log("product", product);
     if (product.categories) {
       product.categories.forEach((category) => {
         if (categoryProductMap.has(category.id)) {
@@ -54,9 +60,11 @@ export default async function MenuPage() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
+              {console.log("category", category)}
               {category.products?.map((product: ProductDTO) => {
                 const variants = product.variants as (ProductVariantDTO & {
                   price_set: any;
+                  price: any;
                 })[];
                 return (
                   <Table.Row key={product.id}>
@@ -73,7 +81,9 @@ export default async function MenuPage() {
                     </Table.Cell>
                     <Table.Cell>{product.title}</Table.Cell>
                     <Table.Cell>{product.description}</Table.Cell>
-                    <Table.Cell>{}</Table.Cell>
+                    <Table.Cell>
+                      ${variants[0].price.calculated_amount / 100}
+                    </Table.Cell>
                     <Table.Cell>
                       <MenuProductActions
                         product={product}

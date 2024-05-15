@@ -25,6 +25,12 @@ export const createVariantPriceSet = async ({
   prices?: CreatePriceSetDTO["prices"]
   rules?: CreatePriceSetDTO["rules"]
 }): Promise<PriceSetDTO> => {
+  console.log({
+    variantId,
+    prices,
+    rules,
+    container,
+  })
   const remoteLink = container.resolve("remoteLink")
   const pricingModuleService: IPricingModuleService = container.resolve(
     "pricingModuleService"
@@ -35,10 +41,14 @@ export const createVariantPriceSet = async ({
     prices,
   })
 
+  console.log("priceSet", priceSet)
+
   await remoteLink.create({
     [Modules.PRODUCT]: { variant_id: variantId },
     [Modules.PRICING]: { price_set_id: priceSet.id },
   })
+
+  console.log("priceSet", priceSet)
 
   return await pricingModuleService.retrieve(priceSet.id, {
     relations: ["prices"],

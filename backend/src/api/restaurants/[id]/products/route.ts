@@ -5,6 +5,7 @@ import { CreateProductDTO, ProductDTO } from "@medusajs/types"
 import zod from "zod"
 import RestaurantModuleService from "../../../../modules/restaurant/service"
 import { createVariantPriceSet } from "../../../../utils/create-variant-price-set"
+import { BigNumber } from "@medusajs/utils"
 
 const schema = zod.object({
   title: zod.string(),
@@ -16,8 +17,7 @@ const schema = zod.object({
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const parsedBody = JSON.parse(req.body)
-  const validatedBody = schema.parse(parsedBody)
+  const validatedBody = schema.parse(req.body)
 
   if (!validatedBody) {
     return res.status(400).json({ message: "Missing restaurant admin data" })
@@ -56,13 +56,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       productData as CreateProductDTO
     )
 
+    console.log("product", product)
+
     // Create and link a price set to the product variant
-    createVariantPriceSet({
+    const priceSet = await createVariantPriceSet({
       container: req.scope,
       variantId: product.variants[0].id,
       prices: [
         {
-          amount: parseInt(price),
+          amount: price,
           currency_code: "usd",
           rules: {
             region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
@@ -71,6 +73,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       ],
       rules: [{ rule_attribute: "region_id" }],
     })
+
+    console.log("priceSet", priceSet)
 
     // Add the product to the restaurant
     const restaurantProduct =
@@ -96,10 +100,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
     "restaurantModuleService"
-  )
-
-  const productModuleService = req.scope.resolve<ProductModuleService>(
-    "productModuleService"
   )
 
   const { query, modules } = await MedusaApp({
@@ -146,8 +146,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
     const products = await query(productsQuery, filters)
 
-    console.log({ products })
-
     return res.status(200).json({ restaurant_products: products })
   } catch (error) {
     return res.status(500).json({ message: error.message })
@@ -159,7 +157,7 @@ const deleteSchema = zod.object({
 })
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
-  const parsedBody = JSON.parse(req.body)
+  const parsedBody = JSON.parse(req.body as string)
   const validatedBody = deleteSchema.parse(parsedBody)
 
   if (!validatedBody) {

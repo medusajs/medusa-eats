@@ -13,7 +13,7 @@ export default function DishCard({ product }: { product: ProductDTO }) {
 
   const handleAdd = async () => {
     setIsAdding(true);
-    console.log("Adding to cart", product.variants[0].id);
+    console.log("Adding to cart", product.variants[0]);
     await addToCart(product.variants[0].id);
     setIsAdding(false);
   };
@@ -23,6 +23,9 @@ export default function DishCard({ product }: { product: ProductDTO }) {
       <div className="flex flex-col gap-2 p-4">
         <Heading>{product.title}</Heading>
         <Text>{product.description}</Text>
+        <Text className="text-lg font-semibold">
+          ${product.variants[0].price?.calculated_amount / 100}
+        </Text>
       </div>
       <div className="relative">
         <Image

@@ -1,6 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { ProductModuleService } from "@medusajs/product"
+import { PricingModuleService } from "@medusajs/pricing"
 import RestaurantModuleService from "../../../modules/restaurant/service"
+import { getPricesByPriceSetId } from "../../../utils/get-prices-by-price-set-id"
+import { MedusaApp, Modules } from "@medusajs/modules-sdk"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
@@ -10,7 +13,22 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     "productModuleService"
   )
 
+  const pricingModuleService = req.scope.resolve<PricingModuleService>(
+    "pricingModuleService"
+  )
+
   const restaurantId = req.params.id
+
+  const { query, modules } = await MedusaApp({
+    modulesConfig: {
+      [Modules.PRODUCT]: true,
+      [Modules.PRICING]: true,
+    },
+    sharedResourcesConfig: {
+      database: { clientUrl: process.env.POSTGRES_URL },
+    },
+    injectedDependencies: {},
+  })
 
   try {
     const restaurant =
@@ -21,21 +39,56 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         restaurant_id: restaurantId,
       })
 
-    if (restaurantProducts.length) {
-      const products = await productModuleService.list(
-        {
-          id: restaurantProducts.map((rp) => rp.product_id),
-        },
-        {
-          relations: ["variants", "options", "categories"],
-        }
-      )
+    console.log({ restaurantProducts })
 
-      restaurant.products = products
+    const filters = {
+      context: {
+        id: restaurantProducts.map((p) => p.product_id),
+        currency_code: "usd",
+        region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
+      },
     }
+
+    const productsQuery = `#graphql
+        query($filters: Record, $id: [String], $currency_code: String, $region_id: String) {
+          products(filters: $filters) {
+            id
+            title
+            description
+            thumbnail
+            categories {
+              id
+              title
+            }
+            variants {
+              id
+              price_set {
+                id
+              }
+              price {
+                id
+                amount
+                currency_code
+              }
+            }
+          }
+        }`
+
+    const products = await query(productsQuery, filters)
+
+    const pricedProducts = await getPricesByPriceSetId({
+      products,
+      currency_code: "usd",
+      pricingService: pricingModuleService,
+    })
+
+    console.log({ pricedProducts })
+
+    restaurant.products = pricedProducts
 
     return res.status(200).json({ restaurant })
   } catch (error) {
+    console.log("error", error)
     return res.status(500).json({ message: error.message })
   }
 }
