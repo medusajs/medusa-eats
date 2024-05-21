@@ -65,7 +65,9 @@
     "dotenv": "^16.4.5",
     "express": "^4.17.2",
     "jsonwebtoken": "^9.0.2",
+    "medusa-fulfillment-manual": "^1.1.40",
     "medusa-interfaces": "*",
+    "medusa-payment-manual": "^1.0.24",
     "prism-react-renderer": "^2.0.4",
     "typeorm": "^0.3.16",
     "zod": "^3.22.4"

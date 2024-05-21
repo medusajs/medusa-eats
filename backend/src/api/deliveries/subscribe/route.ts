@@ -22,6 +22,7 @@ export const GET = async (
 ) => {
   const restaurantId = req.query.restaurant_id as string
   const driverId = req.query.driver_id as string
+  const deliveryId = req.query.delivery_id as string
 
   const deliveryService = req.scope.resolve<DeliveryModuleService>(
     "deliveryModuleService"
@@ -35,6 +36,10 @@ export const GET = async (
 
   if (driverId) {
     filters["driver_id"] = driverId
+  }
+
+  if (deliveryId) {
+    filters["id"] = deliveryId
   }
 
   const deliveries = await deliveryService.listDeliveries(filters, {

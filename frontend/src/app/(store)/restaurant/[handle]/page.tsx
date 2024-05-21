@@ -61,7 +61,11 @@ export default async function RestaurantPage({
               </Heading>
               <div className="grid lg:grid-cols-2 2xl:grid-cols-3 gap-4">
                 {category.products?.map((product: ProductDTO) => (
-                  <DishCard product={product} key={product.id} />
+                  <DishCard
+                    product={product}
+                    key={product.id}
+                    restaurantId={restaurant.id}
+                  />
                 ))}
               </div>
             </div>

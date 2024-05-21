@@ -8,16 +8,19 @@ import { cookies } from "next/headers";
 
 const BACKEND_URL = "http://localhost:9000";
 
-export async function createCart(data: CreateCartDTO): Promise<CartDTO> {
+export async function createCart(
+  data: CreateCartDTO,
+  restaurant_id: string
+): Promise<CartDTO> {
   const user = await retrieveUser();
 
   const body = {
-    email: user.email || null,
+    email: user?.email || null,
     ...data,
   };
 
   try {
-    const { cart } = await fetch(`${BACKEND_URL}/store/carts`, {
+    let cartResponse = await fetch(`${BACKEND_URL}/store/carts`, {
       method: "POST",
       body: JSON.stringify(body),
       headers: {
@@ -26,9 +29,34 @@ export async function createCart(data: CreateCartDTO): Promise<CartDTO> {
       next: {
         tags: ["cart"],
       },
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .catch((error) => {
+        console.log("Error from createCart");
+        console.log(error);
+      });
 
-    console.log("createCart", cart);
+    let cart = cartResponse.cart;
+
+    cartResponse = await fetch(
+      `${BACKEND_URL}/restaurants/${restaurant_id}/carts`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cart_id: cart.id,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((error) => {
+        console.log("Error from createCart");
+        console.log(error);
+      });
+
+    cart = cartResponse.cart;
 
     cookies().set("_medusa_cart_id", cart.id);
 
@@ -41,16 +69,20 @@ export async function createCart(data: CreateCartDTO): Promise<CartDTO> {
   }
 }
 
-export async function addToCart(variantId: string): Promise<CartDTO> {
-  console.log("variantId", variantId);
+export async function addToCart(
+  variantId: string,
+  restaurantId: string
+): Promise<CartDTO> {
   let cartId = cookies().get("_medusa_cart_id")?.value;
   let cart;
 
   if (!cartId) {
-    cart = await createCart({
-      currency_code: "usd",
-    });
-    console.log("cart", cart);
+    cart = await createCart(
+      {
+        currency_code: "usd",
+      },
+      restaurantId
+    );
     cartId = cart.id;
   }
 
@@ -78,8 +110,6 @@ export async function addToCart(variantId: string): Promise<CartDTO> {
         console.log("Error from addToCart");
         console.log(error);
       });
-
-    console.log("addToCart", cart);
 
     revalidateTag("cart");
     return cart;

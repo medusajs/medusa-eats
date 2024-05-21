@@ -39,13 +39,10 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         restaurant_id: restaurantId,
       })
 
-    console.log({ restaurantProducts })
-
     const filters = {
       context: {
         id: restaurantProducts.map((p) => p.product_id),
         currency_code: "usd",
-        region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
       },
     }
 
@@ -65,11 +62,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
               price_set {
                 id
               }
-              price {
-                id
-                amount
-                currency_code
-              }
             }
           }
         }`
@@ -81,8 +73,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       currency_code: "usd",
       pricingService: pricingModuleService,
     })
-
-    console.log({ pricedProducts })
 
     restaurant.products = pricedProducts
 

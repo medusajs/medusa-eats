@@ -10,6 +10,7 @@ type FormState = {
 };
 
 const redirecter = (payload: any) => {
+  console.log({ payload });
   switch (payload?.scope) {
     case "customer":
       redirect("/");
@@ -37,13 +38,20 @@ export async function signup(prevState: FormState, data: FormData) {
 
   const scope = user_type as "customer" | "restaurant" | "driver";
 
+  console.log({ scope });
+
   try {
     const token = await createAuthUser({
       email,
       password,
       scope,
       provider: "emailpass",
+    }).catch((error) => {
+      console.error(error);
+      throw new Error("Error creating auth user");
     });
+
+    console.log({ token });
 
     createSession(token);
     revalidateTag("user");
@@ -54,7 +62,13 @@ export async function signup(prevState: FormState, data: FormData) {
       last_name,
       phone,
       scope,
+      token,
+    }).catch((error) => {
+      console.error(error);
+      throw new Error("Error creating user");
     });
+
+    console.log({ user, newToken });
 
     createSession(newToken);
     revalidateTag("user");

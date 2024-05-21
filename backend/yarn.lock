@@ -643,6 +643,20 @@
     "@babel/helper-split-export-declaration" "^7.22.6"
     globals "^11.1.0"
 
+"@babel/plugin-transform-classes@^7.9.5":
+  version "7.24.5"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-classes/-/plugin-transform-classes-7.24.5.tgz#05e04a09df49a46348299a0e24bfd7e901129339"
+  integrity sha512-gWkLP25DFj2dwe9Ck8uwMOpko4YsqyfZJrOmqqcegeDYEbp7rmn4U6UQZNj08UF6MaX39XenSpKRCvpDRBtZ7Q==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.22.5"
+    "@babel/helper-compilation-targets" "^7.23.6"
+    "@babel/helper-environment-visitor" "^7.22.20"
+    "@babel/helper-function-name" "^7.23.0"
+    "@babel/helper-plugin-utils" "^7.24.5"
+    "@babel/helper-replace-supers" "^7.24.1"
+    "@babel/helper-split-export-declaration" "^7.24.5"
+    globals "^11.1.0"
+
 "@babel/plugin-transform-computed-properties@^7.24.1":
   version "7.24.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-computed-properties/-/plugin-transform-computed-properties-7.24.1.tgz#bc7e787f8e021eccfb677af5f13c29a9934ed8a7"
@@ -714,7 +728,7 @@
     "@babel/helper-function-name" "^7.23.0"
     "@babel/helper-plugin-utils" "^7.24.0"
 
-"@babel/plugin-transform-instanceof@^7.12.1":
+"@babel/plugin-transform-instanceof@^7.12.1", "@babel/plugin-transform-instanceof@^7.8.3":
   version "7.24.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-instanceof/-/plugin-transform-instanceof-7.24.1.tgz#bc75eb7976ecd927aac6c2c34f5ec094597f7e95"
   integrity sha512-WgRFadetnie6/gtCk8BY/ifTxjpht/fE/a2jM4Stm+H9HOyEhZ4WgSO4KHrYIFR3CgmuTs8NxSr+iD+us/rWDw==
@@ -1118,6 +1132,13 @@
   version "7.24.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.4.tgz#de795accd698007a66ba44add6cc86542aff1edd"
   integrity sha512-dkxf7+hn8mFBwKjs9bvBlArzLVxVbS8usaPUDd5p2a9JCL9tB8OaOVN1isD4+Xyk4ns89/xeOmbQvgdK7IIVdA==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
+"@babel/runtime@^7.7.6":
+  version "7.24.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.5.tgz#230946857c053a36ccc66e1dd03b17dd0c4ed02c"
+  integrity sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -8204,10 +8225,26 @@ medusa-core-utils@^1.2.0, medusa-core-utils@^1.2.1:
   resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.2.1.tgz#c95ce78fb5e2d532b5441c11575cbf99f6138fc2"
   integrity sha512-PBAm+5ODVcS9HREz7SH9LtiDY6/Fkwax+tqB5cTjujOiWSPuuj13ImH8eb9p6aVoOEvFtpDP4HL8TIijpJ6juw==
 
+medusa-fulfillment-manual@^1.1.40:
+  version "1.1.40"
+  resolved "https://registry.yarnpkg.com/medusa-fulfillment-manual/-/medusa-fulfillment-manual-1.1.40.tgz#0d98d4af62d826e50f749d8add20048977c9f26a"
+  integrity sha512-HRz2+ZAE8lYMgFs17EVkQrXYuOWTSmR1qZa++XqDx2DJrv6NWtBKYf49AmdB3VkFdeuHRz7Xl+7114bStNlM4Q==
+  dependencies:
+    "@babel/plugin-transform-classes" "^7.9.5"
+    "@babel/plugin-transform-instanceof" "^7.8.3"
+    "@babel/runtime" "^7.7.6"
+    express "^4.17.1"
+    medusa-core-utils "^1.2.1"
+
 medusa-interfaces@*:
   version "1.3.9"
   resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.3.9.tgz#4064a99dd3a50d50ac8a3a7f7e9217c2ba6f2a4a"
   integrity sha512-5cTYPvnL96djEdQjO5Mp4ECLJH6FTL1NWQf6kdxbda3S66JkbliNydQ03KorKEPKxT6Fsr74su494rm077EiFw==
+
+medusa-payment-manual@^1.0.24:
+  version "1.0.24"
+  resolved "https://registry.yarnpkg.com/medusa-payment-manual/-/medusa-payment-manual-1.0.24.tgz#4836998d51e4b2be4d0ba7acf3016b35c0f85437"
+  integrity sha512-VcQJuuE86J+ePPmZPVp0961Gkjfvu9v/xII9jM5uOH2CsuMsLI3G8QOjDBxn+kiy+hiQFXD1ZoWDDuuFY/Wt8A==
 
 medusa-react@8.0.1-preview-20230528131710:
   version "8.0.1-preview-20230528131710"

@@ -55,20 +55,32 @@ export async function createAuthUser({
 }
 
 export async function createUser(
-  input: (CreateDriverDTO | CreateRestaurantAdminDTO) & { scope: string }
+  input: (CreateDriverDTO | CreateRestaurantAdminDTO) & {
+    scope: string;
+    token: string;
+  }
 ) {
-  const { user, token } = await fetch(`${BACKEND_URL}/users`, {
+  console.log({ input });
+  const res = await fetch(`${BACKEND_URL}/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${input.token}`,
     },
     body: JSON.stringify(input),
     next: {
       tags: ["user"],
     },
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.log({ error });
+      throw new Error("Error creating user");
+    });
 
-  return { user, token };
+  console.log(res);
+
+  return res;
 }
 
 export async function getToken({

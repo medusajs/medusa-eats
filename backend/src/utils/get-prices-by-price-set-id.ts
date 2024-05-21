@@ -18,12 +18,9 @@ export async function getPricesByPriceSetId({
   currency_code,
   pricingService,
 }: Props): Promise<typeof products> {
-  console.log({ products })
   for (const product of products) {
     for (const variant of product.variants) {
-      console.log({ variant })
       if (!variant.price_set) continue
-      // console.log({ variant })
       const priceSetId = variant.price_set.id
 
       const [price] = (await pricingService.calculatePrices(
@@ -31,20 +28,15 @@ export async function getPricesByPriceSetId({
         {
           context: {
             currency_code,
-            region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
           },
         }
       )) as unknown as CalculatedPriceSetDTO[]
-
-      console.log({ price })
 
       delete variant.price
 
       if (!price) continue
 
       variant.price = price
-
-      // console.log({ variant })
     }
   }
   return products

@@ -8,13 +8,21 @@ import Image from "next/image";
 import { addToCart } from "@frontend/app/(store)/restaurant/actions";
 import { useState } from "react";
 
-export default function DishCard({ product }: { product: ProductDTO }) {
+export default function DishCard({
+  product,
+  restaurantId,
+}: {
+  product: ProductDTO;
+  restaurantId: string;
+}) {
   const [isAdding, setIsAdding] = useState(false);
+
+  console.log("restaurantId", restaurantId);
 
   const handleAdd = async () => {
     setIsAdding(true);
     console.log("Adding to cart", product.variants[0]);
-    await addToCart(product.variants[0].id);
+    await addToCart(product.variants[0].id, restaurantId);
     setIsAdding(false);
   };
 
@@ -24,7 +32,11 @@ export default function DishCard({ product }: { product: ProductDTO }) {
         <Heading>{product.title}</Heading>
         <Text>{product.description}</Text>
         <Text className="text-lg font-semibold">
-          ${product.variants[0].price?.calculated_amount / 100}
+          $
+          {
+            //@ts-ignore
+            product.variants[0].price?.calculated_amount / 100
+          }
         </Text>
       </div>
       <div className="relative">

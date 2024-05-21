@@ -56,7 +56,11 @@ export default async function AccountBadge({
           </Badge>
         </div>
         <img
-          src={"https://robohash.org/" + data.id}
+          src={
+            "https://robohash.org/" +
+            data.email +
+            "?size=200x200&set=set1&bgset=bg1"
+          }
           alt={name}
           className="h-28 rounded-full border-2 border-ui-border-base"
         />

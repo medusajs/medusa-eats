@@ -6,7 +6,6 @@ import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
-  restaurant_id: zod.string(),
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -24,7 +23,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const restaurantDelivery = await handleDeliveryWorkflow(req.scope).run({
       input: {
         delivery_input: {
-          restaurant_id: validatedBody.restaurant_id,
           cart_id: validatedBody.cart_id,
         },
         auth_user_id: req.user?.userId,

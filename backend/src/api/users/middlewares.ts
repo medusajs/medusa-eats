@@ -8,15 +8,19 @@ const isAdmin = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("isAdmin middleware", req.auth)
+  console.log("first isAdmin middleware", req.auth)
+
+  if (req.auth_user_id) {
+    return next()
+  }
 
   const auth_user_id =
     req.auth?.app_metadata?.restaurant_admin_id ||
     req.auth?.app_metadata?.driver_id
 
-  if (!auth_user_id) {
-    return res.status(403).json({ message: "Unauthorized" })
-  }
+  // if (!auth_user_id) {
+  //   return res.status(403).json({ message: "Unauthorized" })
+  // }
 
   console.log("isAdmin middleware", auth_user_id)
 
@@ -27,23 +31,20 @@ const isAdmin = (
   return next()
 }
 
+const logger = (req, res, next: NextFunction) => {
+  console.log("logger middleware", req)
+  return next()
+}
+
 export const usersMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/users/me",
-    middlewares: [
-      authenticate("restaurant", ["bearer"]),
-      // authenticate("driver", ["bearer"]),
-      // isAdmin,
-    ],
+    middlewares: [authenticate(/driver|restaurant/g, "bearer")],
   },
   {
     method: ["POST"],
     matcher: "/users",
-    middlewares: [
-      authenticate("restaurant", "bearer"),
-      // authenticate("driver", "bearer"),
-      // isAdmin,
-    ],
+    middlewares: [authenticate(/driver|restaurant/g, "bearer")],
   },
 ]

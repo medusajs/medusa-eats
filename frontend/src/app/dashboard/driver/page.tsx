@@ -2,13 +2,19 @@ import { DeliveryStatus } from "../../../../../backend/src/types/delivery/common
 import AccountBadge from "@frontend/components/dashboard/account-badge";
 import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
-import { listDeliveries, retrieveDriver } from "@frontend/lib/data";
+import {
+  listDeliveries,
+  retrieveDriver,
+  retrieveUser,
+} from "@frontend/lib/data";
 import { Container, Heading, Text } from "@medusajs/ui";
 import { revalidateTag } from "next/cache";
 
-export default async function RestaurantDashboardPage() {
+export default async function DriverDashboardPage() {
+  const user = await retrieveUser();
+  console.log("user", user);
   const driverId = "drv_01HTWA9HAFANF85QP26TC3E6C1";
-  const driver = await retrieveDriver(driverId);
+  const driver = await retrieveDriver(user.id);
   const deliveries = await listDeliveries({
     driver_id: driverId,
   });

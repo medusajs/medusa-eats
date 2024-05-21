@@ -5,7 +5,6 @@ import { CreateProductDTO, ProductDTO } from "@medusajs/types"
 import zod from "zod"
 import RestaurantModuleService from "../../../../modules/restaurant/service"
 import { createVariantPriceSet } from "../../../../utils/create-variant-price-set"
-import { BigNumber } from "@medusajs/utils"
 
 const schema = zod.object({
   title: zod.string(),
@@ -56,8 +55,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       productData as CreateProductDTO
     )
 
-    console.log("product", product)
-
     // Create and link a price set to the product variant
     const priceSet = await createVariantPriceSet({
       container: req.scope,
@@ -66,15 +63,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         {
           amount: price,
           currency_code: "usd",
-          rules: {
-            region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
-          },
         },
       ],
-      rules: [{ rule_attribute: "region_id" }],
     })
-
-    console.log("priceSet", priceSet)
 
     // Add the product to the restaurant
     const restaurantProduct =
@@ -102,7 +93,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     "restaurantModuleService"
   )
 
-  const { query, modules } = await MedusaApp({
+  const { query } = await MedusaApp({
     modulesConfig: {
       [Modules.PRODUCT]: true,
       [Modules.PRICING]: true,
@@ -123,26 +114,33 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       context: {
         id: restaurantProducts.map((p) => p.product_id),
         currency_code: "usd",
-        region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
       },
     }
 
     const productsQuery = `#graphql
-        query($filters: Record, $id: String[], $currency_code: String, $region_id: String) {
+        query($filters: Record, $id: [String], $currency_code: String, $region_id: String) {
           products(filters: $filters) {
             id
             title
             description
             thumbnail
+            categories {
+              id
+              title
+            }
             variants {
               id
               price_set {
                 id
               }
+              price {
+                id
+                amount
+                currency_code
+              }
+            }
           }
-          }
-        }
-      `
+        }`
 
     const products = await query(productsQuery, filters)
 

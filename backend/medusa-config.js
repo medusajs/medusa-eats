@@ -12,7 +12,11 @@ const DATABASE_URL =
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
 
-const plugins = []
+const plugins = [
+  `medusa-fulfillment-manual`,
+  `medusa-payment-manual`,
+  `@medusajs/admin`,
+]
 
 const modules = {
   restaurantModuleService: {
@@ -21,7 +25,7 @@ const modules = {
   deliveryModuleService: {
     resolve: "./dist/modules/delivery",
   },
-  eventBus: {
+  [Modules.EVENT_BUS]: {
     resolve: "@medusajs/event-bus-redis",
     options: {
       redisUrl: REDIS_URL,

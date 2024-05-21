@@ -17,6 +17,7 @@ const schema = zod.object({
 const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000 // 30 minutes
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  console.log("POST /api/deliveries/:id/accept")
   const validatedBody = schema.parse(req.body)
 
   const eta =
@@ -38,6 +39,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   )
 
   try {
+    console.log("Accepting delivery no", deliveryId)
     const delivery = await deliveryModuleService.updateDelivery(deliveryId, {
       delivery_status: DeliveryStatus.RESTAURANT_ACCEPTED,
       eta,
@@ -45,17 +47,24 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
     console.log("Restaurant accepted delivery no", deliveryId)
 
-    await engineService.setStepSuccess({
-      idempotencyKey: {
-        action: TransactionHandlerType.INVOKE,
-        transactionId: delivery.transaction_id,
-        stepId: notifyRestaurantStepId,
-        workflowId: handleDeliveryWorkflowId,
-      },
-      stepResponse: {
-        delivery,
-      },
-    })
+    await engineService
+      .setStepSuccess({
+        idempotencyKey: {
+          action: TransactionHandlerType.INVOKE,
+          transactionId: delivery.transaction_id,
+          stepId: notifyRestaurantStepId,
+          workflowId: handleDeliveryWorkflowId,
+        },
+        stepResponse: {
+          delivery,
+        },
+      })
+      .then(() => {
+        console.log("Step set as success")
+      })
+      .catch((err) => {
+        console.error(err)
+      })
 
     return res.status(200).json({ delivery })
   } catch (error) {

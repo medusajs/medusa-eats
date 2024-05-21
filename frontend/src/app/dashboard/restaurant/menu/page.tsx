@@ -12,12 +12,13 @@ import Image from "next/image";
 export default async function MenuPage() {
   const user = await retrieveUser();
   const restaurantId = user.restaurant.id;
+
   const restaurant = await retrieveRestaurant(restaurantId);
   const categories = await listCategories();
 
   const categoryProductMap = new Map();
 
-  restaurant.products?.forEach((product) => {
+  restaurant?.products?.forEach((product) => {
     console.log("product", product);
     if (product.categories) {
       product.categories.forEach((category) => {

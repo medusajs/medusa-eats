@@ -16,14 +16,13 @@ import { notFound } from "next/navigation";
 export default async function RestaurantDashboardPage() {
   const user = await retrieveUser();
 
-  console.log("user", user);
-
   if (!user.restaurant) {
     return notFound();
   }
 
   const restaurantId = user.restaurant.id;
   const restaurant = await retrieveRestaurant(restaurantId);
+
   const deliveries = await listDeliveries({
     restaurant_id: restaurantId,
   });

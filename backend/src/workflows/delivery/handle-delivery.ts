@@ -19,19 +19,34 @@ import { DeliveryStatus, DriverDTO } from "../../types/delivery/common"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type CreateDeliveryStepInput = {
-  restaurant_id: string
   cart_id: string
 }
 
 const createDeliveryStep = createStep(
   "create-delivery-step",
   async function (input: CreateDeliveryStepInput, { container, context }) {
+    const cartService =
+      container.resolve<CartModuleService>("cartModuleService")
+
+    const cart = await cartService.retrieve(input.cart_id)
+
+    if (!cart) {
+      throw new Error("Cart not found")
+    }
+
+    const restaurant_id = cart.metadata?.restaurant_id as string
+
+    if (!restaurant_id) {
+      throw new Error("Restaurant id not found")
+    }
+
     const service = container.resolve<DeliveryModuleService>(
       "deliveryModuleService"
     )
 
     const data = {
-      ...input,
+      cart_id: cart.id,
+      restaurant_id,
       transaction_id: context.transactionId,
     }
 
@@ -55,7 +70,9 @@ const createDeliveryStep = createStep(
 export const notifyRestaurantStepId = "notify-restaurant-step"
 const notifyRestaurantStep = createStep(
   { name: notifyRestaurantStepId, async: true },
-  async function (deliveryId: string, { container }) {
+  async function (deliveryId: string, { container, context }) {
+    console.log("Notifying restaurant step...")
+    console.log({ container })
     const deliveryService = container.resolve<DeliveryModuleService>(
       "deliveryModuleService"
     )
@@ -95,31 +112,48 @@ export const findDriverStepStepId = "await-driver-response-step"
 const findDriverStep = createStep<string, DriverDTO, string>(
   { name: findDriverStepStepId, async: true },
   async function (deliveryId: string, { container }) {
-    const deliveryModuleService = container.resolve<DeliveryModuleService>(
-      "deliveryModuleService"
-    )
+    try {
+      console.log("Finding driver step...")
+      console.log({ container })
 
-    const eventBus = container.resolve<IEventBusModuleService>(
-      ModuleRegistrationName.EVENT_BUS
-    )
+      const deliveryService = container.resolve<DeliveryModuleService>(
+        "deliveryModuleService"
+      )
 
-    const driversToNotify = await deliveryModuleService.listDrivers(
-      {},
-      { take: 5 }
-    )
+      console.log("Resolving event bus...")
 
-    console.log("Notifying drivers...", driversToNotify)
+      const eventBus = container.resolve<IEventBusModuleService>(
+        ModuleRegistrationName.EVENT_BUS
+      )
 
-    const promises = driversToNotify.map((d) =>
-      deliveryModuleService.createDeliveryDriver(deliveryId, d.id)
-    )
+      console.log("Listing drivers...")
 
-    await Promise.all(promises)
+      const driversToNotify = await deliveryService
+        .listDrivers({}, { take: 5 })
+        .catch((e) => {
+          console.log("Error listing drivers", e)
+          return []
+        })
 
-    await eventBus.emit("notify.drivers", {
-      drivers: driversToNotify.map((d) => d.id),
-      delivery_id: deliveryId,
-    })
+      console.log("Notifying drivers...", driversToNotify)
+
+      const promises = driversToNotify.map((d) =>
+        deliveryService.createDeliveryDriver(deliveryId, d.id)
+      )
+
+      await Promise.all(promises)
+
+      await eventBus.emit("notify.drivers", {
+        drivers: driversToNotify.map((d) => d.id),
+        delivery_id: deliveryId,
+      })
+    } catch (e) {
+      console.log("Catch: Error finding driver", e)
+    }
+  },
+  (input: string, { container }) => {
+    // To do: Handle error
+    console.log("Error notifying drivers")
   }
 )
 
@@ -207,6 +241,7 @@ const createFulfillmentStep = createStep(
       return {
         title: lineItem.title,
         sku: lineItem.variant_sku || "",
+        //@ts-ignore
         quantity: Math.round(lineItem.total / lineItem.unit_price),
         barcode: lineItem.variant_barcode || "",
         line_item_id: lineItem.id,

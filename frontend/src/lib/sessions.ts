@@ -24,8 +24,6 @@ export function createSession(token: string) {
 export function retrieveSession() {
   const token = cookies().get("_medusa_jwt")?.value;
 
-  console.log("retrieveSession", token);
-
   if (!token) {
     console.log("No token found");
     return null;

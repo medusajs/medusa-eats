@@ -15,8 +15,7 @@ const schema = zod.object({
 })
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const parsedBody = JSON.parse(req.body)
-  const validatedBody = schema.parse(parsedBody)
+  const validatedBody = schema.parse(req.body)
   const deliveryId = req.params.id
 
   if (!deliveryId) {

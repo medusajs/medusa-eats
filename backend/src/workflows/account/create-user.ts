@@ -34,26 +34,41 @@ export const createUserStep = createStep(
     },
     { container }
   ): Promise<StepResponse<RestaurantAdminDTO | DriverDTO | null>> => {
+    console.log("Creating user", { input })
     if (input.scope === "restaurant") {
+      console.log("Creating restaurant admin")
       const service: RestaurantModuleService = container.resolve(
         "restaurantModuleService"
       )
 
       const { restaurant_id, ...data } = input as CreateRestaurantAdminInput
 
-      const user = await service.createRestaurantAdmin(restaurant_id, data)
+      try {
+        const user = await service.createRestaurantAdmin(restaurant_id, data)
 
-      return new StepResponse(user)
+        return new StepResponse(user)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     if (input.scope === "driver") {
+      console.log("Creating driver")
       const service: DeliveryService = container.resolve(
         "deliveryModuleService"
       )
 
-      const user = await service.createDriver(input as CreateDriverInput)
+      try {
+        const driverData = {
+          ...input,
+          avatar_url: `https://robohash.org/${input.email}?size=40x40&set=set1&bgset=bg1`,
+        }
+        const user = await service.createDriver(driverData as CreateDriverInput)
 
-      return new StepResponse(user)
+        return new StepResponse(user)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     return new StepResponse(null)
