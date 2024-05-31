@@ -4,7 +4,7 @@ import { IEventBusModuleService } from "@medusajs/types"
 import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import DeliveryModuleService from "../../../../modules/delivery/service"
 import { handleDeliveryWorkflowId } from "../../../../workflows/delivery/handle-delivery"
-import { AccountScopedMedusaRequest } from "../../../v1/types"
+import { AuthUserScopedMedusaRequest } from "../../../types"
 
 type RestaurantNotificationData = {
   restaurant_id: string
@@ -17,7 +17,7 @@ type DriverNotificationData = {
 }
 
 export const GET = async (
-  req: AccountScopedMedusaRequest,
+  req: AuthUserScopedMedusaRequest,
   res: MedusaResponse
 ) => {
   const deliveryId = req.params.id

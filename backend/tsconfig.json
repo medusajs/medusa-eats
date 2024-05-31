@@ -1,31 +1,32 @@
 {
   "compilerOptions": {
-    "strictNullChecks": true,
-    "experimentalDecorators": true,
     "target": "es2019",
     "allowJs": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "declaration": true,
-    "sourceMap"../backend/dist,
-    "outDir": ".../backend/src",
-    "rootDir": "../backend/src",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "rootDir": "./",
     "baseUrl": ".",
     "jsx": "react-jsx",
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "checkJs": false
-  },../backend/src
-  "include": ["src/", "migrations"],
-  "ex../backend/**/__tests__
-    "../backend/**/__fixtures__
-    "../backend/node_moduless__",
-    "../backend/buildmodules",
-    "../backend/.cache,
+  },
+  "ts-node": {
+    "swc": true
+  },
+  "exclude": [
+    "**/__tests__",
+    "**/__fixtures__",
+    "node_modules",
+    "build",
     ".cache"
   ]
 }

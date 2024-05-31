@@ -11,10 +11,14 @@ import {
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui";
 import { revalidateTag } from "next/cache";
 import { Link } from "next-view-transitions";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function RestaurantDashboardPage() {
   const user = await retrieveUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   if (!user.restaurant) {
     return notFound();
@@ -30,7 +34,6 @@ export default async function RestaurantDashboardPage() {
 
   async function revalidateCacheTag(tag: string) {
     "use server";
-    console.log("revalidating cache tag", tag);
     revalidateTag(tag);
   }
 

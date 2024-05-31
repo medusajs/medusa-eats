@@ -5,7 +5,7 @@ import { Heading, Text } from "@medusajs/ui";
 import { IconButton } from "@medusajs/ui";
 import { Plus } from "@medusajs/icons";
 import Image from "next/image";
-import { addToCart } from "@frontend/app/(store)/restaurant/actions";
+import { addToCart } from "@frontend/lib/actions";
 import { useState } from "react";
 
 export default function DishCard({
@@ -16,8 +16,6 @@ export default function DishCard({
   restaurantId: string;
 }) {
   const [isAdding, setIsAdding] = useState(false);
-
-  console.log("restaurantId", restaurantId);
 
   const handleAdd = async () => {
     setIsAdding(true);

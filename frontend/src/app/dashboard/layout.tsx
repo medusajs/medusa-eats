@@ -16,8 +16,6 @@ export default async function RootLayout({
 }>) {
   const user = await retrieveUser();
 
-  console.log("user", user);
-
   return (
     <>
       <nav className="flex px-12 py-4 h-16 bg-ui-fg-base text-ui-fg-on-inverted justify-between items-center sticky top-0 z-40">
@@ -31,7 +29,7 @@ export default async function RootLayout({
           <ProfileBadge user={user} />
         </div>
       </nav>
-      <main className="min-h-screen flex flex-col gap-20 p-10">{children}</main>
+      <main className="min-h-[vh90] flex flex-col gap-20 p-10">{children}</main>
     </>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { login } from "@frontend/app/dashboard/actions";
+import { login } from "@frontend/lib/actions";
 import { useFormState, useFormStatus } from "react-dom";
-import { Label, Input, Button, Badge } from "@medusajs/ui";
+import { Label, Input, Button, Badge, Select } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
 
 function Submit() {
@@ -33,6 +33,19 @@ export function LoginForm() {
         <div>
           <Label htmlFor="password">Password</Label>
           <Input id="password" name="password" type="password" />
+        </div>
+        <div>
+          <Label htmlFor="actor_type">I'm a...</Label>
+          <Select name="actor_type">
+            <Select.Trigger>
+              <Select.Value></Select.Value>
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value="customer">Customer</Select.Item>
+              <Select.Item value="restaurant">Restaurant</Select.Item>
+              <Select.Item value="driver">Driver</Select.Item>
+            </Select.Content>
+          </Select>
         </div>
       </div>
       <div className="flex flex-row justify-between">

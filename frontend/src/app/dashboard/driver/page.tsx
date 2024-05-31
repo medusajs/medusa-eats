@@ -9,19 +9,22 @@ import {
 } from "@frontend/lib/data";
 import { Container, Heading, Text } from "@medusajs/ui";
 import { revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 export default async function DriverDashboardPage() {
   const user = await retrieveUser();
-  console.log("user", user);
-  const driverId = "drv_01HTWA9HAFANF85QP26TC3E6C1";
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const driver = await retrieveDriver(user.id);
   const deliveries = await listDeliveries({
-    driver_id: driverId,
+    driver_id: driver.id,
   });
 
   async function revalidateCacheTag(tag: string) {
     "use server";
-    console.log("revalidating cache tag", tag);
     revalidateTag(tag);
   }
 
@@ -33,7 +36,10 @@ export default async function DriverDashboardPage() {
             {driver.first_name} {driver.last_name} | Driver Dashboard
           </Heading>
           <Text>View and manage your Medusa Eats deliveries.</Text>
-          <RealtimeClient driverId={driverId} revalidate={revalidateCacheTag} />
+          <RealtimeClient
+            driverId={driver.id}
+            revalidate={revalidateCacheTag}
+          />
         </div>
         <AccountBadge data={driver} type="driver" />
       </Container>

@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -13,18 +15,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "delivered_at": {
-          "name": "delivered_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "delivery_address": {
-          "name": "delivery_address",
+        "handle": {
+          "name": "handle",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -32,16 +24,69 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "delivery_status": {
-          "name": "delivery_status",
-          "type": "enum",
+        "is_open": {
+          "name": "is_open",
+          "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'pending'",
-          "enumItems": ["pending", "in_progress", "delivered"],
-          "mappedType": "enum"
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "phone": {
+          "name": "phone",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "image_url": {
+          "name": "image_url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         },
         "created_at": {
           "name": "created_at",
@@ -65,12 +110,14 @@
           "mappedType": "datetime"
         }
       },
-      "name": "delivery",
+      "name": "restaurant",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "delivery_pkey",
-          "columnNames": ["id"],
+          "keyName": "restaurant_pkey",
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -108,26 +155,17 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "restaurant_id": {
+          "name": "restaurant_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "email": {
           "name": "email",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "phone": {
-          "name": "phone",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "avatar": {
-          "name": "avatar",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -157,13 +195,75 @@
           "mappedType": "datetime"
         }
       },
-      "name": "driver",
+      "name": "restaurant_admin",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "driver_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "restaurant_id"
+          ],
           "composite": false,
+          "keyName": "restaurant_admin_restaurant_id_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "restaurant_admin_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "restaurant_admin_restaurant_id_foreign": {
+          "constraintName": "restaurant_admin_restaurant_id_foreign",
+          "columnNames": [
+            "restaurant_id"
+          ],
+          "localTableName": "public.restaurant_admin",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.restaurant",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "restaurant_id": {
+          "name": "restaurant_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "restaurant_product",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "restaurant_product_pkey",
+          "columnNames": [
+            "restaurant_id",
+            "product_id"
+          ],
+          "composite": true,
           "primary": true,
           "unique": true
         }

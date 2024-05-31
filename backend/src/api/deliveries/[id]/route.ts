@@ -86,9 +86,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         relations: ["items"],
       })
       items.push(...cart.items)
-    }
-
-    if (delivery.order_id) {
+    } else if (delivery.order_id) {
       const orderService = req.scope.resolve("orderModuleService")
       const order = await orderService.retrieve(delivery.order_id, {
         relations: ["items"],

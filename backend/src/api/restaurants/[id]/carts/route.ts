@@ -1,26 +1,26 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ICartModuleService } from "@medusajs/types"
-import zod from "zod"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { ModuleRegistrationName } from "@medusajs/modules-sdk";
+import { ICartModuleService } from "@medusajs/types";
+import zod from "zod";
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
-})
+});
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body)
+  const validatedBody = schema.parse(req.body);
 
   if (!validatedBody) {
-    return res.status(400).json({ message: "Missing restaurant admin data" })
+    return res.status(400).json({ message: "Missing restaurant admin data" });
   }
 
-  const restaurant_id = req.params.id
+  const restaurant_id = req.params.id;
 
-  const { cart_id } = validatedBody
+  const { cart_id } = validatedBody;
 
   const cartModuleService = req.scope.resolve<ICartModuleService>(
     ModuleRegistrationName.CART
-  )
+  );
 
   try {
     // update the cart with the restaurant id in the metadata
@@ -28,12 +28,12 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       metadata: {
         restaurant_id: restaurant_id,
       },
-    })
+    });
 
     // Return the cart
-    return res.status(200).json({ cart })
+    return res.status(200).json({ cart });
   } catch (error) {
-    console.log("error", error)
-    return res.status(500).json({ message: error.message })
+    console.log("error", error);
+    return res.status(500).json({ message: error.message });
   }
 }

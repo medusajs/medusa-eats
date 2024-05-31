@@ -1,8 +1,6 @@
-import DishCard from "@frontend/components/store/restaurant/dish-card";
+import RestaurantCategories from "@frontend/components/store/restaurant/restaurant-categories";
 import { retrieveRestaurantByHandle } from "@frontend/lib/data";
-import { ProductDTO } from "@medusajs/types";
-import { Button, Heading, Text } from "@medusajs/ui";
-import { Link } from "next-view-transitions";
+import { Heading, Text } from "@medusajs/ui";
 import { notFound } from "next/navigation";
 
 export default async function RestaurantPage({
@@ -41,37 +39,10 @@ export default async function RestaurantPage({
           <Text>{restaurant.description}</Text>
         </div>
       </div>
-      <div className="flex gap-4">
-        <div className="flex flex-col gap-2 min-w-64">
-          {Array.from(categoryProductMap).map(([_, category], idx) => (
-            <Link href={`#cat_${idx}`} key={category.id}>
-              <Button variant="transparent">{category.category_name}</Button>
-            </Link>
-          ))}
-        </div>
-        <div className="flex flex-col w-full gap-8">
-          {Array.from(categoryProductMap).map(([categoryId, category], idx) => (
-            <div
-              key={categoryId}
-              className="flex flex-col gap-4"
-              id={`#cat_${idx}`}
-            >
-              <Heading level="h2" className="text-xl">
-                {category.category_name}
-              </Heading>
-              <div className="grid lg:grid-cols-2 2xl:grid-cols-3 gap-4">
-                {category.products?.map((product: ProductDTO) => (
-                  <DishCard
-                    product={product}
-                    key={product.id}
-                    restaurantId={restaurant.id}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <RestaurantCategories
+        categoryProductMap={categoryProductMap}
+        restaurant={restaurant}
+      />
     </div>
   );
 }

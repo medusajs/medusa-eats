@@ -65,6 +65,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
           currency_code: "usd",
         },
       ],
+      rules: [],
     })
 
     // Add the product to the restaurant

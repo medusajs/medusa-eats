@@ -5,10 +5,7 @@ import {
   DeliveryDTO,
   DeliveryStatus,
 } from "@backend/src/types/delivery/common";
-import {
-  declineDelivery,
-  proceedDelivery,
-} from "@frontend/app/dashboard/restaurant/actions";
+import { declineDelivery, proceedDelivery } from "@frontend/lib/actions";
 import { useState } from "react";
 
 export default function RestaurantDeliveryButtons({

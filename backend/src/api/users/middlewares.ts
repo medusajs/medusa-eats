@@ -1,50 +1,45 @@
-import { authenticate } from "@medusajs/medusa/dist/utils/authenticate-middleware"
-import { AuthUserScopedMedusaRequest } from "../restaurants/types"
-import { NextFunction, Response } from "express"
-import { MiddlewareRoute } from "@medusajs/medusa"
+import { MiddlewareRoute } from "@medusajs/medusa";
+import { authenticate } from "@medusajs/medusa/dist/utils";
 
-const isAdmin = (
-  req: AuthUserScopedMedusaRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  console.log("first isAdmin middleware", req.auth)
+const logger = (req, res, next) => {
+  console.log("Request to /users/me");
+  console.log(req);
+  next();
+};
 
-  if (req.auth_user_id) {
-    return next()
+const isAllowed = (req, res, next) => {
+  const { restaurant_id, driver_id } = req.auth_context.app_metadata;
+
+  if (restaurant_id || driver_id) {
+    const user = {
+      user_type: restaurant_id ? "restaurant" : "driver",
+      user_id: restaurant_id || driver_id,
+    };
+
+    req.user = user;
+
+    next();
+  } else {
+    res.status(403).json({
+      message:
+        "Forbidden. Reason: No restaurant_id or driver_id in app_metadata",
+    });
   }
-
-  const auth_user_id =
-    req.auth?.app_metadata?.restaurant_admin_id ||
-    req.auth?.app_metadata?.driver_id
-
-  // if (!auth_user_id) {
-  //   return res.status(403).json({ message: "Unauthorized" })
-  // }
-
-  console.log("isAdmin middleware", auth_user_id)
-
-  req.auth_user_id = auth_user_id
-
-  console.log("isAdmin middleware", auth_user_id)
-
-  return next()
-}
-
-const logger = (req, res, next: NextFunction) => {
-  console.log("logger middleware", req)
-  return next()
-}
+};
 
 export const usersMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/users/me",
-    middlewares: [authenticate(/driver|restaurant/g, "bearer")],
+    middlewares: [authenticate(["driver", "restaurant"], "bearer"), isAllowed],
   },
   {
     method: ["POST"],
     matcher: "/users",
-    middlewares: [authenticate(/driver|restaurant/g, "bearer")],
+    middlewares: [
+      authenticate(["driver", "restaurant"], "bearer", {
+        allowUnregistered: true,
+      }),
+    ],
   },
-]
+];

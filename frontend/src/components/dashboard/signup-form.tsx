@@ -1,9 +1,11 @@
 "use client";
 
-import { signup } from "@frontend/app/dashboard/actions";
+import { signup } from "@frontend/lib/actions";
 import { useFormState, useFormStatus } from "react-dom";
 import { Label, Input, Button, Badge, Select } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
+import { useState } from "react";
+import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 
 function Submit() {
   const status = useFormStatus();
@@ -26,14 +28,22 @@ const userTypes = [
   { value: "customer", label: "Customer" },
 ];
 
-export function SignupForm() {
+export function SignupForm({
+  restaurants = [],
+}: {
+  restaurants: RestaurantDTO[];
+}) {
   const [state, action] = useFormState(signup, { message: "" });
+  const [userType, setUserType] = useState("");
 
   return (
     <form action={action} className="flex flex-col gap-4 max-w-96">
       <div className="flex flex-col gap-2">
         <div>
-          <Select name="user_type">
+          <Select
+            name="user_type"
+            onValueChange={(value) => setUserType(value)}
+          >
             <Select.Trigger>
               <Select.Value placeholder="I'm a..." />
             </Select.Trigger>
@@ -46,6 +56,22 @@ export function SignupForm() {
             </Select.Content>
           </Select>
         </div>
+        {userType === "restaurant" && (
+          <div>
+            <Select name="restaurant_id">
+              <Select.Trigger>
+                <Select.Value placeholder="Select restaurant" />
+              </Select.Trigger>
+              <Select.Content>
+                {restaurants.map((restaurant) => (
+                  <Select.Item key={restaurant.id} value={restaurant.id}>
+                    {restaurant.name}
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select>
+          </div>
+        )}
         <div>
           <Label htmlFor="first_name">First Name</Label>
           <Input
@@ -89,7 +115,7 @@ export function SignupForm() {
         </Link>
         <Submit />
       </div>
-      {state.message && (
+      {state?.message && (
         <Badge className="justify-center text-center">{state.message}</Badge>
       )}
     </form>

@@ -1,102 +1,70 @@
-# Medusa Platform
+<p align="center">
+  <a href="https://www.medusajs.com">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    <img alt="Medusa logo" src="https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg">
+    </picture>
+  </a>
+</p>
+<h1 align="center">
+  Medusa
+</h1>
 
-## Authentication
+<h4 align="center">
+  <a href="https://docs.medusajs.com">Documentation</a> |
+  <a href="https://www.medusajs.com">Website</a>
+</h4>
 
-Cloud uses the Medusa Auth module for authentication. The Auth module is
-configured with the custom scope "euser" which is used to authenticate external
-users.
+<p align="center">
+  Building blocks for digital commerce
+</p>
+<p align="center">
+  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
+  </a>
+    <a href="https://www.producthunt.com/posts/medusa"><img src="https://img.shields.io/badge/Product%20Hunt-%231%20Product%20of%20the%20Day-%23DA552E" alt="Product Hunt"></a>
+  <a href="https://discord.gg/xpCwq3Kfn8">
+    <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
+  </a>
+  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
+    <img src="https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs" alt="Follow @medusajs" />
+  </a>
+</p>
 
-```
-# Authentication flow
-POST /auth/euser/emailpass
-{ email: "seb@medusajs.com", password: "test1234" }
-```
+## Compatibility
 
-^ returns a token that can be used for subsequent requests.
+This starter is compatible with versions >= 1.8.0 of `@medusajs/medusa`. 
 
-## Custom Modules
+## Getting Started
 
-### Account
+Visit the [Quickstart Guide](https://docs.medusajs.com/create-medusa-app) to set up a server.
 
-An Account is an organization or individual who can create projects on the
-platform. The Account module manages accounts as and users.
+Visit the [Docs](https://docs.medusajs.com/development/backend/prepare-environment) to learn more about our system requirements.
 
-#### Creating a user
+## What is Medusa
 
-```
-POST /v1/users
-{ email: "seb@medusajs.com" }
-```
+Medusa is a set of commerce modules and tools that allow you to build rich, reliable, and performant commerce applications without reinventing core commerce logic. The modules can be customized and used to build advanced ecommerce stores, marketplaces, or any product that needs foundational commerce primitives. All modules are open-source and freely available on npm.
 
-This is an authenticated endpoint that requires the "euser" scope. When a user
-is created, the user's id is added to the auth users app metadata.
+Learn more about [Medusa’s architecture](https://docs.medusajs.com/development/fundamentals/architecture-overview) and [commerce modules](https://docs.medusajs.com/modules/overview) in the Docs.
 
-#### Creating an account
+## Roadmap, Upgrades & Plugins
 
-```
-POST /v1/accounts
-{ name: "My Account" }
-```
+You can view the planned, started and completed features in the [Roadmap discussion](https://github.com/medusajs/medusa/discussions/categories/roadmap).
 
-This is an authenticated endpoint currently we use the "admin" scope to create
-an account.
+Follow the [Upgrade Guides](https://docs.medusajs.com/upgrade-guides/) to keep your Medusa project up-to-date.
 
-#### Adding a user to an account
+Check out all [available Medusa plugins](https://medusajs.com/plugins/).
 
-```
-POST /v1/accounts/:id/invite
-```
+## Community & Contributions
 
-This is an authenticated endpoint with the "euser" or "admin" scope. When you
-create an invite it generates a token that a user can use to join the account.
+The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
 
-```
-POST /v1/invite/accept
-{ token: "[jwttoken]"
-```
+Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
 
-This is an authenticated endpoint with the "euser". The authenticated user is
-added to the account represented by the token.
+## Other channels
 
-### Project
-
-A project represents a Medusa store. A project is associated with an account and
-can have multiple environments. Each project has a set of credentials to a git
-repository (done), and credentials to an AWS account (not done yet).
-
-#### Creating a project
-
-```
-POST /v1/account/:id/projects
-{ name: "My Store", github_data: { owner: "medusajs", repo: "medusa-starter-default" } }
-```
-
-You must be authenticated as an "euser" and be a member of the account to create
-a project. The `github_data` must be repository with the Medusa app installed.
-
-The endpoint will automatically create a production environment.
-
-#### Triggering a build
-
-```
-POST /v1/account/:id/projects/:proj_id/build
-{ environment_id: "projenv_1234" }
-```
-
-Requires "euser" scope and the user must be a member of the account.
-
-### Github module
-
-The Github module is used to manage the integration with Github. The integration
-is powered by a GitHub app that needs to be installed in a repository that is
-used to create a project. When installed the app has the necessary access to
-generate an access token that can be used by the application to check out the
-repository for building.
-
-The GitHub module requires the app's associated private key to be available as
-an env var `MEDUSA_GH_APP_PRIVATE_KEY`.
-
-### Pulumi module
-
-The Pulumi module is responsible for provisioning and managing infrastructure
-for projects and environments.
+- [GitHub Issues](https://github.com/medusajs/medusa/issues)
+- [Twitter](https://twitter.com/medusajs)
+- [LinkedIn](https://www.linkedin.com/company/medusajs)
+- [Medusa Blog](https://medusajs.com/blog/)
