@@ -1,5 +1,5 @@
 import { RestaurantDTO } from "../../../../backend/src/types/restaurant/common";
-import RestaurantCategory from "@frontend/components/store/restaurant-category";
+import RestaurantCategory from "@frontend/components/store/restaurant/restaurant-category";
 import { Heading } from "@medusajs/ui";
 
 export default async function Home() {

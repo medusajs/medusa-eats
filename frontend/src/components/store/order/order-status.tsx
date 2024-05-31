@@ -1,123 +1,162 @@
-"use client";
-
 import { DeliveryDTO } from "@backend/src/types/delivery/common";
-import { DeliveryStatus } from "@backend/src/types/delivery/common";
-import { Container, ProgressTabs } from "@medusajs/ui";
+import { lottieMap } from "@frontend/lib/util/constants";
+import { getNumericStatus } from "@frontend/lib/util/get-numeric-status";
+import {
+  CheckCircleSolid,
+  CircleDottedLine,
+  CircleQuarterSolid,
+} from "@medusajs/icons";
+import { Container, Heading, clx } from "@medusajs/ui";
+import LottiePlayer from "./lottie-player";
 
-/* Order statuses 
-PENDING = "pending",
-RESTAURANT_DECLINED = "restaurant_declined",
-RESTAURANT_ACCEPTED = "restaurant_accepted",
-PICKUP_CLAIMED = "pickup_claimed",
-RESTAURANT_PREPARING = "restaurant_preparing",
-READY_FOR_PICKUP = "ready_for_pickup",
-IN_TRANSIT = "in_transit",
-DELIVERED = "delivered",
-*/
+export default async function OrderStatus({
+  delivery,
+}: {
+  delivery: DeliveryDTO;
+}) {
+  const delivery_status = getNumericStatus(delivery.delivery_status);
 
-const getStatus = (status: DeliveryStatus) => {
-  switch (status) {
-    case DeliveryStatus.PENDING:
-      return 0;
-    case DeliveryStatus.RESTAURANT_ACCEPTED:
-      return 1;
-    case DeliveryStatus.PICKUP_CLAIMED:
-      return 2;
-    case DeliveryStatus.RESTAURANT_PREPARING:
-      return 3;
-    case DeliveryStatus.READY_FOR_PICKUP:
-      return 4;
-    case DeliveryStatus.IN_TRANSIT:
-      return 5;
-    case DeliveryStatus.DELIVERED:
-      return 6;
-    default:
-      return 0;
-  }
-};
-
-export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
-  const delivery_status = getStatus(delivery.delivery_status);
   return (
-    <Container className="w-2/3 p-0 overflow-hidden">
-      <ProgressTabs defaultValue="order-received">
-        <ProgressTabs.List>
-          <ProgressTabs.Trigger
-            disabled={delivery_status !== 0}
-            value="order-received"
-            status={delivery_status === 0 ? "in-progress" : "completed"}
-          >
-            {delivery_status === 0 ? "Order received" : "Order confirmed"}
-          </ProgressTabs.Trigger>
-          <ProgressTabs.Trigger
-            disabled={delivery_status !== 1}
-            value="find-driver"
-            status={
-              delivery_status === 1
-                ? "in-progress"
-                : delivery_status > 1
-                ? "completed"
-                : "not-started"
+    <Container className="flex flex-col gap-6 p-6">
+      <div className="flex justify-between gap-2 flex-wrap">
+        <Heading>Live order status</Heading>
+      </div>
+      <Container className="flex whitespace-pre-wrap h-20 p-0 overflow-hidden">
+        <div
+          className={clx(
+            "border-r border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+            {
+              "bg-ui-tag-blue-bg": delivery_status === 0,
+              "bg-ui-tag-green-bg": delivery_status > 0,
             }
-          >
-            {delivery_status <= 1 ? "Finding driver" : "Driver found"}
-          </ProgressTabs.Trigger>
-          <ProgressTabs.Trigger
-            disabled={!(delivery_status >= 2 && delivery_status <= 3)}
-            value="prepare-order"
-            status={
-              delivery_status === 3
-                ? "in-progress"
-                : delivery_status > 3
-                ? "completed"
-                : "not-started"
+          )}
+        >
+          {delivery_status === 0 ? (
+            <span className="flex gap-1 items-center text-ui-tag-blue-text">
+              <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
+              Order received
+            </span>
+          ) : (
+            <span className="flex gap-1 items-center text-ui-tag-green-text">
+              <CheckCircleSolid className="text-ui-tag-green-icon" />
+              Confirmed
+            </span>
+          )}
+        </div>
+        <div
+          className={clx(
+            "border-r border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+            {
+              "bg-ui-bg-subtle": delivery_status < 1,
+              "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
+                delivery_status === 1,
+              "bg-ui-tag-green-bg": delivery_status > 1,
             }
-          >
-            {delivery_status <= 3 ? "Preparing order" : "Order prepared"}
-          </ProgressTabs.Trigger>
-          <ProgressTabs.Trigger
-            disabled={delivery_status !== 4}
-            value="pickup"
-            status={
-              delivery_status === 4
-                ? "in-progress"
-                : delivery_status > 4
-                ? "completed"
-                : "not-started"
+          )}
+        >
+          {delivery_status < 1 ? (
+            <span className="flex gap-1 items-center text-ui-fg-muted">
+              <CircleDottedLine className="text-ui-tag-neutral" />
+              Finding driver
+            </span>
+          ) : delivery_status === 1 ? (
+            <span className="flex gap-1 items-center text-ui-tag-blue-text">
+              <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
+              Finding driver
+            </span>
+          ) : (
+            <span className="flex gap-1 items-center text-ui-tag-green-text">
+              <CheckCircleSolid className="text-ui-tag-green-icon" />
+              Driver found
+            </span>
+          )}
+        </div>
+        <div
+          className={clx(
+            "border-r border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+            {
+              "bg-ui-bg-subtle": delivery_status < 2,
+              "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
+                delivery_status >= 2 && delivery_status <= 3,
+              "bg-ui-tag-green-bg": delivery_status > 3,
             }
-          >
-            {delivery_status <= 4 ? "Ready for pickup" : "Picked up"}
-          </ProgressTabs.Trigger>
-          <ProgressTabs.Trigger
-            disabled={delivery_status !== 5}
-            value="delivery"
-            status={
-              delivery_status === 5
-                ? "in-progress"
-                : delivery_status > 5
-                ? "completed"
-                : "not-started"
+          )}
+        >
+          {delivery_status < 2 ? (
+            <span className="flex gap-1 items-center text-ui-fg-muted">
+              <CircleDottedLine className="text-ui-tag-neutral" />
+              Preparing order
+            </span>
+          ) : delivery_status >= 2 && delivery_status <= 3 ? (
+            <span className="flex gap-1 items-center text-ui-tag-blue-text">
+              <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
+              Preparing order
+            </span>
+          ) : (
+            <span className="flex gap-1 items-center text-ui-tag-green-text">
+              <CheckCircleSolid className="text-ui-tag-green-icon" />
+              Order prepared
+            </span>
+          )}
+        </div>
+        <div
+          className={clx(
+            "border-r border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+            {
+              "bg-ui-bg-subtle": delivery_status < 4,
+              "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
+                delivery_status === 4,
+              "bg-ui-tag-green-bg": delivery_status > 4,
             }
-          >
-            {delivery_status <= 5 ? "In transit" : "Delivered"}
-          </ProgressTabs.Trigger>
-        </ProgressTabs.List>
-        <ProgressTabs.Content value="order-received">
-          {/* Content */}
-        </ProgressTabs.Content>
-        <ProgressTabs.Content value="find-driver">
-          {/* Content */}
-        </ProgressTabs.Content>
-        <ProgressTabs.Content value="prepare-order">
-          {/* Content */}
-        </ProgressTabs.Content>
-        <ProgressTabs.Content value="pickup">
-          {/* Content */}
-        </ProgressTabs.Content>
-        <ProgressTabs.Content value="delivery">
-          {/* Content */}
-        </ProgressTabs.Content>
-      </ProgressTabs>
+          )}
+        >
+          {delivery_status < 4 ? (
+            <span className="flex gap-1 items-center text-ui-fg-muted">
+              <CircleDottedLine className="text-ui-tag-neutral" />
+              Ready for pickup
+            </span>
+          ) : delivery_status === 4 ? (
+            <span className="flex gap-1 items-center text-ui-tag-blue-text">
+              <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
+              Waiting for pickup
+            </span>
+          ) : (
+            <span className="flex gap-1 items-center text-ui-tag-green-text">
+              <CheckCircleSolid className="text-ui-tag-green-icon" />
+              Picked up
+            </span>
+          )}
+        </div>
+        <div
+          className={clx(
+            "h-full w-1/5 p-4 justify-center items-center flex txt-small",
+            {
+              "bg-ui-bg-subtle": delivery_status < 5,
+              "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
+                delivery_status === 5,
+              "bg-ui-tag-green-bg": delivery_status > 5,
+            }
+          )}
+        >
+          {delivery_status < 5 ? (
+            <span className="flex gap-1 items-center text-ui-fg-muted">
+              <CircleDottedLine className="text-ui-tag-neutral" />
+              In transit
+            </span>
+          ) : delivery_status === 5 ? (
+            <span className="flex gap-1 items-center text-ui-tag-blue-text">
+              <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
+              In transit
+            </span>
+          ) : (
+            <span className="flex gap-1 items-center text-ui-tag-green-text">
+              <CheckCircleSolid className="text-ui-tag-green-icon" />
+              Delivered
+            </span>
+          )}
+        </div>
+      </Container>
+      <LottiePlayer src={lottieMap[delivery_status]} />
     </Container>
   );
 }

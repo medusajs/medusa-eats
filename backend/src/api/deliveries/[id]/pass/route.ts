@@ -7,8 +7,7 @@ const schema = zod.object({
 })
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
-  const parsedBody = JSON.parse(req.body)
-  const validatedBody = schema.parse(parsedBody)
+  const validatedBody = schema.parse(req.body)
 
   if (!validatedBody.driver_id) {
     return res.status(400).json({ message: "Missing driver id" })

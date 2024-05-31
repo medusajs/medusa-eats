@@ -1,22 +1,49 @@
-const { Modules } = require("@medusajs/modules-sdk")
-const dotenv = require("dotenv")
-dotenv.config()
+const dotenv = require("dotenv");
+const { Modules } = require("@medusajs/modules-sdk");
 
-const ADMIN_CORS =
-  process.env.ADMIN_CORS || "http://localhost:7000,http://localhost:7001"
+let ENV_FILE_NAME = "";
+switch (process.env.NODE_ENV) {
+  case "production":
+    ENV_FILE_NAME = ".env.production";
+    break;
+  case "staging":
+    ENV_FILE_NAME = ".env.staging";
+    break;
+  case "test":
+    ENV_FILE_NAME = ".env.test";
+    break;
+  case "development":
+  default:
+    ENV_FILE_NAME = ".env";
+    break;
+}
 
-const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000"
+try {
+  dotenv.config({ path: process.cwd() + "/" + ENV_FILE_NAME });
+} catch (e) {}
+
+// CORS when consuming Medusa from admin
+// Medusa's docs are added for a better learning experience. Feel free to remove.
+const ADMIN_CORS = `${
+  process.env.ADMIN_CORS?.length
+    ? `${process.env.ADMIN_CORS},`
+    : "http://localhost:7000,http://localhost:7001,"
+}https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app`;
+
+// CORS to avoid issues when consuming Medusa from a client
+// Medusa's docs are added for a better learning experience. Feel free to remove.
+const STORE_CORS = `${
+  process.env.STORE_CORS?.length
+    ? `${process.env.STORE_CORS},`
+    : "http://localhost:8000,"
+}https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app`;
 
 const DATABASE_URL =
-  process.env.DATABASE_URL || "postgres://postgres@localhost/medusa-food"
+  process.env.DATABASE_URL || "postgres://localhost/medusa-food";
 
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
+const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
-const plugins = [
-  `medusa-fulfillment-manual`,
-  `medusa-payment-manual`,
-  `@medusajs/admin`,
-]
+const plugins = [];
 
 const modules = {
   restaurantModuleService: {
@@ -25,115 +52,88 @@ const modules = {
   deliveryModuleService: {
     resolve: "./dist/modules/delivery",
   },
-  [Modules.EVENT_BUS]: {
-    resolve: "@medusajs/event-bus-redis",
-    options: {
-      redisUrl: REDIS_URL,
-    },
-  },
-  [Modules.AUTH]: {
-    scope: "internal",
-    resources: "shared",
-    resolve: "@medusajs/auth",
-    options: {
-      providers: [
-        {
-          name: "emailpass",
-          scopes: {
-            admin: {},
-            store: {},
-            restaurant: {},
-            driver: {},
-            customer: {},
-          },
-        },
-      ],
-    },
-  },
+  [Modules.CACHE]: true,
+  [Modules.EVENT_BUS]: true,
+  [Modules.AUTH]: true,
   [Modules.USER]: {
-    scope: "internal",
-    resources: "shared",
     resolve: "@medusajs/user",
     options: {
-      jwt_secret: process.env.JWT_SECRET,
+      jwt_secret: process.env.JWT_SECRET ?? "supersecret",
     },
   },
-  [Modules.CACHE]: {
-    resolve: "@medusajs/cache-redis",
-    options: {
-      redisUrl: REDIS_URL,
-    },
-  },
-  [Modules.STOCK_LOCATION]: {
-    resolve: "@medusajs/stock-location-next",
-    options: {},
-  },
-  [Modules.INVENTORY]: {
-    resolve: "@medusajs/inventory-next",
-    options: {},
-  },
-  [Modules.PRODUCT]: true,
-  [Modules.PRICING]: true,
-  [Modules.PROMOTION]: true,
-  [Modules.CUSTOMER]: true,
-  [Modules.SALES_CHANNEL]: true,
-  [Modules.CART]: true,
-  [Modules.WORKFLOW_ENGINE]: {
-    resolve: "@medusajs/workflow-engine-redis",
-    options: {
-      redis: {
-        url: REDIS_URL,
-      },
-    },
-  },
-  [Modules.REGION]: true,
-  [Modules.ORDER]: true,
-  [Modules.API_KEY]: true,
-  [Modules.STORE]: true,
-  [Modules.TAX]: true,
-  [Modules.CURRENCY]: true,
-  [Modules.PAYMENT]: true,
-  [Modules.FULFILLMENT]: {
-    /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
+  [Modules.FILE]: {
+    resolve: "@medusajs/file",
     options: {
       providers: [
         {
-          resolve: "@medusajs/fulfillment-manual",
+          resolve: "@medusajs/file-local-next",
           options: {
             config: {
-              "test-provider": {},
+              local: {},
             },
           },
         },
       ],
     },
   },
-}
+  [Modules.WORKFLOW_ENGINE]: true,
+  [Modules.STOCK_LOCATION]: true,
+  [Modules.INVENTORY]: true,
+  [Modules.PRODUCT]: true,
+  [Modules.PRICING]: true,
+  [Modules.PROMOTION]: true,
+  [Modules.CUSTOMER]: true,
+  [Modules.SALES_CHANNEL]: true,
+  [Modules.CART]: true,
+  [Modules.REGION]: true,
+  [Modules.API_KEY]: true,
+  [Modules.STORE]: true,
+  [Modules.TAX]: true,
+  [Modules.CURRENCY]: true,
+  [Modules.PAYMENT]: true,
+  [Modules.ORDER]: true,
+  [Modules.FULFILLMENT]: {
+    resolve: "@medusajs/fulfillment",
+    options: {
+      providers: [
+        {
+          resolve: "@medusajs/fulfillment-manual",
+          options: {
+            config: {
+              manual: {},
+            },
+          },
+        },
+      ],
+    },
+  },
+};
 
 /** @type {import('@medusajs/medusa').ConfigModule["projectConfig"]} */
 const projectConfig = {
-  jwtSecret: process.env.JWT_SECRET,
-  cookieSecret: process.env.COOKIE_SECRET,
-  store_cors: STORE_CORS,
   database_url: DATABASE_URL,
-  database_driver_options: DATABASE_URL.includes("localhost")
-    ? {}
-    : {
-        connection: {
-          ssl: { rejectUnauthorized: false },
-        },
-        idle_in_transaction_session_timeout: 20000,
-      },
-  admin_cors: ADMIN_CORS,
+  http: {
+    storeCors: STORE_CORS,
+    adminCors: ADMIN_CORS,
+    authCors: process.env.AUTH_CORS || ADMIN_CORS,
+    jwtSecret: process.env.JWT_SECRET || "supersecret",
+    cookieSecret: process.env.COOKIE_SECRET || "supersecret",
+  },
   redis_url: REDIS_URL,
-}
+};
 
-/** @type {import('@medusajs/medusa').ConfigModule} */
+/** @type {import('@medusajs/types').ConfigModule} */
 module.exports = {
   projectConfig,
+  admin: {
+    backendUrl: "http://localhost:9000",
+  },
   plugins,
   modules,
   featureFlags: {
     medusa_v2: true,
   },
-}
+  directories: {
+    srcDir: "src",
+  },
+};

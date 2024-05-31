@@ -41,7 +41,7 @@ export default async function RootLayout({
           <ProfileBadge user={user} />
         </div>
       </nav>
-      <main className="min-h-screen flex flex-col gap-20 p-10 transition-all duration-150 ease-in-out">
+      <main className="flex flex-col gap-20 p-10 transition-all duration-150 ease-in-out">
         {children}
       </main>
     </>

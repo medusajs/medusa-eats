@@ -24,8 +24,8 @@ export default async function DeliveryColumn({
   );
 
   return (
-    <div className="inline-block">
-      <div className="flex flex-col gap-4">
+    <div className="inline-block w-full">
+      <div className="flex flex-col gap-4 w-full">
         <Heading className="text-lg text-center">{title}</Heading>
         {columnDeliveries?.length > 0 ? (
           columnDeliveries.map((delivery) => (

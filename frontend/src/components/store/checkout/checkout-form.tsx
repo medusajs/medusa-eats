@@ -1,6 +1,6 @@
 "use client";
 
-import { placeOrder } from "@frontend/app/(store)/checkout/actions";
+import { placeOrder } from "@frontend/lib/actions";
 import { Badge, Button, Heading, Input, Label, Textarea } from "@medusajs/ui";
 import { useFormState, useFormStatus } from "react-dom";
 

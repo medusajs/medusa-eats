@@ -12,8 +12,6 @@ export async function OrderSummary() {
   }
   const cart = await retrieveCart(cartId);
 
-  console.log({ cart });
-
   const restaurant = await retrieveRestaurant(
     cart.metadata?.restaurant_id as string
   );

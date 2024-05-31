@@ -1,40 +1,35 @@
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import RestaurantModuleService from "../../../modules/restaurant/service"
-import DeliveryModuleService from "../../../modules/delivery/service"
-import { RestaurantAdminDTO } from "src/types/restaurant/common"
-import { DriverDTO } from "src/types/delivery/common"
-import { UserDTO } from "@medusajs/types"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import RestaurantModuleService from "../../../modules/restaurant/service";
+import DeliveryModuleService from "../../../modules/delivery/service";
+import { RestaurantAdminDTO } from "../../../types/restaurant/common";
+import { DriverDTO } from "../../../types/delivery/common";
+import { UserDTO } from "@medusajs/types";
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { restaurant_admin_id, driver_id, customer_id } = req.auth.app_metadata
-  let user = {} as RestaurantAdminDTO | DriverDTO | UserDTO
+  const { user_id, user_type } = req.user as {
+    user_id: string;
+    user_type: "restaurant" | "driver";
+  };
+  let user = {} as RestaurantAdminDTO | DriverDTO | UserDTO;
 
-  if (restaurant_admin_id) {
+  if (user_type === "restaurant") {
     const service = req.scope.resolve<RestaurantModuleService>(
       "restaurantModuleService"
-    )
-    user = await service.retrieveRestaurantAdmin(restaurant_admin_id)
-    return res.json({ user })
+    );
+    user = await service.retrieveRestaurantAdmin(user_id);
+    return res.json({ user });
   }
 
-  if (driver_id) {
+  if (user_type === "driver") {
     const service = req.scope.resolve<DeliveryModuleService>(
       "deliveryModuleService"
-    )
-    user = await service.retrieveDriver(driver_id)
-    return res.json({ user })
+    );
+    user = await service.retrieveDriver(user_id);
+    return res.json({ user });
   }
 
-  if (customer_id) {
-    const service = req.scope.resolve<DeliveryModuleService>(
-      "deliveryModuleService"
-    )
-    user = await service.retrieveDriver(customer_id)
-    return res.json({ user })
-  }
-
-  return res.status(404).json({ message: "User not found" })
-}
+  return res.status(404).json({ message: "User not found" });
+};

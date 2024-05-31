@@ -22,6 +22,7 @@ export interface DeliveryDTO {
   delivery_status: DeliveryStatus
   created_at: Date
   updated_at: Date
+  eta?: Date
   items: DeliveryItemDTO[]
 }
 

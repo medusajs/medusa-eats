@@ -9,7 +9,7 @@ import {
 import { DropdownMenu, IconButton } from "@medusajs/ui";
 import { ProductDTO } from "@medusajs/types";
 import { RestaurantDTO } from "@backend/src/types/restaurant/common";
-import { deleteProduct } from "@frontend/app/dashboard/restaurant/actions";
+import { deleteProduct } from "@frontend/lib/actions";
 import { useState } from "react";
 
 export function MenuProductActions({

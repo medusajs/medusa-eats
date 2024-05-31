@@ -7,7 +7,6 @@ import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { Badge, Text } from "@medusajs/ui";
 
 async function getDeliveries(query: string) {
-  console.log("Fetching deliveries with query", query);
   const { deliveries } = await fetch(
     `http://localhost:9000/deliveries?${query}&delivery_status=${DeliveryStatus.DELIVERED}`,
     {

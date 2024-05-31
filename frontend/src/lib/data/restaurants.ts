@@ -1,0 +1,45 @@
+import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+
+const BACKEND_URL = "http://localhost:9000";
+
+export async function retrieveRestaurant(
+  restaurantId: string
+): Promise<RestaurantDTO> {
+  const { restaurant } = await fetch(
+    `${BACKEND_URL}/restaurants/${restaurantId}`,
+    {
+      next: {
+        tags: ["restaurants"],
+      },
+    }
+  ).then((res) => res.json());
+  return restaurant;
+}
+
+export async function listRestaurants(
+  filter?: Record<string, string>
+): Promise<RestaurantDTO[]> {
+  const query = new URLSearchParams(filter).toString();
+
+  const { restaurants } = await fetch(`${BACKEND_URL}/restaurants?${query}`, {
+    next: {
+      tags: ["restaurants"],
+    },
+  }).then((res) => res.json());
+
+  return restaurants;
+}
+
+export async function retrieveRestaurantByHandle(
+  handle: string
+): Promise<RestaurantDTO> {
+  const { restaurants } = await fetch(
+    `${BACKEND_URL}/restaurants?handle=${handle}`,
+    {
+      next: {
+        tags: ["restaurants"],
+      },
+    }
+  ).then((res) => res.json());
+  return restaurants[0];
+}

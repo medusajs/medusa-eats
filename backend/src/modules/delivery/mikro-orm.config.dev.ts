@@ -1,6 +1,6 @@
 import path from "path"
-import * as entities from "./models"
 import { TSMigrationGenerator } from "@medusajs/utils"
+import * as entities from "./models"
 
 module.exports = {
   entities: Object.values(entities),

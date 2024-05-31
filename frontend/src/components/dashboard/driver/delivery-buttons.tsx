@@ -5,13 +5,9 @@ import {
   DeliveryStatus,
   DriverDTO,
 } from "@backend/src/types/delivery/common";
-import {
-  passDelivery,
-  proceedDelivery,
-} from "@frontend/app/dashboard/driver/actions";
+import { passDelivery, proceedDelivery } from "@frontend/lib/actions";
 import { Button } from "@medusajs/ui";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 export default function DriverDeliveryButtons({
   delivery,
