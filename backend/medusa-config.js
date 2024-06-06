@@ -1,4 +1,3 @@
-const { Modules } = require("@medusajs/modules-sdk");
 const { defineConfig, loadEnv } = require("@medusajs/utils");
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd())
@@ -40,42 +39,6 @@ export default defineConfig({
     redisUrl: REDIS_URL,
   },
   modules: {
-    [Modules.USER]: {
-      resolve: "@medusajs/user",
-      options: {
-        jwt_secret: process.env.JWT_SECRET ?? "supersecret",
-      },
-    },
-    [Modules.FILE]: {
-      resolve: "@medusajs/file",
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/file-local-next",
-            options: {
-              config: {
-                local: {},
-              },
-            },
-          },
-        ],
-      },
-    },
-    [Modules.FULFILLMENT]: {
-      resolve: "@medusajs/fulfillment",
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/fulfillment-manual",
-            options: {
-              config: {
-                manual: {},
-              },
-            },
-          },
-        ],
-      },
-    },
     restaurantModuleService: {
       resolve: "./modules/restaurant",
     },
