@@ -47,10 +47,10 @@ const plugins = [];
 
 const modules = {
   restaurantModuleService: {
-    resolve: "./dist/modules/restaurant",
+    resolve: "./modules/restaurant",
   },
   deliveryModuleService: {
-    resolve: "./dist/modules/delivery",
+    resolve: "./modules/delivery",
   },
   [Modules.CACHE]: true,
   [Modules.EVENT_BUS]: true,
