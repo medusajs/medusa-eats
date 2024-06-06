@@ -47,10 +47,10 @@ const plugins = [];
 
 const modules = {
   restaurantModuleService: {
-    resolve: "./dist/modules/restaurant",
+    resolve: "./modules/restaurant",
   },
   deliveryModuleService: {
-    resolve: "./dist/modules/delivery",
+    resolve: "./modules/delivery",
   },
   [Modules.CACHE]: true,
   [Modules.EVENT_BUS]: true,
@@ -111,7 +111,7 @@ const modules = {
 
 /** @type {import('@medusajs/medusa').ConfigModule["projectConfig"]} */
 const projectConfig = {
-  database_url: DATABASE_URL,
+  databaseUrl: DATABASE_URL,
   http: {
     storeCors: STORE_CORS,
     adminCors: ADMIN_CORS,

@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/utils";
 import {
   AfterUpdate,
   BeforeCreate,
@@ -6,51 +6,51 @@ import {
   Enum,
   PrimaryKey,
   Property,
-} from "@mikro-orm/core"
-import { DeliveryStatus } from "../../../types/delivery/common"
+} from "@mikro-orm/core";
+import { DeliveryStatus } from "../../../types/delivery/common";
 
 @Entity()
 export default class Delivery {
   @PrimaryKey({ columnType: "text" })
-  id!: string
+  id!: string;
 
   @Property({ columnType: "text" })
-  transaction_id!: string
+  transaction_id!: string;
 
   @Property({ columnType: "text", nullable: true })
-  driver_id: string
+  driver_id: string;
 
   @Property({ columnType: "text" })
-  restaurant_id!: string
+  restaurant_id!: string;
 
   @Property({ columnType: "text", nullable: true })
-  cart_id: string
+  cart_id: string;
 
   @Property({ columnType: "text", nullable: true })
-  order_id: string
+  order_id: string;
 
   @Property({ columnType: "timestamptz", nullable: true })
-  delivered_at: Date
+  delivered_at: Date;
 
   @Enum({
     columnType: "enum",
     items: () => DeliveryStatus,
     default: "pending",
   })
-  delivery_status!: DeliveryStatus
+  delivery_status!: DeliveryStatus;
 
   @Property({ columnType: "timestamptz", type: "date", nullable: true })
-  eta: Date
+  eta: Date;
 
   @Property({ columnType: "timestamptz", defaultRaw: "now()", type: "date" })
-  created_at = new Date()
+  created_at = new Date();
 
   @Property({ onUpdate: () => new Date(), type: "date" })
-  updated_at = new Date()
+  updated_at = new Date();
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "del")
+    this.id = generateEntityId(this.id, "del");
   }
 
   @AfterUpdate()
@@ -59,7 +59,7 @@ export default class Delivery {
       this.delivery_status === DeliveryStatus.DELIVERED &&
       !this.delivered_at
     ) {
-      this.delivered_at = new Date()
+      this.delivered_at = new Date();
     }
   }
 }

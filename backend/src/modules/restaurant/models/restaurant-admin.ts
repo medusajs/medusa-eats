@@ -3,7 +3,6 @@ import {
   BeforeCreate,
   Entity,
   ManyToOne,
-  OneToOne,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core";
