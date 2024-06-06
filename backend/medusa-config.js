@@ -111,7 +111,7 @@ const modules = {
 
 /** @type {import('@medusajs/medusa').ConfigModule["projectConfig"]} */
 const projectConfig = {
-  database_url: DATABASE_URL,
+  databaseUrl: DATABASE_URL,
   http: {
     storeCors: STORE_CORS,
     adminCors: ADMIN_CORS,
