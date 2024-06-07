@@ -1,18 +1,21 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { ModuleRegistrationName } from "@medusajs/modules-sdk";
+import { IWorkflowEngineService } from "@medusajs/types";
 import { TransactionHandlerType } from "@medusajs/utils";
-import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk";
-import DeliveryModuleService from "../../../../modules/delivery/service";
+import { StepResponse } from "@medusajs/workflows-sdk";
+import {
+  DeliveryStatus,
+  IDeliveryModuleService,
+} from "../../../../types/delivery/common";
 import {
   awaitStartPreparationStepId,
   handleDeliveryWorkflowId,
 } from "../../../../workflows/delivery/handle-delivery";
-import { DeliveryStatus } from "../../../../types/delivery/common";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const deliveryId = req.params.id;
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
   );
 

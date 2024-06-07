@@ -1,15 +1,16 @@
-import { CartModuleService } from "@medusajs/cart/dist/services";
-import { FulfillmentModuleService } from "@medusajs/fulfillment";
 import {
   ModuleRegistrationName,
   Modules,
   RemoteLink,
 } from "@medusajs/modules-sdk";
+import { CreateOrderShippingMethodDTO } from "@medusajs/order";
 import {
-  CreateOrderShippingMethodDTO,
-  OrderModuleService,
-} from "@medusajs/order";
-import { IEventBusModuleService, OrderDTO } from "@medusajs/types";
+  ICartModuleService,
+  IEventBusModuleService,
+  IFulfillmentModuleService,
+  IOrderModuleService,
+  OrderDTO,
+} from "@medusajs/types";
 import {
   StepResponse,
   WorkflowData,
@@ -18,9 +19,12 @@ import {
   transform,
 } from "@medusajs/workflows-sdk";
 import { Delivery } from "../../modules/delivery/models";
-import DeliveryModuleService from "../../modules/delivery/service";
-import RestaurantModuleService from "../../modules/restaurant/service";
-import { DeliveryStatus, DriverDTO } from "../../types/delivery/common";
+import {
+  DeliveryStatus,
+  DriverDTO,
+  IDeliveryModuleService,
+} from "../../types/delivery/common";
+import { IRestaurantModuleService } from "../../types/restaurant/common";
 
 type CreateDeliveryStepInput = {
   cart_id: string;
@@ -30,7 +34,7 @@ const createDeliveryStep = createStep(
   "create-delivery-step",
   async function (input: CreateDeliveryStepInput, { container, context }) {
     const cartService =
-      container.resolve<CartModuleService>("cartModuleService");
+      container.resolve<ICartModuleService>("cartModuleService");
 
     const cart = await cartService.retrieve(input.cart_id);
 
@@ -44,7 +48,7 @@ const createDeliveryStep = createStep(
       throw new Error("Restaurant id not found");
     }
 
-    const service = container.resolve<DeliveryModuleService>(
+    const service = container.resolve<IDeliveryModuleService>(
       "deliveryModuleService"
     );
 
@@ -63,7 +67,7 @@ const createDeliveryStep = createStep(
   (input: string, { container }) => {
     console.log("Error creating delivery", input);
 
-    const service = container.resolve<DeliveryModuleService>(
+    const service = container.resolve<IDeliveryModuleService>(
       "deliveryModuleService"
     );
 
@@ -76,7 +80,7 @@ const notifyRestaurantStep = createStep(
   { name: notifyRestaurantStepId, async: true },
   async function (deliveryId: string, { container, context }) {
     console.log("Notifying restaurant step...");
-    const deliveryService = container.resolve<DeliveryModuleService>(
+    const deliveryService = container.resolve<IDeliveryModuleService>(
       "deliveryModuleService"
     );
 
@@ -84,7 +88,7 @@ const notifyRestaurantStep = createStep(
 
     const { restaurant_id } = delivery;
 
-    const restaurantService = container.resolve<RestaurantModuleService>(
+    const restaurantService = container.resolve<IRestaurantModuleService>(
       "restaurantModuleService"
     );
 
@@ -120,7 +124,7 @@ const findDriverStep = createStep<string, DriverDTO, string>(
     try {
       console.log("Finding driver step...");
 
-      const deliveryService = container.resolve<DeliveryModuleService>(
+      const deliveryService = container.resolve<IDeliveryModuleService>(
         "deliveryModuleService"
       );
 
@@ -165,7 +169,7 @@ const createOrderStep = createStep(
   "create-order-step",
   async function (deliveryId: string, { container }) {
     try {
-      const deliveryModuleService = container.resolve<DeliveryModuleService>(
+      const deliveryModuleService = container.resolve<IDeliveryModuleService>(
         "deliveryModuleService"
       );
 
@@ -183,7 +187,7 @@ const createOrderStep = createStep(
       }
 
       const cartModuleService =
-        container.resolve<CartModuleService>("cartModuleService");
+        container.resolve<ICartModuleService>("cartModuleService");
 
       const cart = await cartModuleService.retrieve(delivery.cart_id, {
         relations: ["items"],
@@ -196,7 +200,7 @@ const createOrderStep = createStep(
       }
 
       const orderModuleService =
-        container.resolve<OrderModuleService>("orderModuleService");
+        container.resolve<IOrderModuleService>("orderModuleService");
 
       const order = await orderModuleService
         .create({
@@ -263,7 +267,9 @@ const createFulfillmentStep = createStep(
     try {
       console.log("Creating fulfillment...", { order });
       const fulfillmentModuleService =
-        container.resolve<FulfillmentModuleService>("fulfillmentModuleService");
+        container.resolve<IFulfillmentModuleService>(
+          "fulfillmentModuleService"
+        );
 
       const items = order.items?.map((lineItem) => {
         return {
@@ -295,7 +301,7 @@ const createFulfillmentStep = createStep(
     console.log("Error creating fulfillment", input);
 
     const fulfillmentModuleService =
-      container.resolve<FulfillmentModuleService>("fulfillmentModuleService");
+      container.resolve<IFulfillmentModuleService>("fulfillmentModuleService");
 
     return fulfillmentModuleService.delete(input);
   }

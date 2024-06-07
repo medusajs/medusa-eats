@@ -1,9 +1,13 @@
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import RestaurantModuleService from "../../../modules/restaurant/service";
-import DeliveryModuleService from "../../../modules/delivery/service";
-import { RestaurantAdminDTO } from "../../../types/restaurant/common";
-import { DriverDTO } from "../../../types/delivery/common";
 import { UserDTO } from "@medusajs/types";
+import {
+  DriverDTO,
+  IDeliveryModuleService,
+} from "../../../types/delivery/common";
+import {
+  IRestaurantModuleService,
+  RestaurantAdminDTO,
+} from "../../../types/restaurant/common";
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -16,7 +20,7 @@ export const GET = async (
   let user = {} as RestaurantAdminDTO | DriverDTO | UserDTO;
 
   if (user_type === "restaurant") {
-    const service = req.scope.resolve<RestaurantModuleService>(
+    const service = req.scope.resolve<IRestaurantModuleService>(
       "restaurantModuleService"
     );
     user = await service.retrieveRestaurantAdmin(user_id);
@@ -24,7 +28,7 @@ export const GET = async (
   }
 
   if (user_type === "driver") {
-    const service = req.scope.resolve<DeliveryModuleService>(
+    const service = req.scope.resolve<IDeliveryModuleService>(
       "deliveryModuleService"
     );
     user = await service.retrieveDriver(user_id);

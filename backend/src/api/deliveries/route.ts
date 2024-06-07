@@ -1,7 +1,10 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { ICartModuleService } from "@medusajs/types";
 import zod from "zod";
-import DeliveryModuleService from "../../modules/delivery/service";
-import { DeliveryItemDTO } from "../../types/delivery/common";
+import {
+  DeliveryItemDTO,
+  IDeliveryModuleService,
+} from "../../types/delivery/common";
 import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery";
 
 const schema = zod.object({
@@ -35,7 +38,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
   );
 
@@ -67,20 +70,13 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       const items = [] as DeliveryItemDTO[];
 
       if (delivery.cart_id) {
-        const cartService = req.scope.resolve("cartModuleService");
+        const cartService =
+          req.scope.resolve<ICartModuleService>("cartModuleService");
         const cart = await cartService.retrieve(delivery.cart_id, {
           relations: ["items"],
         });
-        items.push(...cart.items);
+        items.push(...(cart.items as DeliveryItemDTO[]));
       }
-
-      // if (delivery.order_id) {
-      //   const orderService = req.scope.resolve("orderModuleService")
-      //   const order = await orderService.retrieve(delivery.order_id, {
-      //     relations: ["items"],
-      //   })
-      //   items.push(...order.items)
-      // }
 
       delivery.items = items;
     }

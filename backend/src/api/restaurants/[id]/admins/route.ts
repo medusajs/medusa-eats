@@ -1,13 +1,13 @@
 import {
-  MedusaRequest,
   AuthenticatedMedusaRequest,
+  MedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa";
-import RestaurantModuleService from "../../../../modules/restaurant/service";
-import zod from "zod";
 import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { IAuthModuleService } from "@medusajs/types";
 import jwt from "jsonwebtoken";
+import zod from "zod";
+import { IRestaurantModuleService } from "../../../../types/restaurant/common";
 import { createUserWorkflow } from "../../../../workflows/account/create-user";
 
 const schema = zod
@@ -65,7 +65,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing restaurant id" });
   }
 
-  const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
+  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
     "restaurantModuleService"
   );
 
@@ -94,7 +94,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing admin id" });
   }
 
-  const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
+  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
     "restaurantModuleService"
   );
 

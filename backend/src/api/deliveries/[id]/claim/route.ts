@@ -1,9 +1,10 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { TransactionHandlerType } from "@medusajs/utils";
-import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk";
-import DeliveryModuleService from "../../../../modules/delivery/service";
+import { StepResponse } from "@medusajs/workflows-sdk";
+import { IDeliveryModuleService } from "../../../../types/delivery/common";
 import { DeliveryStatus } from "../../../../types/delivery/common";
+import { IWorkflowEngineService } from "@medusajs/types";
 import {
   findDriverStepStepId,
   handleDeliveryWorkflowId,
@@ -26,7 +27,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing driver id" });
   }
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
   );
 

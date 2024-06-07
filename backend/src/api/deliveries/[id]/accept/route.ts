@@ -1,14 +1,17 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { ModuleRegistrationName } from "@medusajs/modules-sdk";
+import { IWorkflowEngineService } from "@medusajs/types";
 import { TransactionHandlerType } from "@medusajs/utils";
-import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk";
-import DeliveryModuleService from "../../../../modules/delivery/service";
-import { DeliveryStatus } from "../../../../types/delivery/common";
-import {
-  notifyRestaurantStepId,
-  handleDeliveryWorkflowId,
-} from "../../../../workflows/delivery/handle-delivery";
+import { StepResponse } from "@medusajs/workflows-sdk";
 import zod from "zod";
+import {
+  DeliveryStatus,
+  IDeliveryModuleService,
+} from "../../../../types/delivery/common";
+import {
+  handleDeliveryWorkflowId,
+  notifyRestaurantStepId,
+} from "../../../../workflows/delivery/handle-delivery";
 
 const schema = zod.object({
   eta: zod.date().optional(),
@@ -30,7 +33,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing delivery id" });
   }
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
   );
 

@@ -1,6 +1,6 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import DeliveryModuleService from "../../../modules/delivery/service"
-import zod from "zod"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import zod from "zod";
+import { IDeliveryModuleService } from "../../../types/delivery/common";
 
 const schema = zod.object({
   first_name: zod.string().optional(),
@@ -8,72 +8,72 @@ const schema = zod.object({
   email: zod.string().optional(),
   phone: zod.string().optional(),
   avatar_url: zod.string().optional(),
-})
+});
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body)
+  const validatedBody = schema.parse(req.body);
 
   if (!validatedBody) {
-    return res.status(400).json({ message: "Missing driver data" })
+    return res.status(400).json({ message: "Missing driver data" });
   }
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
-  )
+  );
 
-  const driverId = req.params.id
+  const driverId = req.params.id;
 
   if (!driverId) {
-    return res.status(400).json({ message: "Missing driver id" })
+    return res.status(400).json({ message: "Missing driver id" });
   }
 
   try {
     const driver = await deliveryModuleService.updateDriver(driverId, {
       ...validatedBody,
-    })
+    });
 
-    return res.status(200).json({ driver })
+    return res.status(200).json({ driver });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const driverId = req.params.id
+  const driverId = req.params.id;
 
   if (!driverId) {
-    return res.status(400).json({ message: "Missing driver id" })
+    return res.status(400).json({ message: "Missing driver id" });
   }
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
-  )
+  );
 
   try {
-    const driver = await deliveryModuleService.retrieveDriver(driverId)
+    const driver = await deliveryModuleService.retrieveDriver(driverId);
 
-    return res.status(200).json({ driver })
+    return res.status(200).json({ driver });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
-  const driverId = req.params.id
+  const driverId = req.params.id;
 
   if (!driverId) {
-    return res.status(400).json({ message: "Missing driver id" })
+    return res.status(400).json({ message: "Missing driver id" });
   }
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
-  )
+  );
 
   try {
-    await deliveryModuleService.deleteDriver(driverId)
+    await deliveryModuleService.deleteDriver(driverId);
 
-    return res.status(200).json({ message: "Driver deleted" })
+    return res.status(200).json({ message: "Driver deleted" });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }

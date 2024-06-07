@@ -1,12 +1,15 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { ModuleRegistrationName } from "@medusajs/modules-sdk";
+import { IWorkflowEngineService } from "@medusajs/types";
 import { TransactionHandlerType } from "@medusajs/utils";
-import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk";
-import DeliveryModuleService from "../../../../modules/delivery/service";
-import { DeliveryStatus } from "../../../../types/delivery/common";
+import { StepResponse } from "@medusajs/workflows-sdk";
 import {
-  notifyRestaurantStepId,
+  DeliveryStatus,
+  IDeliveryModuleService,
+} from "../../../../types/delivery/common";
+import {
   handleDeliveryWorkflowId,
+  notifyRestaurantStepId,
 } from "../../../../workflows/delivery/handle-delivery";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -16,7 +19,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing delivery id" });
   }
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
   );
 

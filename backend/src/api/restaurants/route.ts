@@ -1,9 +1,9 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import RestaurantModuleService from "../../modules/restaurant/service"
-import { MedusaApp, Modules, RemoteQuery } from "@medusajs/modules-sdk"
-import zod from "zod"
-import { getPricesByPriceSetId } from "../../utils/get-prices-by-price-set-id"
-import { IPricingModuleService } from "@medusajs/types"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaApp, Modules } from "@medusajs/modules-sdk";
+import { IPricingModuleService } from "@medusajs/types";
+import zod from "zod";
+import { IRestaurantModuleService } from "../../types/restaurant/common";
+import { getPricesByPriceSetId } from "../../utils/get-prices-by-price-set-id";
 
 const schema = zod.object({
   name: zod.string(),
@@ -11,43 +11,44 @@ const schema = zod.object({
   phone: zod.string(),
   email: zod.string(),
   image_url: zod.string(),
-})
+});
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = schema.parse(req.body) as {
-    name: string
-    address: string
-    phone: string
-    email: string
-    image_url: string
-  }
+    name: string;
+    address: string;
+    phone: string;
+    email: string;
+    image_url: string;
+  };
 
   if (!validatedBody) {
-    return res.status(400).json({ message: "Missing restaurant data" })
+    return res.status(400).json({ message: "Missing restaurant data" });
   }
 
-  const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
+  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
     "restaurantModuleService"
-  )
+  );
 
   try {
-    const restaurant =
-      await restaurantModuleService.createRestaurant(validatedBody)
+    const restaurant = await restaurantModuleService.createRestaurant(
+      validatedBody
+    );
 
-    return res.status(200).json({ restaurant })
+    return res.status(200).json({ restaurant });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
+  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
     "restaurantModuleService"
-  )
+  );
 
-  const productModuleService = req.scope.resolve("productModuleService")
+  const productModuleService = req.scope.resolve("productModuleService");
 
-  const queryFilters = req.query
+  const queryFilters = req.query;
 
   const { query, modules } = await MedusaApp({
     modulesConfig: {
@@ -58,26 +59,27 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       database: { clientUrl: process.env.POSTGRES_URL },
     },
     injectedDependencies: {},
-  })
+  });
 
   try {
-    const restaurants =
-      await restaurantModuleService.listRestaurants(queryFilters)
+    const restaurants = await restaurantModuleService.listRestaurants(
+      queryFilters
+    );
 
     for (const restaurant of restaurants) {
       const restaurantProducts =
         await restaurantModuleService.listRestaurantProducts({
           restaurant_id: restaurant.id,
-        })
+        });
 
       const filters = {
         context: {
           currency_code: "usd",
           region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
         },
-      }
+      };
 
-      restaurant.products = []
+      restaurant.products = [];
 
       if (restaurantProducts.length) {
         const productsQuery = `#graphql
@@ -100,24 +102,24 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
           }
           }
         }
-      `
+      `;
 
-        const products = await query(productsQuery, filters)
+        const products = await query(productsQuery, filters);
 
         const productsWithPrices = await getPricesByPriceSetId({
           products,
           currency_code: "usd",
           pricingService:
             modules.pricingService as unknown as IPricingModuleService,
-        })
+        });
 
-        restaurant.products = productsWithPrices
+        restaurant.products = productsWithPrices;
       }
     }
 
-    return res.status(200).json({ restaurants })
+    return res.status(200).json({ restaurants });
   } catch (error) {
-    console.log({ message: error.message })
-    return res.status(500).json({ message: error.message })
+    console.log({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 }
