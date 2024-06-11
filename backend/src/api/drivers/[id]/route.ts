@@ -1,4 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
 import { IDeliveryModuleService } from "../../../types/delivery/common";
 
@@ -14,7 +15,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = schema.parse(req.body);
 
   if (!validatedBody) {
-    return res.status(400).json({ message: "Missing driver data" });
+    return MedusaError.Types.INVALID_DATA;
   }
 
   const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
@@ -24,56 +25,50 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const driverId = req.params.id;
 
   if (!driverId) {
-    return res.status(400).json({ message: "Missing driver id" });
+    return MedusaError.Types.NOT_FOUND;
   }
 
-  try {
-    const driver = await deliveryModuleService.updateDriver(driverId, {
-      ...validatedBody,
-    });
+  const driver = await deliveryModuleService.updateDriver(driverId, {
+    ...validatedBody,
+  });
 
-    return res.status(200).json({ driver });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ driver });
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const driverId = req.params.id;
 
   if (!driverId) {
-    return res.status(400).json({ message: "Missing driver id" });
+    return MedusaError.Types.INVALID_DATA;
   }
 
-  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
-    "deliveryModuleService"
-  );
+  const remoteQuery = req.scope.resolve("remoteQuery");
 
-  try {
-    const driver = await deliveryModuleService.retrieveDriver(driverId);
+  const driverQuery = remoteQueryObjectFromString({
+    entryPoint: "drivers",
+    variables: {
+      id: driverId,
+    },
+    fields: ["id", "first_name", "last_name", "email", "phone", "avatar_url"],
+  });
 
-    return res.status(200).json({ driver });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  const driver = await remoteQuery(driverQuery).then((d) => d[0]);
+
+  return res.status(200).json({ driver });
 }
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
   const driverId = req.params.id;
 
   if (!driverId) {
-    return res.status(400).json({ message: "Missing driver id" });
+    return MedusaError.Types.INVALID_DATA;
   }
 
   const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
   );
 
-  try {
-    await deliveryModuleService.deleteDriver(driverId);
+  await deliveryModuleService.deleteDriver(driverId);
 
-    return res.status(200).json({ message: "Driver deleted" });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ message: "Driver deleted" });
 }

@@ -1,5 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaApp, Modules } from "@medusajs/modules-sdk";
+import {
+  MedusaError,
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils";
 import { CreateProductDTO, ProductDTO } from "@medusajs/types";
 import zod from "zod";
 import { createVariantPriceSet } from "../../../../utils/create-variant-price-set";
@@ -23,11 +27,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   }
 
   const { price, category_id, ...rest } = validatedBody;
-  const productData = rest as CreateProductDTO;
+  const productData = rest as CreateProductDTO & { categories: any[] };
 
   const restaurantId = req.params.id;
 
-  // @ts-ignore
   productData.categories = [{ id: category_id }];
 
   productData.variants = [
@@ -87,68 +90,48 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const restaurantId = req.params.id;
 
   if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" });
+    return MedusaError.Types.NOT_FOUND;
   }
 
-  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
 
-  const { query } = await MedusaApp({
-    modulesConfig: {
-      [Modules.PRODUCT]: true,
-      [Modules.PRICING]: true,
+  const restaurantProductsQuery = remoteQueryObjectFromString({
+    entryPoint: "restaurantProducts",
+    variables: {
+      filters: {
+        restaurant_id: restaurantId,
+      },
     },
-    sharedResourcesConfig: {
-      database: { clientUrl: process.env.POSTGRES_URL },
-    },
-    injectedDependencies: {},
+    fields: ["restaurant_id", "product_id"],
   });
 
-  try {
-    const restaurantProducts =
-      await restaurantModuleService.listRestaurantProducts({
-        restaurant_id: restaurantId,
-      });
+  const restaurantProducts = await remoteQuery(restaurantProductsQuery);
 
-    const filters = {
-      context: {
+  const productsQuery = remoteQueryObjectFromString({
+    entryPoint: "products",
+    fields: [
+      "id",
+      "title",
+      "description",
+      "thumbnail",
+      "categories",
+      "categories.id",
+      "categories.name",
+      "variants",
+      "variants.id",
+      "variants.price_set",
+      "variants.price_set.id",
+    ],
+    variables: {
+      filters: {
         id: restaurantProducts.map((p) => p.product_id),
-        currency_code: "usd",
       },
-    };
+    },
+  });
 
-    const productsQuery = `#graphql
-        query($filters: Record, $id: [String], $currency_code: String, $region_id: String) {
-          products(filters: $filters) {
-            id
-            title
-            description
-            thumbnail
-            categories {
-              id
-              title
-            }
-            variants {
-              id
-              price_set {
-                id
-              }
-              price {
-                id
-                amount
-                currency_code
-              }
-            }
-          }
-        }`;
+  const products = await remoteQuery(productsQuery);
 
-    const products = await query(productsQuery, filters);
-
-    return res.status(200).json({ restaurant_products: products });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ restaurant_products: products });
 }
 
 const deleteSchema = zod.object({

@@ -37,6 +37,8 @@ export async function getThumbnails(queryParams: Record<string, any>) {
     },
   }).then((res) => res.json());
 
+  console.log(products);
+
   return products;
 }
 
@@ -48,6 +50,8 @@ export async function enrichLineItems(
     id: lineItems.map((lineItem) => lineItem.product_id!),
   };
 
+  console.log(queryParams);
+
   // Fetch products by their IDs
   const productThumbnail = await getThumbnails(queryParams);
   // If there are no line items or products, return an empty array
@@ -55,9 +59,14 @@ export async function enrichLineItems(
     return [];
   }
 
+  console.log({ productThumbnail });
+
   // Enrich line items with thumbn
   const enrichedItems = lineItems.map((item) => {
     const product = productThumbnail.find((p: any) => p.id === item.product_id);
+    if (!product) {
+      return item;
+    }
     item.thumbnail = product.thumbnail;
     return item;
   }) as CartLineItemDTO[];

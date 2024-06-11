@@ -1,6 +1,6 @@
 const { defineConfig, loadEnv } = require("@medusajs/utils");
 
-loadEnv(process.env.NODE_ENV || "development", process.cwd())
+loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
 // CORS when consuming Medusa from admin
 // Medusa's docs are added for a better learning experience. Feel free to remove.
@@ -41,9 +41,17 @@ export default defineConfig({
   modules: {
     restaurantModuleService: {
       resolve: "./modules/restaurant",
+      definition: {
+        key: "restaurantModuleService",
+        isQueryable: true,
+      },
     },
     deliveryModuleService: {
       resolve: "./modules/delivery",
+      definition: {
+        key: "deliveryModuleService",
+        isQueryable: true,
+      },
     },
-  }
-})
+  },
+});

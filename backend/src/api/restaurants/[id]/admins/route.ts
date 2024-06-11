@@ -5,6 +5,11 @@ import {
 } from "@medusajs/medusa";
 import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { IAuthModuleService } from "@medusajs/types";
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+  MedusaError,
+} from "@medusajs/utils";
 import jwt from "jsonwebtoken";
 import zod from "zod";
 import { IRestaurantModuleService } from "../../../../types/restaurant/common";
@@ -62,47 +67,39 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const restaurantId = req.params.id;
 
   if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" });
+    return MedusaError.Types.NOT_FOUND, "Restaurant not found";
   }
 
-  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
 
-  try {
-    const restaurantAdmins = await restaurantModuleService.listRestaurantAdmins(
-      {
+  const restaurantAdminsQuery = remoteQueryObjectFromString({
+    entryPoint: "restaurantAdmins",
+    fields: ["id", "email", "first_name", "last_name"],
+    variables: {
+      filters: {
         restaurant_id: restaurantId,
-      }
-    );
+      },
+    },
+  });
 
-    return res.status(200).json({ restaurant_admins: restaurantAdmins });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  const restaurantAdmins = await remoteQuery(restaurantAdminsQuery);
+
+  return res.status(200).json({ restaurant_admins: restaurantAdmins });
 }
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
   const restaurantId = req.params.id;
   const adminId = req.params.adminId;
 
-  if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" });
-  }
-
-  if (!adminId) {
-    return res.status(400).json({ message: "Missing admin id" });
+  if (!restaurantId || !adminId) {
+    return MedusaError.Types.INVALID_DATA;
   }
 
   const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
     "restaurantModuleService"
   );
 
-  try {
-    await restaurantModuleService.deleteRestaurantAdmin(adminId);
+  await restaurantModuleService.deleteRestaurantAdmin(adminId);
 
-    return res.status(200).json({ message: "Admin deleted" });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ message: "Admin deleted" });
 }

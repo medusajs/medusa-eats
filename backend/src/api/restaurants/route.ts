@@ -1,6 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { MedusaApp, Modules } from "@medusajs/modules-sdk";
-import { IPricingModuleService } from "@medusajs/types";
+import { remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
 import { IRestaurantModuleService } from "../../types/restaurant/common";
 import { getPricesByPriceSetId } from "../../utils/get-prices-by-price-set-id";
@@ -42,84 +41,79 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
-
-  const productModuleService = req.scope.resolve("productModuleService");
-
   const queryFilters = req.query;
 
-  const { query, modules } = await MedusaApp({
-    modulesConfig: {
-      [Modules.PRODUCT]: true,
-      [Modules.PRICING]: true,
+  const remoteQuery = req.scope.resolve("remoteQuery");
+
+  const restaurantsQuery = remoteQueryObjectFromString({
+    entryPoint: "restaurants",
+    fields: [
+      "id",
+      "handle",
+      "name",
+      "address",
+      "phone",
+      "email",
+      "image_url",
+      "is_open",
+    ],
+    variables: {
+      filters: queryFilters,
     },
-    sharedResourcesConfig: {
-      database: { clientUrl: process.env.POSTGRES_URL },
-    },
-    injectedDependencies: {},
   });
 
-  try {
-    const restaurants = await restaurantModuleService.listRestaurants(
-      queryFilters
-    );
+  const restaurants = await remoteQuery(restaurantsQuery);
 
-    for (const restaurant of restaurants) {
-      const restaurantProducts =
-        await restaurantModuleService.listRestaurantProducts({
+  for (const restaurant of restaurants) {
+    const restaurantProductsQuery = remoteQueryObjectFromString({
+      entryPoint: "restaurantProducts",
+      variables: {
+        filters: {
           restaurant_id: restaurant.id,
-        });
-
-      const filters = {
-        context: {
-          currency_code: "usd",
-          region_id: "reg_01H9T2TK25TG2M26Q01EP62ZVP",
         },
-      };
+      },
+      fields: ["restaurant_id", "product_id"],
+    });
 
-      restaurant.products = [];
+    const restaurantProducts = await remoteQuery(restaurantProductsQuery);
 
-      if (restaurantProducts.length) {
-        const productsQuery = `#graphql
-        query($filters: Record, $id: String, $currency_code: String, $region_id: String) {
-          products(filters: $filters) {
-            id
-            title
-            description
-            thumbnail
-            categories {
-              id
-              name
-            }
-            variants {
-              id
-              price_set {
-                id
-                price
-              }
-          }
-          }
-        }
-      `;
+    restaurant.products = [];
 
-        const products = await query(productsQuery, filters);
+    if (restaurantProducts.length) {
+      const productsQuery = remoteQueryObjectFromString({
+        entryPoint: "products",
+        fields: [
+          "id",
+          "title",
+          "description",
+          "thumbnail",
+          "categories",
+          "categories.id",
+          "categories.name",
+          "variants",
+          "variants.id",
+          "variants.price_set",
+          "variants.price_set.id",
+        ],
+        variables: {
+          filters: {
+            id: restaurantProducts.map((p) => p.product_id),
+          },
+          relations: ["categories"],
+        },
+      });
 
-        const productsWithPrices = await getPricesByPriceSetId({
-          products,
-          currency_code: "usd",
-          pricingService:
-            modules.pricingService as unknown as IPricingModuleService,
-        });
+      const products = await remoteQuery(productsQuery);
 
-        restaurant.products = productsWithPrices;
-      }
+      const productsWithPrices = await getPricesByPriceSetId({
+        products,
+        currency_code: "usd",
+        pricingService: req.scope.resolve("pricingModuleService"),
+      });
+
+      restaurant.products = productsWithPrices;
     }
-
-    return res.status(200).json({ restaurants });
-  } catch (error) {
-    console.log({ message: error.message });
-    return res.status(500).json({ message: error.message });
   }
+
+  return res.status(200).json({ restaurants });
 }
