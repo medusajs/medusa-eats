@@ -82,7 +82,6 @@ export async function addToCart(
   if (!cartId) {
     cart = await createCart(
       {
-        sales_channel_id: "sc_01HYFTMPT6QGF9AKCGN62CTTEV",
         currency_code: "usd",
       },
       restaurantId

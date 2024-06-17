@@ -12,16 +12,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const restaurantQuery = remoteQueryObjectFromString({
     entryPoint: "restaurants",
-    fields: [
-      "id",
-      "handle",
-      "name",
-      "address",
-      "phone",
-      "email",
-      "image_url",
-      "is_open",
-    ],
+    fields: ["*"],
     variables: {
       filters: {
         id: restaurantId,

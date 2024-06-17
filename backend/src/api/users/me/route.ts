@@ -13,13 +13,13 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { user_id, user_type } = req.user as {
+  const { user_id, actor_type } = req.user as {
     user_id: string;
-    user_type: "restaurant" | "driver";
+    actor_type: "restaurant" | "driver";
   };
   let user = {} as RestaurantAdminDTO | DriverDTO | UserDTO;
 
-  if (user_type === "restaurant") {
+  if (actor_type === "restaurant") {
     const service = req.scope.resolve<IRestaurantModuleService>(
       "restaurantModuleService"
     );
@@ -27,7 +27,7 @@ export const GET = async (
     return res.json({ user });
   }
 
-  if (user_type === "driver") {
+  if (actor_type === "driver") {
     const service = req.scope.resolve<IDeliveryModuleService>(
       "deliveryModuleService"
     );

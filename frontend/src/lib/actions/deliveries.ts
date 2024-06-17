@@ -170,6 +170,8 @@ export async function acceptDelivery(
       }
     ).then((res) => res.json());
 
+    console.log({ delivery });
+
     console.log("Delivery accepted", deliveryId);
 
     revalidateTag("deliveries");

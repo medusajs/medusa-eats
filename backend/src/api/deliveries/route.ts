@@ -1,67 +1,87 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { ICartModuleService } from "@medusajs/types";
+import { remoteQueryObjectFromString, MedusaError } from "@medusajs/utils";
 import zod from "zod";
-import {
-  DeliveryItemDTO,
-  IDeliveryModuleService,
-} from "../../types/delivery/common";
-import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery";
+import { DeliveryItemDTO } from "../../types/delivery/common";
+import { handleDeliveryWorkflow } from "../../workflows/workflows/handle-delivery";
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
 });
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  console.log("POST /api/deliveries");
+  console.log(JSON.stringify(req.body));
+
   const validatedBody = schema.parse(req.body);
 
-  if (!validatedBody) {
-    return res.status(400).json({ message: "Missing delivery data" });
-  }
-
-  if (!validatedBody.cart_id) {
-    return res.status(400).json({ message: "Missing cart id" });
-  }
+  console.log({ validatedBody });
 
   try {
     const { result } = await handleDeliveryWorkflow(req.scope).run({
       input: {
-        delivery_input: {
-          cart_id: validatedBody.cart_id,
-        },
+        cart_id: validatedBody.cart_id,
       },
     });
 
+    console.log({ result });
+
     return res.status(200).json({ delivery: result });
   } catch (error) {
+    console.log({ error });
     return res.status(500).json({ message: error.message });
   }
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
-    "deliveryModuleService"
-  );
+  const remoteQuery = req.scope.resolve("remoteQuery");
 
   const filter = {};
+  let take = parseInt(req.query.take as string) || null;
+  let skip = parseInt(req.query.skip as string) || 0;
 
   for (const key in req.query) {
+    if (["take", "skip"].includes(key)) continue;
+
     filter[key] = req.query[key];
   }
 
   try {
-    const deliveries = await deliveryModuleService.listDeliveries(filter, {
-      take: 100,
+    const deliveryQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveries",
+      fields: ["*"],
+      variables: {
+        filter: JSON.stringify(filter),
+        take,
+        skip,
+      },
     });
 
-    if (filter.hasOwnProperty("driver_id")) {
-      const availableDeliveriesIds =
-        await deliveryModuleService.listDeliveryDrivers({
-          driver_id: filter["driver_id"],
-        });
+    const { rows: deliveries } = await remoteQuery(deliveryQuery);
 
-      const availableDeliveries = await deliveryModuleService.listDeliveries({
-        id: availableDeliveriesIds.map((d) => d.delivery_id),
+    if (filter.hasOwnProperty("driver_id")) {
+      const driverQuery = remoteQueryObjectFromString({
+        entryPoint: "deliveryDrivers",
+        fields: ["driver_id", "delivery_id"],
+        variables: {
+          filters: {
+            driver_id: filter["driver_id"],
+          },
+        },
       });
+
+      const availableDeliveriesIds = await remoteQuery(driverQuery);
+
+      const availableDeliveriesQuery = remoteQueryObjectFromString({
+        entryPoint: "deliveries",
+        fields: ["*"],
+        variables: {
+          filters: {
+            id: availableDeliveriesIds.map((d) => d.delivery_id),
+          },
+        },
+      });
+
+      const availableDeliveries = await remoteQuery(availableDeliveriesQuery);
 
       deliveries.push(...availableDeliveries);
     }
@@ -70,11 +90,18 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       const items = [] as DeliveryItemDTO[];
 
       if (delivery.cart_id) {
-        const cartService =
-          req.scope.resolve<ICartModuleService>("cartModuleService");
-        const cart = await cartService.retrieve(delivery.cart_id, {
-          relations: ["items"],
+        const cartQuery = remoteQueryObjectFromString({
+          entryPoint: "carts",
+          fields: ["id", "items.*"],
+          variables: {
+            filters: {
+              id: delivery.cart_id,
+            },
+          },
         });
+
+        const cart = await remoteQuery(cartQuery).then((res) => res[0]);
+
         items.push(...(cart.items as DeliveryItemDTO[]));
       }
 
@@ -83,7 +110,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
     return res.status(200).json({ deliveries });
   } catch (error) {
-    console.log({ error });
     return res.status(500).json({ message: error.message });
   }
 }

@@ -31,7 +31,7 @@ export async function getToken({
 }: {
   email: string;
   password: string;
-  actor_type: "customer" | "restaurant" | "driver";
+  actor_type: "restaurant" | "driver";
   provider: "emailpass";
 }): Promise<string> {
   console.log("Getting token", { email, password, actor_type, provider });

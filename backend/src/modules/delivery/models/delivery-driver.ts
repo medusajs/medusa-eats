@@ -1,10 +1,19 @@
-import { Entity, PrimaryKey } from "@mikro-orm/core"
+import { generateEntityId } from "@medusajs/utils";
+import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core";
 
 @Entity()
 export default class DeliveryDriver {
-  @PrimaryKey({ columnType: "text" })
-  delivery_id!: string
+  @Property({ columnType: "text" })
+  id!: string;
 
   @PrimaryKey({ columnType: "text" })
-  driver_id!: string
+  delivery_id!: string;
+
+  @PrimaryKey({ columnType: "text" })
+  driver_id!: string;
+
+  @BeforeCreate()
+  onCreate() {
+    this.id = generateEntityId(this.id, "deldriv");
+  }
 }

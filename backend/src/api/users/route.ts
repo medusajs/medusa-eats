@@ -7,7 +7,7 @@ import zod from "zod";
 import {
   CreateDriverInput,
   createUserWorkflow,
-} from "../../workflows/account/create-user";
+} from "../../workflows/workflows/create-user";
 
 const schema = zod
   .object({
@@ -17,7 +17,7 @@ const schema = zod
     phone: zod.string(),
     avatar_url: zod.string().optional(),
     restaurant_id: zod.string().optional(),
-    actor_type: zod.ZodEnum.create(["restaurant", "driver", "customer"]),
+    actor_type: zod.ZodEnum.create(["restaurant", "driver"]),
   })
   .required({
     email: true,
@@ -36,7 +36,7 @@ export const POST = async (
   const { auth_identity_id } = req.auth_context;
 
   const validatedBody = schema.parse(req.body) as CreateDriverInput & {
-    actor_type: "restaurant" | "driver" | "customer";
+    actor_type: "restaurant" | "driver";
   };
 
   console.log({ validatedBody });

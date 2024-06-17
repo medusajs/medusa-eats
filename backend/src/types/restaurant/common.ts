@@ -13,21 +13,21 @@ export interface IRestaurantModuleService extends IModuleService {
     options?: any
   ): Promise<RestaurantAdminDTO[]>;
   listRestaurantProducts(filter: any): Promise<RestaurantProductDTO[]>;
-  createRestaurant(data: CreateRestaurantDTO): Promise<RestaurantDTO>;
-  createRestaurantAdmin(
+  create(data: CreateRestaurantDTO): Promise<RestaurantDTO>;
+  createRestaurantAdmins(
     data: CreateRestaurantAdminDTO
   ): Promise<RestaurantAdminDTO>;
   retrieveRestaurant(restaurantId: string): Promise<RestaurantDTO>;
   retrieveRestaurantAdmin(adminId: string): Promise<RestaurantAdminDTO>;
-  updateRestaurant(
+  updateRestaurants(
     restaurantId: string,
     data: UpdateRestaurantDTO
   ): Promise<RestaurantDTO>;
-  updateRestaurantAdmin(
+  updateRestaurantAdmins(
     adminId: string,
     data: Partial<RestaurantAdminDTO>
   ): Promise<RestaurantAdminDTO>;
-  deleteRestaurant(restaurantId: string): Promise<void>;
+  deleteRestaurants(restaurantId: string): Promise<void>;
   deleteRestaurantAdmin(adminId: string): Promise<void>;
   removeProductFromRestaurant(data: RestaurantProductDTO): Promise<void>;
 }

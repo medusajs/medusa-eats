@@ -14,7 +14,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   console.log({ productIds });
 
   const query = remoteQueryObjectFromString({
-    entryPoint: "product",
+    entryPoint: "products",
     fields: ["id", "thumbnail"],
     variables: {
       filters: {

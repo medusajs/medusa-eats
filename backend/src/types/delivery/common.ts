@@ -27,24 +27,29 @@ export interface IDeliveryModuleService extends IModuleService {
   listDrivers(filter?: any, options?: any): Promise<DriverDTO[]>;
   listDeliveries(filter?: any, options?: any): Promise<DeliveryDTO[]>;
   listDeliveryDrivers(filter: any): Promise<DeliveryDriverDTO[]>;
-  createDelivery(data: CreateDeliveryDTO): Promise<Delivery>;
-  createDriver(data: CreateDriverDTO): Promise<DriverDTO>;
-  createDeliveryDriver(
-    deliveryId: string,
-    driverId: string
-  ): Promise<DeliveryDriverDTO>;
+  create(data: CreateDeliveryDTO): Promise<DeliveryDTO>;
+  createDrivers(data: CreateDriverDTO | CreateDriverDTO[]): Promise<DriverDTO>;
+  createDeliveryDrivers(
+    data: {
+      delivery_id: string;
+      driver_id: string;
+    }[]
+  ): Promise<DeliveryDriverDTO[]>;
   retrieve(deliveryId: string): Promise<DeliveryDTO>;
   retrieveDelivery(deliveryId: string): Promise<DeliveryDTO>;
   retrieveDriver(driverId: string): Promise<DriverDTO>;
-  updateDelivery(
-    deliveryId: string,
-    data: UpdateDeliveryDTO
-  ): Promise<DeliveryDTO>;
+  update(data: UpdateDeliveryDTO[]): Promise<DeliveryDTO[]>;
   updateDriver(driverId: string, data: UpdateDriverDTO): Promise<DriverDTO>;
   delete(deliveryId: string): Promise<void>;
   deleteDelivery(deliveryId: string): Promise<void>;
   deleteDriver(driverId: string): Promise<void>;
   deleteDeliveryDriver(data: Partial<CreateDeliveryDriverDTO>): Promise<void>;
+  softDeleteDeliveryDrivers(
+    data: Partial<CreateDeliveryDriverDTO>
+  ): Promise<{ id: string }[]>;
+  restoreDeliveryDrivers(
+    data: Partial<UpdateDeliveryDTO>[]
+  ): Promise<{ id: string }[]>;
 }
 
 export interface DeliveryDTO {

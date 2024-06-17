@@ -7,10 +7,8 @@ import {
   DeliveryStatus,
   IDeliveryModuleService,
 } from "../../../../types/delivery/common";
-import {
-  handleDeliveryWorkflowId,
-  notifyRestaurantStepId,
-} from "../../../../workflows/delivery/handle-delivery";
+import { handleDeliveryWorkflowId } from "../../../../workflows/workflows/handle-delivery";
+import { notifyRestaurantStepId } from "../../../../workflows/steps/notify-restaurant";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const deliveryId = req.params.id;
@@ -28,7 +26,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   );
 
   try {
-    const delivery = await deliveryModuleService.updateDelivery(deliveryId, {
+    const delivery = await deliveryModuleService.update(deliveryId, {
       delivery_status: DeliveryStatus.RESTAURANT_DECLINED,
     });
 

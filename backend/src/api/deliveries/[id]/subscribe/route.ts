@@ -5,7 +5,7 @@ import {
   IWorkflowEngineService,
 } from "@medusajs/types";
 import { IDeliveryModuleService } from "../../../../types/delivery/common";
-import { handleDeliveryWorkflowId } from "../../../../workflows/delivery/handle-delivery";
+import { handleDeliveryWorkflowId } from "../../../../workflows/workflows/handle-delivery";
 import { AuthUserScopedMedusaRequest } from "../../../types";
 
 type RestaurantNotificationData = {

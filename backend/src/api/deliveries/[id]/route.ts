@@ -53,10 +53,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   }
 
   try {
-    const delivery = await deliveryModuleService.updateDelivery(
-      deliveryId,
-      updateData
-    );
+    const delivery = await deliveryModuleService.update(deliveryId, updateData);
 
     return res.status(200).json({ delivery });
   } catch (error) {

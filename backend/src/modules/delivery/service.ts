@@ -48,6 +48,10 @@ export default class DeliveryModuleService<
     this.deliveryDriverService_ = deliveryDriverService;
   }
 
+  createDrivers(data: DriverDTO | DriverDTO[]): Promise<DriverDTO> {
+    return this.driverService_.create(data);
+  }
+
   __joinerConfig(): ModuleJoinerConfig {
     return {
       serviceName: "deliveryModuleService",

@@ -16,7 +16,7 @@ export interface CreateRestaurantAdminDTO {
   email: string;
   first_name: string;
   last_name: string;
-  restaurant: RestaurantDTO;
+  restaurant_id: string;
 }
 
 export interface CreateAdminInviteDTO {

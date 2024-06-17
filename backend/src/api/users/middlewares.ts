@@ -12,7 +12,7 @@ const isAllowed = (req, res, next) => {
 
   if (restaurant_id || driver_id) {
     const user = {
-      user_type: restaurant_id ? "restaurant" : "driver",
+      actor_type: restaurant_id ? "restaurant" : "driver",
       user_id: restaurant_id || driver_id,
     };
 

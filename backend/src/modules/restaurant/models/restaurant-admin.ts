@@ -19,8 +19,8 @@ export default class RestaurantAdmin {
   @Property({ columnType: "text" })
   last_name!: string;
 
-  @ManyToOne(() => Restaurant)
-  restaurant!: Restaurant;
+  @Property({ columnType: "text" })
+  restaurant_id!: string;
 
   @Property({ columnType: "text" })
   email!: string;
