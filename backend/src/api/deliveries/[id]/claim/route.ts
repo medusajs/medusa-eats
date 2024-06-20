@@ -1,7 +1,7 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError } from "@medusajs/utils";
-import { claimDeliveryWorkflow } from "../../../../workflows/workflows/claim-delivery";
 import zod from "zod";
+import { claimDeliveryWorkflow } from "../../../../workflows/delivery/workflows";
 
 const schema = zod.object({
   driver_id: zod.string(),

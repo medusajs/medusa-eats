@@ -4,6 +4,7 @@ import {
   BeforeCreate,
   Entity,
   Enum,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core";
@@ -49,6 +50,7 @@ export default class Delivery {
   updated_at = new Date();
 
   @BeforeCreate()
+  @OnInit()
   onCreate() {
     this.id = generateEntityId(this.id, "del");
   }

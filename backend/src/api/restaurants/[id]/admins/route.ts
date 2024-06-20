@@ -13,7 +13,7 @@ import {
 import jwt from "jsonwebtoken";
 import zod from "zod";
 import { IRestaurantModuleService } from "../../../../types/restaurant/common";
-import { createUserWorkflow } from "../../../../workflows/workflows/create-user";
+import { createUserWorkflow } from "../../../../workflows/user/workflows/create-user";
 
 const schema = zod
   .object({

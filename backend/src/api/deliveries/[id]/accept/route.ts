@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError } from "@medusajs/utils";
 import { DeliveryStatus } from "../../../../types/delivery/common";
-import { notifyRestaurantStepId } from "../../../../workflows/steps/notify-restaurant";
-import { updateDeliveryWorkflow } from "../../../../workflows/workflows/update-delivery";
+import { notifyRestaurantStepId } from "../../../../workflows/delivery/steps";
+import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows";
 
 const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000; // 30 minutes
 

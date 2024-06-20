@@ -24,5 +24,7 @@ export async function listDeliveries(
     },
   }).then((res) => res.json());
 
+  console.log({ deliveries });
+
   return deliveries;
 }

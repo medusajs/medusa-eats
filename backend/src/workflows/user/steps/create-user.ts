@@ -1,10 +1,13 @@
 import { createStep, StepResponse } from "@medusajs/workflows-sdk";
 import { MedusaError } from "@medusajs/utils";
-import { DriverDTO, IDeliveryModuleService } from "../../types/delivery/common";
+import {
+  DriverDTO,
+  IDeliveryModuleService,
+} from "../../../types/delivery/common";
 import {
   IRestaurantModuleService,
   RestaurantAdminDTO,
-} from "../../types/restaurant/common";
+} from "../../../types/restaurant/common";
 import {
   CreateRestaurantAdminInput,
   CreateDriverInput,
@@ -85,7 +88,7 @@ export const createUserStep = createStep(
         "deliveryModuleService"
       );
 
-      return service.deleteDriver(id);
+      return service.deleteDrivers(id);
     }
   }
 );

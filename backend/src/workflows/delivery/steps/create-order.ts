@@ -2,7 +2,7 @@ import { CreateOrderShippingMethodDTO } from "@medusajs/order";
 import { IOrderModuleService } from "@medusajs/types";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { IDeliveryModuleService } from "../../types/delivery/common";
+import { IDeliveryModuleService } from "../../../types/delivery/common";
 
 export const createOrderStepId = "create-order-step";
 export const createOrderStep = createStep(
@@ -20,18 +20,19 @@ export const createOrderStep = createStep(
       fields: ["id", "cart_id", "delivery_status", "driver_id"],
     });
 
-    const delivery = await remoteQuery(deliveryQuery);
+    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
 
     const cartQuery = remoteQueryObjectFromString({
       entryPoint: "carts",
+      fields: ["*", "items.*"],
       variables: {
-        id: delivery.cart_id,
-        relations: ["items"],
+        filters: {
+          id: delivery.cart_id,
+        },
       },
-      fields: ["id", "metadata"],
     });
 
-    const cart = await remoteQuery(cartQuery);
+    const cart = await remoteQuery(cartQuery).then((res) => res[0]);
 
     const orderModuleService =
       container.resolve<IOrderModuleService>("orderModuleService");
@@ -62,12 +63,35 @@ export const createOrderStep = createStep(
       },
     ]);
 
-    return new StepResponse(order, order?.id);
+    return new StepResponse(order, {
+      orderId: order.id,
+      deliveryId,
+    });
   },
-  (orderId: string, { container }) => {
-    const service =
+  async (
+    {
+      orderId,
+      deliveryId,
+    }: {
+      orderId: string;
+      deliveryId: string;
+    },
+    { container }
+  ) => {
+    const deliveryService = container.resolve<IDeliveryModuleService>(
+      "deliveryModuleService"
+    );
+
+    await deliveryService.update([
+      {
+        id: deliveryId,
+        order_id: null,
+      },
+    ]);
+
+    const orderService =
       container.resolve<IOrderModuleService>("orderModuleService");
 
-    return service.delete(orderId);
+    await orderService.delete(orderId);
   }
 );

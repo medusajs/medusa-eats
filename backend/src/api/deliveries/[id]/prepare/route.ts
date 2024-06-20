@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError } from "@medusajs/utils";
 import { DeliveryStatus } from "../../../../types/delivery/common";
-import { awaitStartPreparationStepId } from "../../../../workflows/steps/await-start-preparation";
-import { updateDeliveryWorkflow } from "../../../../workflows/workflows/update-delivery";
+import { awaitStartPreparationStepId } from "../../../../workflows/delivery/steps";
+import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { id } = req.params;

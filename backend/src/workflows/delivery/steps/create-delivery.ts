@@ -1,6 +1,6 @@
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { IDeliveryModuleService } from "../../types/delivery/common";
+import { IDeliveryModuleService } from "../../../types/delivery/common";
 
 export type CreateDeliveryStepInput = {
   cart_id: string;
@@ -10,8 +10,6 @@ export const createDeliveryStepId = "create-delivery-step";
 export const createDeliveryStep = createStep(
   createDeliveryStepId,
   async function (input: CreateDeliveryStepInput, { container, context }) {
-    console.log("createDeliveryStep");
-    console.log({ input });
     const remoteQuery = container.resolve("remoteQuery");
 
     const cartQuery = remoteQueryObjectFromString({
@@ -23,8 +21,6 @@ export const createDeliveryStep = createStep(
     });
 
     const cart = await remoteQuery(cartQuery).then((res) => res[0]);
-
-    console.log({ cart });
 
     const restaurant_id = cart.metadata?.restaurant_id as string;
 
@@ -43,8 +39,6 @@ export const createDeliveryStep = createStep(
     );
 
     const delivery = await service.create(data);
-
-    console.log({ delivery });
 
     return new StepResponse(delivery, delivery.id);
   },

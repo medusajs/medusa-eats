@@ -1,5 +1,5 @@
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk";
-import { Delivery } from "../../modules/delivery/models";
+import { Delivery } from "../../../modules/delivery/models";
 import {
   awaitDeliveryStep,
   awaitPickUpStep,
@@ -10,7 +10,7 @@ import {
   createOrderStep,
   findDriverStep,
   notifyRestaurantStep,
-} from "../steps";
+} from "../../util";
 
 type WorkflowInput = {
   cart_id: string;

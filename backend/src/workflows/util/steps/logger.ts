@@ -1,4 +1,4 @@
-import { createStep } from "@medusajs/workflows-sdk";
+import { createStep, StepResponse } from "@medusajs/workflows-sdk";
 
 export const loggerStepId = "logger-step";
 export const loggerStep = createStep(
@@ -13,5 +13,10 @@ export const loggerStep = createStep(
   ) {
     const logger = container.resolve("logger");
     logger.info({ message });
+    return new StepResponse(message, message);
+  },
+  function (message, { container }) {
+    const logger = container.resolve("logger");
+    logger.info({ message: "Compensating...", original_message: message });
   }
 );

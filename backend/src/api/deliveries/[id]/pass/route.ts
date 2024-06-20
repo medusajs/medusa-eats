@@ -1,6 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import zod from "zod";
-import { IDeliveryModuleService } from "../../../../types/delivery/common";
+import { passDeliveryWorkflow } from "../../../../workflows/delivery/workflows";
 
 const schema = zod.object({
   driver_id: zod.string(),
@@ -9,24 +9,14 @@ const schema = zod.object({
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = schema.parse(req.body);
 
-  if (!validatedBody.driver_id) {
-    return res.status(400).json({ message: "Missing driver id" });
-  }
-
   const deliveryId = req.params.id;
 
-  if (!deliveryId) {
-    return res.status(400).json({ message: "Missing delivery id" });
-  }
-
-  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
-    "deliveryModuleService"
-  );
-
   try {
-    await deliveryModuleService.deleteDeliveryDriver({
-      delivery_id: deliveryId,
-      driver_id: validatedBody.driver_id,
+    await passDeliveryWorkflow(req.scope).run({
+      input: {
+        driver_id: validatedBody.driver_id,
+        delivery_id: deliveryId,
+      },
     });
 
     return res.status(200).json({ message: "Driver declined delivery" });

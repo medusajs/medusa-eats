@@ -1,11 +1,8 @@
 import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk";
-import { DeliveryDTO, DeliveryStatus } from "../../types/delivery/common";
-import {
-  setStepSuccessStep,
-  updateDeliveryStep,
-  deleteDeliveryDriversStep,
-} from "../steps";
-import { findDriverStepStepId } from "../steps/find-driver";
+import { DeliveryDTO, DeliveryStatus } from "../../../types/delivery/common";
+import { setStepSuccessStep } from "../../util/steps";
+import { updateDeliveryStep, deleteDeliveryDriversStep } from "../steps";
+import { findDriverStepId } from "../steps/find-driver";
 
 export type WorkflowInput = {
   driver_id: string;
@@ -29,7 +26,7 @@ export const claimDeliveryWorkflow = createWorkflow<WorkflowInput, DeliveryDTO>(
 
     // Set the step success for the find driver step
     setStepSuccessStep({
-      stepId: findDriverStepStepId,
+      stepId: findDriverStepId,
       updatedDelivery: claimedDelivery,
     });
 

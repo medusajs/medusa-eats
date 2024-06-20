@@ -2,19 +2,19 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { IWorkflowEngineService } from "@medusajs/types";
 import { TransactionHandlerType } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { handleDeliveryWorkflowId } from "../../workflows/workflows/handle-delivery";
+import { handleDeliveryWorkflowId } from "../../delivery/workflows/handle-delivery";
 import { DeliveryDTO } from "src/types/delivery/common";
 
-type SetStepSuccessStepInput = {
+type SetStepFailedtepInput = {
   stepId?: string;
   updatedDelivery: DeliveryDTO;
 };
 
-export const setStepSuccessStepId = "set-step-success-step";
-export const setStepSuccessStep = createStep(
-  setStepSuccessStepId,
+export const setStepFailedStepId = "set-step-success-step";
+export const setStepFailedStep = createStep(
+  setStepFailedStepId,
   async function (
-    { stepId, updatedDelivery }: SetStepSuccessStepInput,
+    { stepId, updatedDelivery }: SetStepFailedtepInput,
     { container }
   ) {
     if (!stepId) {
@@ -25,7 +25,7 @@ export const setStepSuccessStep = createStep(
       ModuleRegistrationName.WORKFLOW_ENGINE
     );
 
-    await engineService.setStepSuccess({
+    await engineService.setStepFailure({
       idempotencyKey: {
         action: TransactionHandlerType.INVOKE,
         transactionId: updatedDelivery.transaction_id,

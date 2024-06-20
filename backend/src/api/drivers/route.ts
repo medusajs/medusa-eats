@@ -2,6 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import zod from "zod";
 import { IDeliveryModuleService } from "../../types/delivery/common";
 import { CreateDriverDTO } from "../../types/delivery/mutations";
+import { remoteQueryObjectFromString } from "@medusajs/utils";
 
 const schema = zod
   .object({
@@ -30,7 +31,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   );
 
   try {
-    const driver = await deliveryModuleService.createDriver(validatedBody);
+    const driver = await deliveryModuleService.createDrivers(validatedBody);
 
     return res.status(200).json({ driver: driver });
   } catch (error) {
@@ -39,12 +40,19 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
-    "deliveryModuleService"
-  );
-
+  const remoteQuery = req.scope.resolve("remoteQuery");
   try {
-    const drivers = await deliveryModuleService.listDrivers();
+    const driverQuery = remoteQueryObjectFromString({
+      entryPoint: "drivers",
+      fields: ["*"],
+      variables: {
+        take: null,
+        skip: 0,
+      },
+    });
+
+    const { rows: drivers } = await remoteQuery(driverQuery);
+
     return res.status(200).json({ drivers });
   } catch (error) {
     return res.status(500).json({ message: error.message });

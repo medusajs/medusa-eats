@@ -19,7 +19,7 @@ export const notifyRestaurantStep = createStep(
       fields: ["id", "restaurant_id"],
     });
 
-    const delivery = await remoteQuery(deliveryQuery);
+    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
 
     const { restaurant_id } = delivery;
 
