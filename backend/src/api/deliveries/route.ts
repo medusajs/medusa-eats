@@ -11,18 +11,13 @@ const schema = zod.object({
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = schema.parse(req.body);
 
-  try {
-    const { transaction } = await handleDeliveryWorkflow(req.scope).run({
-      input: {
-        cart_id: validatedBody.cart_id,
-      },
-    });
+  const { transaction } = await handleDeliveryWorkflow(req.scope).run({
+    input: {
+      cart_id: validatedBody.cart_id,
+    },
+  });
 
-    return res.status(200).json({ message: "Delivery created", transaction });
-  } catch (error) {
-    console.log({ error });
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ message: "Delivery created", transaction });
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
@@ -38,72 +33,68 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     filters[key] = req.query[key];
   }
 
-  try {
-    const deliveryQuery = remoteQueryObjectFromString({
-      entryPoint: "deliveries",
-      fields: ["*"],
+  const deliveryQuery = remoteQueryObjectFromString({
+    entryPoint: "deliveries",
+    fields: ["*"],
+    variables: {
+      filters,
+      take,
+      skip,
+    },
+  });
+
+  const { rows: deliveries } = await remoteQuery(deliveryQuery);
+
+  if (filters.hasOwnProperty("driver_id")) {
+    const driverQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveryDrivers",
+      fields: ["driver_id", "delivery_id"],
       variables: {
-        filters,
-        take,
-        skip,
+        filters: {
+          deleted_at: null,
+          driver_id: filters["driver_id"],
+        },
       },
     });
 
-    const { rows: deliveries } = await remoteQuery(deliveryQuery);
+    const availableDeliveriesIds = await remoteQuery(driverQuery);
 
-    if (filters.hasOwnProperty("driver_id")) {
-      const driverQuery = remoteQueryObjectFromString({
-        entryPoint: "deliveryDrivers",
-        fields: ["driver_id", "delivery_id"],
-        variables: {
-          filters: {
-            deleted_at: null,
-            driver_id: filters["driver_id"],
-          },
+    const availableDeliveriesQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveries",
+      fields: ["*"],
+      variables: {
+        filters: {
+          id: availableDeliveriesIds.map((d) => d.delivery_id),
         },
-      });
+      },
+    });
 
-      const availableDeliveriesIds = await remoteQuery(driverQuery);
+    const availableDeliveries = await remoteQuery(availableDeliveriesQuery);
 
-      const availableDeliveriesQuery = remoteQueryObjectFromString({
-        entryPoint: "deliveries",
-        fields: ["*"],
-        variables: {
-          filters: {
-            id: availableDeliveriesIds.map((d) => d.delivery_id),
-          },
-        },
-      });
-
-      const availableDeliveries = await remoteQuery(availableDeliveriesQuery);
-
-      deliveries.push(...availableDeliveries);
-    }
-
-    for (const delivery of deliveries) {
-      const items = [] as DeliveryItemDTO[];
-
-      if (delivery.cart_id) {
-        const cartQuery = remoteQueryObjectFromString({
-          entryPoint: "carts",
-          fields: ["id", "items.*"],
-          variables: {
-            filters: {
-              id: delivery.cart_id,
-            },
-          },
-        });
-
-        const cart = await remoteQuery(cartQuery).then((res) => res[0]);
-
-        items.push(...(cart.items as DeliveryItemDTO[]));
-      }
-
-      delivery.items = items;
-    }
-
-    return res.status(200).json({ deliveries });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
+    deliveries.push(...availableDeliveries);
   }
+
+  for (const delivery of deliveries) {
+    const items = [] as DeliveryItemDTO[];
+
+    if (delivery.cart_id) {
+      const cartQuery = remoteQueryObjectFromString({
+        entryPoint: "carts",
+        fields: ["id", "items.*"],
+        variables: {
+          filters: {
+            id: delivery.cart_id,
+          },
+        },
+      });
+
+      const cart = await remoteQuery(cartQuery).then((res) => res[0]);
+
+      items.push(...(cart.items as DeliveryItemDTO[]));
+    }
+
+    delivery.items = items;
+  }
+
+  return res.status(200).json({ deliveries });
 }

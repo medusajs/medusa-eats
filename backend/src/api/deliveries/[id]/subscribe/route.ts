@@ -124,7 +124,6 @@ export const GET = async (
       "notify.drivers",
       async (data: DriverNotificationData) => {
         if (!data.drivers.includes(driverId)) {
-          console.log("Driver not included");
           return;
         }
 
@@ -139,7 +138,6 @@ export const GET = async (
         });
 
         const delivery = await remoteQuery(deliveryQuery).then((r) => r[0]);
-        console.log("Delivery", delivery);
 
         await workflowEngine.subscribe({
           workflowId: handleDeliveryWorkflowId,

@@ -1,9 +1,7 @@
 "use server";
 
 import { retrieveUser } from "@frontend/lib/data";
-//@ts-ignore
-import { CreateCartDTO } from "@medusajs/cart";
-import { CartDTO } from "@medusajs/types";
+import { CartDTO, CreateCartDTO } from "@medusajs/types";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -32,12 +30,7 @@ export async function createCart(
       next: {
         tags: ["cart"],
       },
-    })
-      .then((res) => res.json())
-      .catch((error) => {
-        console.log("Error from createCart");
-        console.log(error);
-      });
+    }).then((res) => res.json());
 
     cart = cartResponse.cart;
 
@@ -52,12 +45,7 @@ export async function createCart(
           cart_id: cart.id,
         }),
       }
-    )
-      .then((res) => res.json())
-      .catch((error) => {
-        console.log("Error from createCart");
-        console.log(error);
-      });
+    ).then((res) => res.json());
 
     cart = cartResponse.cart;
 
@@ -66,16 +54,15 @@ export async function createCart(
     revalidateTag("cart");
 
     return cart as CartDTO;
-  } catch (error) {
-    console.log("Error from createCart");
-    console.log(error);
+  } catch (e) {
+    throw e;
   }
 }
 
 export async function addToCart(
   variantId: string,
   restaurantId: string
-): Promise<CartDTO | undefined> {
+): Promise<CartDTO | { message: string }> {
   let cartId = cookies().get("_medusa_cart_id")?.value;
   let cart;
 
@@ -91,7 +78,7 @@ export async function addToCart(
   }
 
   if (!cartId) {
-    return;
+    return { message: "Error creating cart" };
   }
 
   try {
@@ -107,23 +94,19 @@ export async function addToCart(
       next: {
         tags: ["cart"],
       },
-    })
-      .then((res) => res.json())
-      .catch((error) => {
-        console.log("Error from addToCart");
-        console.log(error);
-      });
+    }).then((res) => res.json());
 
     revalidateTag("cart");
+
     return cart;
   } catch (error) {
-    console.log(error);
+    return { message: "Error adding item to cart" };
   }
 }
 
 export async function removeItemFromCart(
   lineItemId: string
-): Promise<CartDTO | undefined> {
+): Promise<CartDTO | { message: string }> {
   try {
     const cartId = cookies().get("_medusa_cart_id")?.value;
 
@@ -135,16 +118,11 @@ export async function removeItemFromCart(
           tags: ["cart"],
         },
       }
-    )
-      .then((res) => res.json())
-      .catch((error) => {
-        console.log("Error from removeItemFromCart");
-        console.log(error);
-      });
+    ).then((res) => res.json());
 
     revalidateTag("cart");
     return cart;
   } catch (error) {
-    console.log(error);
+    return { message: "Error removing item from cart" };
   }
 }

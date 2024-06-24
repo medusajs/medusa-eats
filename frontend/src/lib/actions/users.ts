@@ -10,6 +10,7 @@ import {
 } from "../../lib/data/sessions";
 import { CreateDriverDTO } from "@backend/src/types/delivery/mutations";
 import { CreateRestaurantAdminDTO } from "@backend/src/types/restaurant/mutations";
+import { JWTPayload } from "jose";
 
 const BACKEND_URL = "http://localhost:9000";
 
@@ -61,7 +62,6 @@ export async function signup(prevState: FormState, data: FormData) {
       actor_type,
       provider: "emailpass",
     }).catch((error) => {
-      console.error(error);
       throw new Error("Error creating auth user");
     });
 
@@ -83,7 +83,6 @@ export async function signup(prevState: FormState, data: FormData) {
 
     const { user, token: newToken } = await createUser(createUserData).catch(
       (error) => {
-        console.error(error);
         throw new Error("Error creating user");
       }
     );
@@ -91,7 +90,6 @@ export async function signup(prevState: FormState, data: FormData) {
     createSession(newToken);
     revalidateTag("user");
   } catch (error) {
-    console.error(error);
     return {
       message: "Error creating user",
     };
@@ -120,13 +118,12 @@ export async function login(prevState: FormState, data: FormData) {
 
     revalidateTag("user");
   } catch (error) {
-    console.error(error);
     return {
       message: "Invalid email or password",
     };
   }
 
-  const payload = await decrypt(token!);
+  const payload = (await decrypt(token!)) as JWTPayload;
 
   redirecter(payload?.actor_type as "restaurant" | "driver");
 
@@ -160,8 +157,6 @@ export async function createAuthUser({
     }
   ).then((res) => res.json());
 
-  console.log({ token_from_createAuthUser: token });
-
   return token;
 }
 
@@ -173,8 +168,6 @@ export type CreateUserType = (CreateDriverDTO | CreateRestaurantAdminDTO) & {
 
 export async function createUser(input: CreateUserType) {
   const { token, ...rest } = input;
-
-  console.log({ rest });
 
   const res = await fetch(`${BACKEND_URL}/users`, {
     method: "POST",
@@ -189,7 +182,6 @@ export async function createUser(input: CreateUserType) {
   })
     .then((res) => res.json())
     .catch((error) => {
-      console.log({ error });
       throw new Error("Error creating user");
     });
 

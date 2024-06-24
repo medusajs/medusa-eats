@@ -1,7 +1,6 @@
 import { createStep, StepResponse } from "@medusajs/workflows-sdk";
 import { IDeliveryModuleService } from "src/types/delivery/common";
 import { UpdateDeliveryDTO } from "src/types/delivery/mutations";
-import { IProductModuleService } from "@medusajs/types";
 
 type UpdateDeliveryStepInput = {
   data: UpdateDeliveryDTO;
@@ -17,13 +16,7 @@ export const updateDeliveryStep = createStep(
 
     const delivery = await deliveryService
       .update([input.data])
-      .then((res) => res[0])
-      .catch((error) => {
-        console.log("Failed to update delivery", error);
-        throw error;
-      });
-
-    console.log("Updated delivery", delivery);
+      .then((res) => res[0]);
 
     return new StepResponse(delivery, delivery.id);
   }

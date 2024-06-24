@@ -15,7 +15,7 @@ export function CreateCategoryDrawer({
         <Button
           variant="secondary"
           size="large"
-          onClick={() => console.log("Create category")}
+          onClick={() => window.alert("Not implemented in this demo")}
         >
           <Plus />
           Create Category

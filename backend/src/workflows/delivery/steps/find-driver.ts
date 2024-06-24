@@ -11,47 +11,40 @@ export const findDriverStepId = "await-driver-response-step";
 export const findDriverStep = createStep<string, DriverDTO, string>(
   { name: findDriverStepId, async: true },
   async function (deliveryId: string, { container }) {
-    try {
-      const remoteQuery = container.resolve("remoteQuery");
+    const remoteQuery = container.resolve("remoteQuery");
 
-      const driversQuery = remoteQueryObjectFromString({
-        entryPoint: "drivers",
-        fields: ["id"],
-        variables: {
-          skip: 0,
-          take: 5,
-        },
-      });
+    const driversQuery = remoteQueryObjectFromString({
+      entryPoint: "drivers",
+      fields: ["id"],
+      variables: {
+        skip: 0,
+        take: 5,
+      },
+    });
 
-      const { rows: drivers } = await remoteQuery(driversQuery).catch(
-        (e) => []
-      );
+    const { rows: drivers } = await remoteQuery(driversQuery).catch((e) => []);
 
-      const idsToNotify = drivers.map((d: DriverDTO) => d.id);
+    const idsToNotify = drivers.map((d: DriverDTO) => d.id);
 
-      const createData = idsToNotify.map((driverId: string) => ({
-        delivery_id: deliveryId,
-        driver_id: driverId,
-      }));
+    const createData = idsToNotify.map((driverId: string) => ({
+      delivery_id: deliveryId,
+      driver_id: driverId,
+    }));
 
-      const deliveryService = container.resolve<IDeliveryModuleService>(
-        "deliveryModuleService"
-      );
+    const deliveryService = container.resolve<IDeliveryModuleService>(
+      "deliveryModuleService"
+    );
 
-      await deliveryService.createDeliveryDrivers(createData);
+    await deliveryService.createDeliveryDrivers(createData);
 
-      const eventBus = container.resolve<IEventBusModuleService>(
-        ModuleRegistrationName.EVENT_BUS
-      );
+    const eventBus = container.resolve<IEventBusModuleService>(
+      ModuleRegistrationName.EVENT_BUS
+    );
 
-      await eventBus.emit("notify.drivers", {
-        drivers: idsToNotify,
-        delivery_id: deliveryId,
-      });
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
+    await eventBus.emit("notify.drivers", {
+      drivers: idsToNotify,
+      delivery_id: deliveryId,
+    });
   },
   (input, { container }) => {
     const deliveryService = container.resolve<IDeliveryModuleService>(

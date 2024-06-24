@@ -11,17 +11,12 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
 
   const deliveryId = req.params.id;
 
-  try {
-    await passDeliveryWorkflow(req.scope).run({
-      input: {
-        driver_id: validatedBody.driver_id,
-        delivery_id: deliveryId,
-      },
-    });
+  await passDeliveryWorkflow(req.scope).run({
+    input: {
+      driver_id: validatedBody.driver_id,
+      delivery_id: deliveryId,
+    },
+  });
 
-    return res.status(200).json({ message: "Driver declined delivery" });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ message: "Driver declined delivery" });
 }

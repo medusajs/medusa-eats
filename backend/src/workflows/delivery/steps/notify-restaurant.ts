@@ -33,7 +33,8 @@ export const notifyRestaurantStep = createStep(
     });
   },
   function (input: string, { container }) {
-    // To do: Handle error
-    console.log("Error notifying restaurant");
+    const logger = container.resolve("logger");
+
+    logger.error("Failed to notify restaurant", { input });
   }
 );

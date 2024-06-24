@@ -135,7 +135,6 @@ export const GET = async (
       "notify.drivers",
       async (data: DriverNotificationData) => {
         if (!data.drivers.includes(driver_id)) {
-          console.log("Driver not included");
           return;
         }
 

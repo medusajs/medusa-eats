@@ -1,5 +1,5 @@
-import { createStep, StepResponse } from "@medusajs/workflows-sdk";
 import { MedusaError } from "@medusajs/utils";
+import { createStep, StepResponse } from "@medusajs/workflows-sdk";
 import {
   DriverDTO,
   IDeliveryModuleService,
@@ -9,8 +9,8 @@ import {
   RestaurantAdminDTO,
 } from "../../../types/restaurant/common";
 import {
-  CreateRestaurantAdminInput,
   CreateDriverInput,
+  CreateRestaurantAdminInput,
 } from "../workflows/create-user";
 
 type CreateUserStepInput = (CreateRestaurantAdminInput | CreateDriverInput) & {
@@ -61,8 +61,6 @@ export const createUserStep = createStep(
       const driver = await service.createDrivers(
         driverData as CreateDriverInput
       );
-
-      console.log("Driver created: " + JSON.stringify(driver));
 
       const compensationData = {
         id: driver.id,

@@ -11,8 +11,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const idsArray = productIds.split(",");
 
-  console.log({ productIds });
-
   const query = remoteQueryObjectFromString({
     entryPoint: "products",
     fields: ["id", "thumbnail"],
@@ -22,8 +20,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       },
     },
   });
-
-  console.log({ query: JSON.stringify(query, null, 2) });
 
   const products = await remoteQuery(query);
 

@@ -19,7 +19,6 @@ export default async function MenuPage() {
   const categoryProductMap = new Map();
 
   restaurant?.products?.forEach((product) => {
-    console.log("product", product);
     if (product.categories) {
       product.categories.forEach((category) => {
         if (categoryProductMap.has(category.id)) {
@@ -61,7 +60,6 @@ export default async function MenuPage() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {console.log("category", category)}
               {category.products?.map((product: ProductDTO) => {
                 const variants = product.variants as (ProductVariantDTO & {
                   price_set: any;

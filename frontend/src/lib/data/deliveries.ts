@@ -10,6 +10,7 @@ export async function retrieveDelivery(
       tags: ["deliveries"],
     },
   }).then((res) => res.json());
+
   return delivery;
 }
 
@@ -23,8 +24,6 @@ export async function listDeliveries(
       tags: ["deliveries"],
     },
   }).then((res) => res.json());
-
-  console.log({ deliveries });
 
   return deliveries;
 }

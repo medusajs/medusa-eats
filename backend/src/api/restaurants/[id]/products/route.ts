@@ -52,38 +52,33 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     "productModuleService"
   );
 
-  try {
-    // Create the product
-    const product: ProductDTO = await productModuleService.create(
-      productData as CreateProductDTO
-    );
+  // Create the product
+  const product: ProductDTO = await productModuleService.create(
+    productData as CreateProductDTO
+  );
 
-    // Create and link a price set to the product variant
-    const priceSet = await createVariantPriceSet({
-      container: req.scope,
-      variantId: product.variants[0].id,
-      prices: [
-        {
-          amount: price,
-          currency_code: "usd",
-        },
-      ],
-      rules: [],
+  // Create and link a price set to the product variant
+  const priceSet = await createVariantPriceSet({
+    container: req.scope,
+    variantId: product.variants[0].id,
+    prices: [
+      {
+        amount: price,
+        currency_code: "usd",
+      },
+    ],
+    rules: [],
+  });
+
+  // Add the product to the restaurant
+  const restaurantProduct =
+    await restaurantModuleService.addProductToRestaurant({
+      restaurant_id: restaurantId,
+      product_id: product.id,
     });
 
-    // Add the product to the restaurant
-    const restaurantProduct =
-      await restaurantModuleService.addProductToRestaurant({
-        restaurant_id: restaurantId,
-        product_id: product.id,
-      });
-
-    // Return the product
-    return res.status(200).json({ restaurant_product: restaurantProduct });
-  } catch (error) {
-    console.log("error", error);
-    return res.status(500).json({ message: error.message });
-  }
+  // Return the product
+  return res.status(200).json({ restaurant_product: restaurantProduct });
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
@@ -160,16 +155,12 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     "productModuleService"
   );
 
-  try {
-    await productModuleService.delete([validatedBody.product_id]);
+  await productModuleService.delete([validatedBody.product_id]);
 
-    await restaurantModuleService.removeProductFromRestaurant({
-      restaurant_id: restaurantId,
-      product_id: validatedBody.product_id,
-    });
+  await restaurantModuleService.removeProductFromRestaurant({
+    restaurant_id: restaurantId,
+    product_id: validatedBody.product_id,
+  });
 
-    return res.status(200);
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200);
 }

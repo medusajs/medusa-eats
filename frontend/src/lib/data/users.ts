@@ -34,7 +34,6 @@ export async function getToken({
   actor_type: "restaurant" | "driver";
   provider: "emailpass";
 }): Promise<string> {
-  console.log("Getting token", { email, password, actor_type, provider });
   const { token } = await fetch(
     `${BACKEND_URL}/auth/${actor_type}/${provider}`,
     {
