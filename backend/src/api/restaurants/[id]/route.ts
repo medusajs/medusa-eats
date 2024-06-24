@@ -1,84 +1,70 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { ProductModuleService } from "@medusajs/product"
-import { PricingModuleService } from "@medusajs/pricing"
-import RestaurantModuleService from "../../../modules/restaurant/service"
-import { getPricesByPriceSetId } from "../../../utils/get-prices-by-price-set-id"
-import { MedusaApp, Modules } from "@medusajs/modules-sdk"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils";
+import { getPricesByPriceSetId } from "../../../utils/get-prices-by-price-set-id";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const restaurantModuleService = req.scope.resolve<RestaurantModuleService>(
-    "restaurantModuleService"
-  )
-  const productModuleService = req.scope.resolve<ProductModuleService>(
-    "productModuleService"
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
 
-  const pricingModuleService = req.scope.resolve<PricingModuleService>(
-    "pricingModuleService"
-  )
+  const restaurantId = req.params.id;
 
-  const restaurantId = req.params.id
-
-  const { query, modules } = await MedusaApp({
-    modulesConfig: {
-      [Modules.PRODUCT]: true,
-      [Modules.PRICING]: true,
-    },
-    sharedResourcesConfig: {
-      database: { clientUrl: process.env.POSTGRES_URL },
-    },
-    injectedDependencies: {},
-  })
-
-  try {
-    const restaurant =
-      await restaurantModuleService.retrieveRestaurant(restaurantId)
-
-    const restaurantProducts =
-      await restaurantModuleService.listRestaurantProducts({
-        restaurant_id: restaurantId,
-      })
-
-    const filters = {
-      context: {
-        id: restaurantProducts.map((p) => p.product_id),
-        currency_code: "usd",
+  const restaurantQuery = remoteQueryObjectFromString({
+    entryPoint: "restaurants",
+    fields: ["*"],
+    variables: {
+      filters: {
+        id: restaurantId,
       },
-    }
+    },
+  });
 
-    const productsQuery = `#graphql
-        query($filters: Record, $id: [String], $currency_code: String, $region_id: String) {
-          products(filters: $filters) {
-            id
-            title
-            description
-            thumbnail
-            categories {
-              id
-              title
-            }
-            variants {
-              id
-              price_set {
-                id
-              }
-            }
-          }
-        }`
+  const restaurant = await remoteQuery(restaurantQuery).then((r) => r[0]);
 
-    const products = await query(productsQuery, filters)
+  const restaurantProductsQuery = remoteQueryObjectFromString({
+    entryPoint: "restaurantProducts",
+    fields: ["product_id"],
+    variables: {
+      filters: {
+        restaurant_id: restaurantId,
+      },
+    },
+  });
 
-    const pricedProducts = await getPricesByPriceSetId({
-      products,
-      currency_code: "usd",
-      pricingService: pricingModuleService,
-    })
+  const restaurantProducts = await remoteQuery(restaurantProductsQuery);
 
-    restaurant.products = pricedProducts
+  const productsQuery = remoteQueryObjectFromString({
+    entryPoint: "products",
+    fields: [
+      "id",
+      "title",
+      "description",
+      "thumbnail",
+      "categories",
+      "categories.id",
+      "categories.handle",
+      "variants",
+      "variants.id",
+      "variants.price_set",
+      "variants.price_set.id",
+    ],
+    variables: {
+      filters: {
+        id: restaurantProducts.map((p) => p.product_id),
+      },
+    },
+  });
 
-    return res.status(200).json({ restaurant })
-  } catch (error) {
-    console.log("error", error)
-    return res.status(500).json({ message: error.message })
-  }
+  const products = await remoteQuery(productsQuery);
+
+  const pricedProducts = await getPricesByPriceSetId({
+    products,
+    currency_code: "usd",
+    pricingService: req.scope.resolve("pricingModuleService"),
+  });
+
+  restaurant.products = pricedProducts;
+
+  return res.status(200).json({ restaurant });
 }

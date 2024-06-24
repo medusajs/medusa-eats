@@ -1,4 +1,4 @@
-import { jwtVerify } from "jose";
+import { JWTPayload, jwtVerify } from "jose";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import "server-only";
@@ -26,7 +26,6 @@ export function retrieveSession() {
   const token = cookies().get("_medusa_jwt")?.value;
 
   if (!token) {
-    console.log("No token found");
     return null;
   }
 
@@ -38,13 +37,15 @@ export function destroySession() {
   revalidateTag("user");
 }
 
-export async function decrypt(session: string | undefined = "") {
+export async function decrypt(
+  session: string | undefined = ""
+): Promise<JWTPayload | { message: string }> {
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
       algorithms: ["HS256"],
     });
     return payload;
   } catch (error) {
-    console.log("Failed to verify session");
+    return { message: "Error decrypting session" };
   }
 }

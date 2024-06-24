@@ -1,15 +1,19 @@
 "use server";
 
+import {
+  RestaurantDTO,
+  RestaurantProductDTO,
+} from "@backend/src/types/restaurant/common";
 import { retrieveSession } from "@frontend/lib/data/sessions";
 import { promises as fs } from "fs";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function setRestaurantStatus(
   restaurantId: string,
   status: boolean
-) {
+): Promise<RestaurantDTO | { message: string }> {
   try {
     const { restaurant } = await fetch(
       `${BACKEND_URL}/restaurants/${restaurantId}/status`,
@@ -25,23 +29,20 @@ export async function setRestaurantStatus(
       }
     ).then((res) => res.json());
 
-    console.log("Restaurant status updated", status);
-
     revalidateTag("restaurants");
     revalidatePath("/dashboard/driver");
     revalidatePath("/dashboard/restaurant");
 
     return restaurant;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error setting restaurant status" };
   }
 }
 
 export async function createProduct(
   prevState: any,
   createProductData: FormData
-) {
+): Promise<RestaurantProductDTO | { message: string }> {
   const token = retrieveSession();
   const restaurantId = createProductData.get("restaurant_id") as string;
   const image = createProductData.get("image") as File;
@@ -64,8 +65,6 @@ export async function createProduct(
     productData[key] = value;
   });
 
-  console.log("Creating product", productData);
-
   try {
     const { restaurant_product } = await fetch(
       `${BACKEND_URL}/restaurants/${restaurantId}/products`,
@@ -83,14 +82,11 @@ export async function createProduct(
       }
     ).then((res) => res.json());
 
-    console.log("Product created", restaurant_product);
-
     revalidateTag("products");
 
     return restaurant_product;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error creating product" };
   }
 }
 
@@ -113,11 +109,8 @@ export async function deleteProduct(productId: string, restaurantId: string) {
     revalidateTag("products");
     revalidateTag("restaurants");
 
-    console.log("Product deleted", productId);
-
     return true;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }

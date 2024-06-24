@@ -39,8 +39,6 @@ export default function RealtimeClient({
     source.onmessage = (message: Record<string, any>) => {
       const data = JSON.parse(message.data);
 
-      console.log("Realtime event", data);
-
       revalidate("deliveries");
       data.new && audio.play();
 

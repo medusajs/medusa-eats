@@ -20,11 +20,11 @@ export default async function RestaurantDashboardPage() {
     redirect("/login");
   }
 
-  if (!user.restaurant) {
+  if (!user.restaurant_id) {
     return notFound();
   }
 
-  const restaurantId = user.restaurant.id;
+  const restaurantId = user.restaurant_id;
   const restaurant = await retrieveRestaurant(restaurantId);
 
   const deliveries = await listDeliveries({

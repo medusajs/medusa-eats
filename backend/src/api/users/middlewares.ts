@@ -1,18 +1,12 @@
 import { MiddlewareRoute } from "@medusajs/medusa";
 import { authenticate } from "@medusajs/medusa/dist/utils";
 
-const logger = (req, res, next) => {
-  console.log("Request to /users/me");
-  console.log(req);
-  next();
-};
-
 const isAllowed = (req, res, next) => {
   const { restaurant_id, driver_id } = req.auth_context.app_metadata;
 
   if (restaurant_id || driver_id) {
     const user = {
-      user_type: restaurant_id ? "restaurant" : "driver",
+      actor_type: restaurant_id ? "restaurant" : "driver",
       user_id: restaurant_id || driver_id,
     };
 

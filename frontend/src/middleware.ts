@@ -19,10 +19,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (request.url.includes("/customer") && payload?.actor_type === "customer") {
-    return NextResponse.next();
-  }
-
   // Redirect to login page if not authenticated
   return NextResponse.redirect(new URL("/login", request.url));
 }

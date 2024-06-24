@@ -1,6 +1,6 @@
 import { retrieveSession } from "./sessions";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function retrieveUser() {
   const token = retrieveSession();
@@ -31,10 +31,9 @@ export async function getToken({
 }: {
   email: string;
   password: string;
-  actor_type: "customer" | "restaurant" | "driver";
+  actor_type: "restaurant" | "driver";
   provider: "emailpass";
 }): Promise<string> {
-  console.log("Getting token", { email, password, actor_type, provider });
   const { token } = await fetch(
     `${BACKEND_URL}/auth/${actor_type}/${provider}`,
     {

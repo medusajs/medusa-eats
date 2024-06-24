@@ -25,7 +25,6 @@ function Submit() {
 const userTypes = [
   { value: "driver", label: "Driver" },
   { value: "restaurant", label: "Restaurant" },
-  { value: "customer", label: "Customer" },
 ];
 
 export function SignupForm({

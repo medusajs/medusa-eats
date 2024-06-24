@@ -45,11 +45,7 @@ function CartItem({ item }: { item: Record<string, any> }) {
 
   const deleteItem = async (itemId: string) => {
     setDeleting(true);
-    try {
-      await removeItemFromCart(itemId);
-    } catch (error) {
-      console.error("Error deleting item", error);
-    }
+    await removeItemFromCart(itemId);
     setDeleting(false);
   };
 

@@ -1,50 +1,27 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { ModuleRegistrationName } from "@medusajs/modules-sdk";
-import { TransactionHandlerType } from "@medusajs/utils";
-import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk";
-import DeliveryModuleService from "../../../../modules/delivery/service";
-import {
-  awaitPreparationStepId,
-  handleDeliveryWorkflowId,
-} from "../../../../workflows/delivery/handle-delivery";
+import { MedusaError } from "@medusajs/utils";
 import { DeliveryStatus } from "../../../../types/delivery/common";
+import { awaitPreparationStepId } from "../../../../workflows/delivery/steps";
+import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryId = req.params.id;
+  const { id } = req.params;
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
-    "deliveryModuleService"
-  );
+  const data = {
+    id,
+    delivery_status: DeliveryStatus.READY_FOR_PICKUP,
+  };
 
-  const engineService = req.scope.resolve<IWorkflowEngineService>(
-    ModuleRegistrationName.WORKFLOW_ENGINE
-  );
-
-  try {
-    const updatedDelivery = await deliveryModuleService.updateDelivery(
-      req.params.id,
-      {
-        delivery_status: DeliveryStatus.READY_FOR_PICKUP,
-      }
-    );
-
-    console.log("Delivery is ready for pickup", deliveryId);
-
-    await engineService.setStepSuccess({
-      idempotencyKey: {
-        action: TransactionHandlerType.INVOKE,
-        transactionId: updatedDelivery.transaction_id,
-        stepId: awaitPreparationStepId,
-        workflowId: handleDeliveryWorkflowId,
+  const updatedDelivery = await updateDeliveryWorkflow(req.scope)
+    .run({
+      input: {
+        data,
+        stepIdToSucceed: awaitPreparationStepId,
       },
-      stepResponse: new StepResponse(updatedDelivery, updatedDelivery.id),
-      options: {
-        container: req.scope,
-      },
+    })
+    .catch((error) => {
+      return MedusaError.Types.UNEXPECTED_STATE;
     });
 
-    return res.status(200).json({ delivery: updatedDelivery });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ delivery: updatedDelivery });
 }

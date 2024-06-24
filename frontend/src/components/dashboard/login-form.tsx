@@ -41,7 +41,6 @@ export function LoginForm() {
               <Select.Value></Select.Value>
             </Select.Trigger>
             <Select.Content>
-              <Select.Item value="customer">Customer</Select.Item>
               <Select.Item value="restaurant">Restaurant</Select.Item>
               <Select.Item value="driver">Driver</Select.Item>
             </Select.Content>

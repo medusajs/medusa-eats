@@ -1,7 +1,8 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import DeliveryModuleService from "../../modules/delivery/service"
-import zod from "zod"
-import { CreateDriverDTO } from "src/types/delivery/mutations"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import zod from "zod";
+import { IDeliveryModuleService } from "../../types/delivery/common";
+import { CreateDriverDTO } from "../../types/delivery/mutations";
+import { remoteQueryObjectFromString } from "@medusajs/utils";
 
 const schema = zod
   .object({
@@ -16,37 +17,44 @@ const schema = zod
     last_name: true,
     email: true,
     phone: true,
-  })
+  });
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body) as CreateDriverDTO
+  const validatedBody = schema.parse(req.body) as CreateDriverDTO;
 
   if (!validatedBody) {
-    return res.status(400).json({ message: "Missing driver data" })
+    return res.status(400).json({ message: "Missing driver data" });
   }
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
+  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
     "deliveryModuleService"
-  )
+  );
 
   try {
-    const driver = await deliveryModuleService.createDriver(validatedBody)
+    const driver = await deliveryModuleService.createDrivers(validatedBody);
 
-    return res.status(200).json({ driver: driver })
+    return res.status(200).json({ driver: driver });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
-    "deliveryModuleService"
-  )
-
+  const remoteQuery = req.scope.resolve("remoteQuery");
   try {
-    const drivers = await deliveryModuleService.listDrivers()
-    return res.status(200).json({ drivers })
+    const driverQuery = remoteQueryObjectFromString({
+      entryPoint: "drivers",
+      fields: ["*"],
+      variables: {
+        take: null,
+        skip: 0,
+      },
+    });
+
+    const { rows: drivers } = await remoteQuery(driverQuery);
+
+    return res.status(200).json({ drivers });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }
