@@ -1,7 +1,7 @@
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function listCategories() {
-  const { categories } = await fetch(
+  const { product_categories } = await fetch(
     `${BACKEND_URL}/store/product-categories`,
     {
       next: {
@@ -10,5 +10,5 @@ export async function listCategories() {
     }
   ).then((res) => res.json());
 
-  return categories;
+  return product_categories;
 }

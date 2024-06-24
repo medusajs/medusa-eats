@@ -1,6 +1,6 @@
 import { CartDTO, CartLineItemDTO } from "@medusajs/types";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function retrieveCart(cartId: string) {
   const { cart } = (await fetch(`${BACKEND_URL}/store/carts/${cartId}`, {
@@ -58,6 +58,9 @@ export async function enrichLineItems(
   // Enrich line items with thumbn
   const enrichedItems = lineItems.map((item) => {
     const product = productThumbnail.find((p: any) => p.id === item.product_id);
+    if (!product) {
+      return item;
+    }
     item.thumbnail = product.thumbnail;
     return item;
   }) as CartLineItemDTO[];

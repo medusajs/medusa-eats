@@ -6,7 +6,7 @@ import {
   DeliveryStatus,
 } from "@backend/src/types/delivery/common";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function proceedDelivery(
   delivery: DeliveryDTO,
@@ -38,15 +38,13 @@ export async function proceedDelivery(
     return await completeDelivery(delivery.id);
   }
 
-  console.log("Invalid delivery status", delivery.delivery_status);
-
-  return null;
+  return { message: "Delivery is not in a state that can be proceeded" };
 }
 
 export async function claimDelivery(
   deliveryId: string,
   driverId: string
-): Promise<DeliveryDTO | null> {
+): Promise<DeliveryDTO | { message: string }> {
   try {
     const { delivery } = await fetch(
       `${BACKEND_URL}/deliveries/${deliveryId}/claim`,
@@ -62,21 +60,18 @@ export async function claimDelivery(
       }
     ).then((res) => res.json());
 
-    console.log("Delivery claimed by", delivery);
-
     revalidateTag("deliveries");
 
     return delivery;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error claiming delivery" };
   }
 }
 
 export async function passDelivery(
   deliveryId: string,
   driverId: string
-): Promise<string | null> {
+): Promise<{ message: string } | null> {
   try {
     await fetch(`${BACKEND_URL}/deliveries/${deliveryId}/pass`, {
       headers: {
@@ -93,16 +88,15 @@ export async function passDelivery(
 
     revalidateTag("deliveries");
 
-    return "Delivery passed";
+    return { message: "Delivery passed" };
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error passing delivery" };
   }
 }
 
 export async function pickUpDelivery(
   deliveryId: string
-): Promise<DeliveryDTO | null> {
+): Promise<DeliveryDTO | { message: string }> {
   try {
     const { delivery } = await fetch(
       `${BACKEND_URL}/deliveries/${deliveryId}/pick-up`,
@@ -119,18 +113,15 @@ export async function pickUpDelivery(
 
     revalidateTag("deliveries");
 
-    console.log("Order is picked up", deliveryId);
-
     return delivery;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error picking up delivery" };
   }
 }
 
 export async function completeDelivery(
   deliveryId: string
-): Promise<DeliveryDTO | null> {
+): Promise<DeliveryDTO | { message: string }> {
   try {
     const { delivery } = await fetch(
       `${BACKEND_URL}/deliveries/${deliveryId}/complete`,
@@ -145,20 +136,17 @@ export async function completeDelivery(
       }
     ).then((res) => res.json());
 
-    console.log("Order delivered at ", delivery);
-
     revalidateTag("deliveries");
 
     return delivery;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error completing delivery" };
   }
 }
 
 export async function acceptDelivery(
   deliveryId: string
-): Promise<DeliveryDTO | null> {
+): Promise<DeliveryDTO | { message: string }> {
   try {
     const { delivery } = await fetch(
       `${BACKEND_URL}/deliveries/${deliveryId}/accept`,
@@ -170,20 +158,17 @@ export async function acceptDelivery(
       }
     ).then((res) => res.json());
 
-    console.log("Delivery accepted", deliveryId);
-
     revalidateTag("deliveries");
 
     return delivery;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error accepting delivery" };
   }
 }
 
 export async function declineDelivery(
   deliveryId: string
-): Promise<DeliveryDTO | null> {
+): Promise<DeliveryDTO | { message: string }> {
   try {
     const { delivery } = await fetch(
       `${BACKEND_URL}/deliveries/${deliveryId}/decline`,
@@ -195,19 +180,17 @@ export async function declineDelivery(
       }
     ).then((res) => res.json());
 
-    console.log("Delivery declined", deliveryId);
     revalidateTag("deliveries");
 
     return delivery;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error declining delivery" };
   }
 }
 
 export async function prepareDelivery(
   deliveryId: string
-): Promise<DeliveryDTO | null> {
+): Promise<DeliveryDTO | { message: string }> {
   try {
     const { delivery } = await fetch(
       `${BACKEND_URL}/deliveries/${deliveryId}/prepare`,
@@ -221,18 +204,15 @@ export async function prepareDelivery(
 
     revalidateTag("deliveries");
 
-    console.log("Restarant is preparing order", deliveryId);
-
     return delivery;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error preparing delivery" };
   }
 }
 
 export async function preparationReady(
   deliveryId: string
-): Promise<DeliveryDTO | null> {
+): Promise<DeliveryDTO | { message: string }> {
   try {
     const { delivery } = await fetch(
       `${BACKEND_URL}/deliveries/${deliveryId}/ready`,
@@ -244,13 +224,10 @@ export async function preparationReady(
       }
     ).then((res) => res.json());
 
-    console.log("Delivery is ready for pickup", deliveryId);
-
     revalidateTag("deliveries");
 
     return delivery;
   } catch (error) {
-    console.log(error);
-    return null;
+    return { message: "Error preparing delivery" };
   }
 }

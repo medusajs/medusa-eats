@@ -10,8 +10,9 @@ import {
 } from "../../lib/data/sessions";
 import { CreateDriverDTO } from "@backend/src/types/delivery/mutations";
 import { CreateRestaurantAdminDTO } from "@backend/src/types/restaurant/mutations";
+import { JWTPayload } from "jose";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 type FormState =
   | {
@@ -19,7 +20,7 @@ type FormState =
     }
   | undefined;
 
-const redirecter = (actor_type: "restaurant" | "driver" | "customer") => {
+const redirecter = (actor_type: "restaurant" | "driver") => {
   let redirectPatch;
   if (actor_type === "restaurant") {
     redirectPatch = "/dashboard/restaurant";
@@ -52,7 +53,7 @@ export async function signup(prevState: FormState, data: FormData) {
     };
   }
 
-  const actor_type = user_type as "customer" | "restaurant" | "driver";
+  const actor_type = user_type as "restaurant" | "driver";
 
   try {
     const token = await createAuthUser({
@@ -61,7 +62,6 @@ export async function signup(prevState: FormState, data: FormData) {
       actor_type,
       provider: "emailpass",
     }).catch((error) => {
-      console.error(error);
       throw new Error("Error creating auth user");
     });
 
@@ -83,7 +83,6 @@ export async function signup(prevState: FormState, data: FormData) {
 
     const { user, token: newToken } = await createUser(createUserData).catch(
       (error) => {
-        console.error(error);
         throw new Error("Error creating user");
       }
     );
@@ -91,7 +90,6 @@ export async function signup(prevState: FormState, data: FormData) {
     createSession(newToken);
     revalidateTag("user");
   } catch (error) {
-    console.error(error);
     return {
       message: "Error creating user",
     };
@@ -103,10 +101,7 @@ export async function signup(prevState: FormState, data: FormData) {
 export async function login(prevState: FormState, data: FormData) {
   const email = data.get("email") as string;
   const password = data.get("password") as string;
-  const actor_type = data.get("actor_type") as
-    | "customer"
-    | "restaurant"
-    | "driver";
+  const actor_type = data.get("actor_type") as "restaurant" | "driver";
 
   let token;
 
@@ -123,15 +118,14 @@ export async function login(prevState: FormState, data: FormData) {
 
     revalidateTag("user");
   } catch (error) {
-    console.error(error);
     return {
       message: "Invalid email or password",
     };
   }
 
-  const payload = await decrypt(token!);
+  const payload = (await decrypt(token!)) as JWTPayload;
 
-  redirecter(payload?.actor_type as "restaurant" | "driver" | "customer");
+  redirecter(payload?.actor_type as "restaurant" | "driver");
 
   return {
     message: "User logged in",
@@ -146,7 +140,7 @@ export async function createAuthUser({
 }: {
   email: string;
   password: string;
-  actor_type: "customer" | "restaurant" | "driver";
+  actor_type: "restaurant" | "driver";
   provider: "emailpass";
 }) {
   const { token } = await fetch(
@@ -175,8 +169,6 @@ export type CreateUserType = (CreateDriverDTO | CreateRestaurantAdminDTO) & {
 export async function createUser(input: CreateUserType) {
   const { token, ...rest } = input;
 
-  console.log({ rest });
-
   const res = await fetch(`${BACKEND_URL}/users`, {
     method: "POST",
     headers: {
@@ -190,7 +182,6 @@ export async function createUser(input: CreateUserType) {
   })
     .then((res) => res.json())
     .catch((error) => {
-      console.log({ error });
       throw new Error("Error creating user");
     });
 

@@ -1,74 +1,32 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { ModuleRegistrationName } from "@medusajs/modules-sdk";
-import { TransactionHandlerType } from "@medusajs/utils";
-import { IWorkflowEngineService, StepResponse } from "@medusajs/workflows-sdk";
-import DeliveryModuleService from "../../../../modules/delivery/service";
+import { MedusaError } from "@medusajs/utils";
 import { DeliveryStatus } from "../../../../types/delivery/common";
-import {
-  notifyRestaurantStepId,
-  handleDeliveryWorkflowId,
-} from "../../../../workflows/delivery/handle-delivery";
-import zod from "zod";
-
-const schema = zod.object({
-  eta: zod.date().optional(),
-});
+import { notifyRestaurantStepId } from "../../../../workflows/delivery/steps";
+import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows";
 
 const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000; // 30 minutes
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  console.log("POST /api/deliveries/:id/accept");
-  const validatedBody = schema.parse(req.body);
+  const { id } = req.params;
 
-  const eta =
-    validatedBody.eta ||
-    new Date(new Date().getTime() + DEFAULT_PROCESSING_TIME);
+  const eta = new Date(new Date().getTime() + DEFAULT_PROCESSING_TIME);
 
-  const deliveryId = req.params.id;
+  const data = {
+    id,
+    delivery_status: DeliveryStatus.RESTAURANT_ACCEPTED,
+    eta,
+  };
 
-  if (!deliveryId) {
-    return res.status(400).json({ message: "Missing delivery id" });
-  }
-
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
-    "deliveryModuleService"
-  );
-
-  const engineService = req.scope.resolve<IWorkflowEngineService>(
-    ModuleRegistrationName.WORKFLOW_ENGINE
-  );
-
-  try {
-    console.log("Accepting delivery no", deliveryId);
-    const delivery = await deliveryModuleService.updateDelivery(deliveryId, {
-      delivery_status: DeliveryStatus.RESTAURANT_ACCEPTED,
-      eta,
+  const updatedDelivery = await updateDeliveryWorkflow(req.scope)
+    .run({
+      input: {
+        data,
+        stepIdToSucceed: notifyRestaurantStepId,
+      },
+    })
+    .catch((error) => {
+      return MedusaError.Types.UNEXPECTED_STATE;
     });
 
-    console.log("Restaurant accepted delivery no", deliveryId);
-
-    await engineService
-      .setStepSuccess({
-        idempotencyKey: {
-          action: TransactionHandlerType.INVOKE,
-          transactionId: delivery.transaction_id,
-          stepId: notifyRestaurantStepId,
-          workflowId: handleDeliveryWorkflowId,
-        },
-        stepResponse: new StepResponse(delivery, deliveryId),
-        options: {
-          container: req.scope,
-        },
-      })
-      .then(() => {
-        console.log("Step set as success");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-    return res.status(200).json({ delivery });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ delivery: updatedDelivery });
 }

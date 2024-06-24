@@ -37,7 +37,7 @@ export default function RestaurantCategories({
       <div className="flex flex-col gap-2 min-w-64">
         {Array.from(categoryProductMap).map(([_, category], idx) => (
           <Button
-            key={"button_" + category.id}
+            key={"button_" + "cat_" + idx}
             variant="transparent"
             onClick={() => scrollIntoView(idx)}
           >

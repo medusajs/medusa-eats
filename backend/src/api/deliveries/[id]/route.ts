@@ -1,8 +1,12 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import DeliveryModuleService from "../../../modules/delivery/service"
-import { DeliveryStatus, DeliveryItemDTO } from "../../../types/delivery/common"
-import { UpdateDeliveryDTO } from "../../../types/delivery/mutations"
-import zod from "zod"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { remoteQueryObjectFromString } from "@medusajs/utils";
+import zod from "zod";
+import {
+  DeliveryItemDTO,
+  DeliveryStatus,
+} from "../../../types/delivery/common";
+import { UpdateDeliveryDTO } from "../../../types/delivery/mutations";
+import { updateDeliveryWorkflow } from "../../../workflows/delivery/workflows";
 
 const schema = zod.object({
   driver_id: zod.string().optional(),
@@ -10,94 +14,93 @@ const schema = zod.object({
   order_id: zod.string().optional(),
   delivery_status: zod.nativeEnum(DeliveryStatus).optional(),
   eta: zod.date().optional(),
-})
+});
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body)
+  const validatedBody = schema.parse(req.body);
 
-  if (!validatedBody) {
-    return res.status(400).json({ message: "Missing delivery data" })
-  }
-
-  const restaurantId = req.params.id
-
-  if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" })
-  }
-
-  const deliveryId = req.params.id
-
-  if (!deliveryId) {
-    return res.status(400).json({ message: "Missing delivery id" })
-  }
-
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
-    "deliveryModuleService"
-  )
+  const deliveryId = req.params.id;
 
   const updateData: UpdateDeliveryDTO = {
+    id: deliveryId,
     ...validatedBody,
-  }
-
-  if (validatedBody.order_id) {
-    // If an order is assigned to the delivery, remove the cart_id as it is no longer relevant.
-    updateData.cart_id = null
-  }
+  };
 
   if (validatedBody.delivery_status === "delivered") {
-    updateData.delivered_at = new Date()
+    updateData.delivered_at = new Date();
   }
 
   try {
-    const delivery = await deliveryModuleService.updateDelivery(
-      deliveryId,
-      updateData
-    )
+    const delivery = await updateDeliveryWorkflow(req.scope).run({
+      input: {
+        data: updateData,
+      },
+    });
 
-    return res.status(200).json({ delivery })
+    return res.status(200).json({ delivery });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryId = req.params.id
+  const deliveryId = req.params.id;
 
-  if (!deliveryId) {
-    return res.status(400).json({ message: "Missing delivery id" })
-  }
+  const remoteQuery = req.scope.resolve("remoteQuery");
 
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
-    "deliveryModuleService"
-  )
+  const deliveryQuery = remoteQueryObjectFromString({
+    entryPoint: "deliveries",
+    fields: ["*"],
+    variables: {
+      filters: {
+        id: deliveryId,
+      },
+    },
+  });
 
-  const delivery = await deliveryModuleService.retrieveDelivery(deliveryId)
+  const delivery = await remoteQuery(deliveryQuery).then((r) => r[0]);
 
   if (!delivery) {
-    return res.status(404).json({ message: "Delivery not found" })
+    return res.status(404).json({ message: "Delivery not found" });
   }
 
   try {
-    const items = [] as DeliveryItemDTO[]
+    const items = [] as DeliveryItemDTO[];
 
     if (delivery.cart_id) {
-      const cartService = req.scope.resolve("cartModuleService")
-      const cart = await cartService.retrieve(delivery.cart_id, {
-        relations: ["items"],
-      })
-      items.push(...cart.items)
+      const cartQuery = remoteQueryObjectFromString({
+        entryPoint: "carts",
+        fields: ["items.*"],
+        variables: {
+          filters: {
+            id: delivery.cart_id,
+          },
+        },
+      });
+
+      const cart = await remoteQuery(cartQuery).then((r) => r[0]);
+
+      items.push(...(cart.items as DeliveryItemDTO[]));
     } else if (delivery.order_id) {
-      const orderService = req.scope.resolve("orderModuleService")
-      const order = await orderService.retrieve(delivery.order_id, {
-        relations: ["items"],
-      })
-      items.push(...order.items)
+      const orderQuery = remoteQueryObjectFromString({
+        entryPoint: "orders",
+        fields: ["items.*"],
+        variables: {
+          filters: {
+            id: delivery.order_id,
+          },
+        },
+      });
+
+      const order = await remoteQuery(orderQuery).then((r) => r[0]);
+
+      items.push(...order.items);
     }
 
-    delivery.items = items
+    delivery.items = items;
 
-    return res.status(200).json({ delivery })
+    return res.status(200).json({ delivery });
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
 }

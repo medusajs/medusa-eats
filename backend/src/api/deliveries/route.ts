@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
-import DeliveryModuleService from "../../modules/delivery/service";
 import { DeliveryItemDTO } from "../../types/delivery/common";
-import { handleDeliveryWorkflow } from "../../workflows/delivery/handle-delivery";
+import { handleDeliveryWorkflow } from "../../workflows/delivery/workflows/handle-delivery";
 
 const schema = zod.object({
   cart_id: zod.string().startsWith("cart_"),
@@ -11,83 +11,90 @@ const schema = zod.object({
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = schema.parse(req.body);
 
-  if (!validatedBody) {
-    return res.status(400).json({ message: "Missing delivery data" });
+  const { transaction } = await handleDeliveryWorkflow(req.scope).run({
+    input: {
+      cart_id: validatedBody.cart_id,
+    },
+  });
+
+  return res.status(200).json({ message: "Delivery created", transaction });
+}
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const remoteQuery = req.scope.resolve("remoteQuery");
+
+  const filters = {};
+  let take = parseInt(req.query.take as string) || null;
+  let skip = parseInt(req.query.skip as string) || 0;
+
+  for (const key in req.query) {
+    if (["take", "skip"].includes(key)) continue;
+
+    filters[key] = req.query[key];
   }
 
-  if (!validatedBody.cart_id) {
-    return res.status(400).json({ message: "Missing cart id" });
-  }
+  const deliveryQuery = remoteQueryObjectFromString({
+    entryPoint: "deliveries",
+    fields: ["*"],
+    variables: {
+      filters,
+      take,
+      skip,
+    },
+  });
 
-  try {
-    const { result } = await handleDeliveryWorkflow(req.scope).run({
-      input: {
-        delivery_input: {
-          cart_id: validatedBody.cart_id,
+  const { rows: deliveries } = await remoteQuery(deliveryQuery);
+
+  if (filters.hasOwnProperty("driver_id")) {
+    const driverQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveryDrivers",
+      fields: ["driver_id", "delivery_id"],
+      variables: {
+        filters: {
+          deleted_at: null,
+          driver_id: filters["driver_id"],
         },
       },
     });
 
-    return res.status(200).json({ delivery: result });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-}
+    const availableDeliveriesIds = await remoteQuery(driverQuery);
 
-export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const deliveryModuleService = req.scope.resolve<DeliveryModuleService>(
-    "deliveryModuleService"
-  );
-
-  const filter = {};
-
-  for (const key in req.query) {
-    filter[key] = req.query[key];
-  }
-
-  try {
-    const deliveries = await deliveryModuleService.listDeliveries(filter, {
-      take: 100,
+    const availableDeliveriesQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveries",
+      fields: ["*"],
+      variables: {
+        filters: {
+          id: availableDeliveriesIds.map((d) => d.delivery_id),
+        },
+      },
     });
 
-    if (filter.hasOwnProperty("driver_id")) {
-      const availableDeliveriesIds =
-        await deliveryModuleService.listDeliveryDrivers({
-          driver_id: filter["driver_id"],
-        });
+    const availableDeliveries = await remoteQuery(availableDeliveriesQuery);
 
-      const availableDeliveries = await deliveryModuleService.listDeliveries({
-        id: availableDeliveriesIds.map((d) => d.delivery_id),
+    deliveries.push(...availableDeliveries);
+  }
+
+  for (const delivery of deliveries) {
+    const items = [] as DeliveryItemDTO[];
+
+    if (delivery.cart_id) {
+      const cartQuery = remoteQueryObjectFromString({
+        entryPoint: "carts",
+        fields: ["id", "items.*"],
+        variables: {
+          filters: {
+            id: delivery.cart_id,
+          },
+        },
       });
 
-      deliveries.push(...availableDeliveries);
+      const cart = await remoteQuery(cartQuery).then((res) => res[0]);
+
+      items.push(...(cart.items as DeliveryItemDTO[]));
     }
 
-    for (const delivery of deliveries) {
-      const items = [] as DeliveryItemDTO[];
-
-      if (delivery.cart_id) {
-        const cartService = req.scope.resolve("cartModuleService");
-        const cart = await cartService.retrieve(delivery.cart_id, {
-          relations: ["items"],
-        });
-        items.push(...cart.items);
-      }
-
-      // if (delivery.order_id) {
-      //   const orderService = req.scope.resolve("orderModuleService")
-      //   const order = await orderService.retrieve(delivery.order_id, {
-      //     relations: ["items"],
-      //   })
-      //   items.push(...order.items)
-      // }
-
-      delivery.items = items;
-    }
-
-    return res.status(200).json({ deliveries });
-  } catch (error) {
-    console.log({ error });
-    return res.status(500).json({ message: error.message });
+    delivery.items = items;
   }
+
+  return res.status(200).json({ deliveries });
 }

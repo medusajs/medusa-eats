@@ -17,26 +17,24 @@ export function ProfileBadge({ user }: ProfileBadgeProps) {
   const hoverRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    if (hoverRef.current) {
-      hoverRef.current.addEventListener("mouseenter", () =>
-        setIsDropdownOpen(true)
-      );
-      hoverRef.current.addEventListener("mouseleave", () =>
-        setIsDropdownOpen(false)
-      );
+    const current = hoverRef.current;
+
+    if (current) {
+      current.addEventListener("mouseenter", () => setIsDropdownOpen(true));
+      current.addEventListener("mouseleave", () => setIsDropdownOpen(false));
     }
 
     return () => {
-      if (hoverRef.current) {
-        hoverRef.current.removeEventListener("mouseenter", () =>
+      if (current) {
+        current.removeEventListener("mouseenter", () =>
           setIsDropdownOpen(true)
         );
-        hoverRef.current.removeEventListener("mouseleave", () =>
+        current.removeEventListener("mouseleave", () =>
           setIsDropdownOpen(false)
         );
       }
     };
-  }, [hoverRef.current]);
+  }, [hoverRef]);
 
   const dashboardPath = user
     ? user.hasOwnProperty("restaurant")

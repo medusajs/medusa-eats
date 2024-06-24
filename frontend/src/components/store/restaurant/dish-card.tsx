@@ -19,7 +19,6 @@ export default function DishCard({
 
   const handleAdd = async () => {
     setIsAdding(true);
-    console.log("Adding to cart", product.variants[0]);
     await addToCart(product.variants[0].id, restaurantId);
     setIsAdding(false);
   };

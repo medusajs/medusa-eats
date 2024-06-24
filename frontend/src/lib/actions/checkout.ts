@@ -5,7 +5,7 @@ import { UpsertAddressDTO } from "@medusajs/cart/dist/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function updateCart(data: Record<string, unknown>) {
   const cartId = cookies().get("_medusa_cart_id")?.value;
@@ -20,8 +20,7 @@ export async function updateCart(data: Record<string, unknown>) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  }).catch((error) => {
-    console.log({ error });
+  }).catch(() => {
     throw new Error("Error updating cart");
   });
 
@@ -44,7 +43,6 @@ export async function completeCart() {
       method: "POST",
     }
   ).catch((error) => {
-    console.log({ error });
     throw new Error("Error completing cart");
   });
 
@@ -52,7 +50,6 @@ export async function completeCart() {
 }
 
 export async function addPaymentSession(cartId: string) {
-  console.log(`${BACKEND_URL}/store/carts/${cartId}/payment-sessions`);
   const response = await fetch(
     `${BACKEND_URL}/store/carts/${cartId}/payment-sessions`,
     {
@@ -61,11 +58,8 @@ export async function addPaymentSession(cartId: string) {
   )
     .then((res) => res.json())
     .catch((error) => {
-      console.log({ error });
       throw new Error("Error adding payment session");
     });
-
-  console.log({ paymentSession: response });
 
   return response;
 }
@@ -80,11 +74,8 @@ export async function createDelivery(cartId: string) {
   })
     .then((res) => res.json())
     .catch((error) => {
-      console.log({ error });
       throw new Error("Error creating delivery");
     });
-
-  console.log("Delivery created", delivery);
 
   return delivery;
 }
@@ -131,7 +122,6 @@ export async function placeOrder(prevState: any, data: FormData) {
     })
       .then((res) => res.json())
       .catch((error) => {
-        console.log({ error });
         return { message: "Error updating cart" };
       });
 
@@ -144,7 +134,6 @@ export async function placeOrder(prevState: any, data: FormData) {
     cookies().set("_medusa_cart_id", "", { maxAge: 0 });
     cookies().set("_medusa_delivery_id", delivery.id);
   } catch (error) {
-    console.log({ error });
     return { message: "Error placing order" };
   }
 

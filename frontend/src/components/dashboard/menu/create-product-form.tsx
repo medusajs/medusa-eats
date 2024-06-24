@@ -3,7 +3,7 @@
 import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { createProduct } from "@frontend/lib/actions";
 import { ProductCategoryDTO } from "@medusajs/types";
-import { Container, Input, Label, Select, Textarea } from "@medusajs/ui";
+import { Input, Label, Select, Textarea } from "@medusajs/ui";
 import { useFormState } from "react-dom";
 
 export function CreateProductForm({
