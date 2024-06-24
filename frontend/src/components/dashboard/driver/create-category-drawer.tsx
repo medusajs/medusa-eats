@@ -12,11 +12,7 @@ export function CreateCategoryDrawer({
   return (
     <Drawer>
       <Drawer.Trigger asChild>
-        <Button
-          variant="secondary"
-          size="large"
-          onClick={() => window.alert("Not implemented in this demo")}
-        >
+        <Button variant="secondary" size="large">
           <Plus />
           Create Category
         </Button>
@@ -28,7 +24,7 @@ export function CreateCategoryDrawer({
         <Drawer.Body className="p-4">
           <Text>
             This is where you create a new category for your restaurant&apos;s
-            menu
+            menu (not implemented in this demo)
           </Text>
         </Drawer.Body>
         <Drawer.Footer>

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { DeliveryDTO, DriverDTO } from "../../types/delivery/common";
 import { RestaurantDTO } from "../../types/restaurant/common";
 
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+
 export const useDrivers = (
   query?: Record<string, any>
 ): {
@@ -16,7 +18,7 @@ export const useDrivers = (
     const fetchRestaurants = async () => {
       try {
         const response = await fetch(
-          "http://localhost:9000/drivers" + (query ? `?${filterQuery}` : "")
+          BACKEND_URL + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);
@@ -48,7 +50,7 @@ export const useDeliveries = (
     const fetchDeliveries = async () => {
       try {
         const response = await fetch(
-          "http://localhost:9000/deliveries" + (query ? `?${filterQuery}` : "")
+          BACKEND_URL + "/deliveries" + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);
@@ -79,7 +81,7 @@ export const useRestaurants = (
     const fetchRestaurants = async () => {
       try {
         const response = await fetch(
-          "http://localhost:9000/restaurants" + (query ? `?${filterQuery}` : "")
+          BACKEND_URL + "/restaurants" + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);

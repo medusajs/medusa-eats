@@ -8,7 +8,7 @@ import { retrieveSession } from "@frontend/lib/data/sessions";
 import { promises as fs } from "fs";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function setRestaurantStatus(
   restaurantId: string,

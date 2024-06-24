@@ -1,6 +1,6 @@
 import { CartDTO, CartLineItemDTO } from "@medusajs/types";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 export async function retrieveCart(cartId: string) {
   const { cart } = (await fetch(`${BACKEND_URL}/store/carts/${cartId}`, {

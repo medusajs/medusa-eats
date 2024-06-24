@@ -11,7 +11,7 @@ import Image from "next/image";
 
 export default async function MenuPage() {
   const user = await retrieveUser();
-  const restaurantId = user.restaurant.id;
+  const restaurantId = user.restaurant_id;
 
   const restaurant = await retrieveRestaurant(restaurantId);
   const categories = await listCategories();

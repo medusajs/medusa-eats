@@ -72,7 +72,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   // Add the product to the restaurant
   const restaurantProduct =
-    await restaurantModuleService.addProductToRestaurant({
+    await restaurantModuleService.createRestaurantProducts({
       restaurant_id: restaurantId,
       product_id: product.id,
     });
@@ -157,7 +157,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
 
   await productModuleService.delete([validatedBody.product_id]);
 
-  await restaurantModuleService.removeProductFromRestaurant({
+  await restaurantModuleService.deleteRestaurantProducts({
     restaurant_id: restaurantId,
     product_id: validatedBody.product_id,
   });

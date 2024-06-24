@@ -6,7 +6,9 @@ import {
 } from "./mutations";
 
 export interface IRestaurantModuleService extends IModuleService {
-  addProductToRestaurant(data: RestaurantProductDTO): Promise<void>;
+  createRestaurantProducts(
+    data: RestaurantProductDTO | RestaurantProductDTO[]
+  ): Promise<void>;
   listRestaurants(filter?: any, options?: any): Promise<RestaurantDTO[]>;
   listRestaurantAdmins(
     filter?: any,
@@ -29,7 +31,9 @@ export interface IRestaurantModuleService extends IModuleService {
   ): Promise<RestaurantAdminDTO>;
   deleteRestaurants(restaurantId: string): Promise<void>;
   deleteRestaurantAdmin(adminId: string): Promise<void>;
-  removeProductFromRestaurant(data: RestaurantProductDTO): Promise<void>;
+  deleteRestaurantProducts(
+    data: RestaurantProductDTO | RestaurantProductDTO[]
+  ): Promise<void>;
 }
 
 export interface RestaurantDTO {

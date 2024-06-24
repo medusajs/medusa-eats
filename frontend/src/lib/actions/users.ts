@@ -12,7 +12,7 @@ import { CreateDriverDTO } from "@backend/src/types/delivery/mutations";
 import { CreateRestaurantAdminDTO } from "@backend/src/types/restaurant/mutations";
 import { JWTPayload } from "jose";
 
-const BACKEND_URL = "http://localhost:9000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
 type FormState =
   | {
