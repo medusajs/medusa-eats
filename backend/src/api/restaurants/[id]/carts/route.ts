@@ -1,6 +1,7 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { ICartModuleService } from "@medusajs/types";
+import { MedusaError } from "@medusajs/utils";
 import zod from "zod";
 
 const schema = zod.object({
@@ -9,10 +10,6 @@ const schema = zod.object({
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = schema.parse(req.body);
-
-  if (!validatedBody) {
-    return res.status(400).json({ message: "Missing restaurant admin data" });
-  }
 
   const restaurant_id = req.params.id;
 

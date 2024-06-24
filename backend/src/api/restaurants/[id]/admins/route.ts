@@ -32,8 +32,8 @@ export const POST = async (
 
   const validatedBody = schema.parse(req.body) as {
     email: string;
-    first_name?: string;
-    last_name?: string;
+    first_name: string;
+    last_name: string;
   };
 
   const { result, errors } = await createUserWorkflow(req.scope).run({

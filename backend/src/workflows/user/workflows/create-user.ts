@@ -4,7 +4,7 @@ import {
   transform,
   WorkflowData,
 } from "@medusajs/workflows-sdk";
-import { createUserStep } from "../../util";
+import { createUserStep } from "../../user/steps";
 
 export type CreateRestaurantAdminInput = {
   restaurant_id: string;
