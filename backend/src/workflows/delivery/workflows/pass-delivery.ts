@@ -1,6 +1,6 @@
 import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk";
 import { DeliveryDTO } from "../../../types/delivery/common";
-import { deleteDeliveryDriversStep } from "../../util";
+import { deleteDeliveryDriversStep } from "../../delivery/steps";
 
 export type WorkflowInput = {
   driver_id: string;

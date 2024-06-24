@@ -1,16 +1,14 @@
 import {
   CartLineItemDTO,
-  OrderLineItemDTO,
   IModuleService,
+  OrderLineItemDTO,
 } from "@medusajs/types";
 import {
   CreateDeliveryDTO,
-  CreateDeliveryDriverDTO,
   CreateDriverDTO,
   UpdateDeliveryDTO,
   UpdateDriverDTO,
 } from "./mutations";
-import { Delivery } from "src/modules/delivery/models";
 
 export enum DeliveryStatus {
   PENDING = "pending",

@@ -1,11 +1,8 @@
 import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk";
 import { DeliveryDTO } from "../../../types/delivery/common";
 import { UpdateDeliveryDTO } from "../../../types/delivery/mutations";
-import {
-  setStepFailedStep,
-  setStepSuccessStep,
-  updateDeliveryStep,
-} from "../../util";
+import { updateDeliveryStep } from "../../delivery/steps";
+import { setStepFailedStep, setStepSuccessStep } from "../../util/steps";
 
 export type WorkflowInput = {
   data: UpdateDeliveryDTO;
