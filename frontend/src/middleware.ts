@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "./lib/data/sessions";
+import { JWTPayload } from "jose";
 
 export async function middleware(request: NextRequest) {
-  const payload = await decrypt(request.cookies.get("_medusa_jwt")?.value);
+  const payload = (await decrypt(
+    request.cookies.get("_medusa_jwt")?.value
+  )) as JWTPayload;
 
   // If the user is authenticated with the appropriate role, continue as normal
   if (

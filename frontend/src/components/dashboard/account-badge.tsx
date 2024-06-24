@@ -5,6 +5,7 @@ import {
 } from "@backend/src/types/delivery/common";
 import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { Badge, Text } from "@medusajs/ui";
+import Image from "next/image";
 
 async function getDeliveries(query: string) {
   const { deliveries } = await fetch(
@@ -54,14 +55,16 @@ export default async function AccountBadge({
             <span className="font-bold">{deliveries?.length}</span>
           </Badge>
         </div>
-        <img
+        <Image
           src={
             "https://robohash.org/" +
             data.email +
             "?size=200x200&set=set1&bgset=bg1"
           }
           alt={name}
-          className="h-28 rounded-full border-2 border-ui-border-base"
+          className="h-28 w-28 rounded-full border-2 border-ui-border-base"
+          width={200}
+          height={200}
         />
       </div>
     </div>

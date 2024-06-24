@@ -35,7 +35,7 @@ export function LoginForm() {
           <Input id="password" name="password" type="password" />
         </div>
         <div>
-          <Label htmlFor="actor_type">I'm a...</Label>
+          <Label htmlFor="actor_type">I&apos;m a...</Label>
           <Select name="actor_type">
             <Select.Trigger>
               <Select.Value></Select.Value>

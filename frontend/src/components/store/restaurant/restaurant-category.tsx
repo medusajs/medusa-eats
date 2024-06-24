@@ -1,7 +1,8 @@
 import { RestaurantDTO } from "@backend/src/types/restaurant/common";
-import { Badge } from "@medusajs/ui";
 import { ClockSolidMini } from "@medusajs/icons";
+import { Badge } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
+import Image from "next/image";
 
 export default function RestaurantCategory({
   restaurants,
@@ -20,11 +21,15 @@ export default function RestaurantCategory({
             key={restaurant.id}
             className="bg-ui-bg-base rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out max-w-2xl min-w-fit"
           >
-            <img
-              src={restaurant.image_url}
-              alt={restaurant.name}
-              className="object-cover w-full h-48 rounded-t-lg"
-            />
+            {restaurant.image_url && (
+              <Image
+                src={restaurant.image_url}
+                alt={restaurant.name}
+                className="object-cover h-48 w-full rounded-t-lg"
+                width={400}
+                height={400}
+              />
+            )}
             <div className="flex flex-col gap-2 p-4">
               <div className="flex justify-between">
                 <h3 className="text-xl font-medium">{restaurant.name}</h3>
