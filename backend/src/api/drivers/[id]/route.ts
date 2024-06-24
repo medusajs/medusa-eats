@@ -24,13 +24,16 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   const driverId = req.params.id;
 
+  const data = {
+    id: driverId,
+    ...validatedBody,
+  };
+
   if (!driverId) {
     return MedusaError.Types.NOT_FOUND;
   }
 
-  const driver = await deliveryModuleService.updateDriver(driverId, {
-    ...validatedBody,
-  });
+  const driver = await deliveryModuleService.updateDrivers(data);
 
   return res.status(200).json({ driver });
 }
@@ -68,7 +71,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     "deliveryModuleService"
   );
 
-  await deliveryModuleService.deleteDriver(driverId);
+  await deliveryModuleService.deleteDrivers(driverId);
 
   return res.status(200).json({ message: "Driver deleted" });
 }

@@ -1,7 +1,7 @@
 import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk";
 import { DeliveryDTO, DeliveryStatus } from "../../../types/delivery/common";
 import { setStepSuccessStep } from "../../util/steps";
-import { updateDeliveryStep, deleteDeliveryDriversStep } from "../steps";
+import { deleteDeliveryDriversStep, updateDeliveryStep } from "../steps";
 import { findDriverStepId } from "../steps/find-driver";
 
 export type WorkflowInput = {

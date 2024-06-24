@@ -39,9 +39,9 @@ export interface IDeliveryModuleService extends IModuleService {
   retrieveDelivery(deliveryId: string): Promise<DeliveryDTO>;
   retrieveDriver(driverId: string): Promise<DriverDTO>;
   update(data: UpdateDeliveryDTO | UpdateDeliveryDTO[]): Promise<DeliveryDTO[]>;
-  updateDriver(driverId: string, data: UpdateDriverDTO): Promise<DriverDTO>;
-  delete(deliveryId: string): Promise<void>;
-  deleteDrivers(driverId: string): Promise<void>;
+  updateDrivers(data: UpdateDriverDTO | UpdateDriverDTO[]): Promise<DriverDTO>;
+  delete(ids: string | string[]): Promise<void>;
+  deleteDrivers(ids: string | string[]): Promise<void>;
   deleteDeliveryDrivers(ids: string | string[]): Promise<{ id: string }[]>;
   softDeleteDeliveryDrivers(ids: string | string[]): Promise<{ id: string }[]>;
   restoreDeliveryDrivers(ids: string | string[]): Promise<{ id: string }[]>;
