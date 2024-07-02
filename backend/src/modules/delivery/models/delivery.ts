@@ -1,67 +1,16 @@
-import { generateEntityId } from "@medusajs/utils";
-import {
-  AfterUpdate,
-  BeforeCreate,
-  Entity,
-  Enum,
-  OnInit,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core";
+import { model } from "@medusajs/utils";
 import { DeliveryStatus } from "../../../types/delivery/common";
 
-@Entity()
-export default class Delivery {
-  @PrimaryKey({ columnType: "text" })
-  id!: string;
-
-  @Property({ columnType: "text" })
-  transaction_id!: string;
-
-  @Property({ columnType: "text", nullable: true })
-  driver_id: string;
-
-  @Property({ columnType: "text" })
-  restaurant_id!: string;
-
-  @Property({ columnType: "text", nullable: true })
-  cart_id: string;
-
-  @Property({ columnType: "text", nullable: true })
-  order_id: string;
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  delivered_at: Date;
-
-  @Enum({
-    columnType: "enum",
-    items: () => DeliveryStatus,
-    default: "pending",
-  })
-  delivery_status!: DeliveryStatus;
-
-  @Property({ columnType: "timestamptz", type: "date", nullable: true })
-  eta: Date;
-
-  @Property({ columnType: "timestamptz", defaultRaw: "now()", type: "date" })
-  created_at = new Date();
-
-  @Property({ onUpdate: () => new Date(), type: "date" })
-  updated_at = new Date();
-
-  @BeforeCreate()
-  @OnInit()
-  onCreate() {
-    this.id = generateEntityId(this.id, "del");
-  }
-
-  @AfterUpdate()
-  async onStatusUpdate() {
-    if (
-      this.delivery_status === DeliveryStatus.DELIVERED &&
-      !this.delivered_at
-    ) {
-      this.delivered_at = new Date();
-    }
-  }
-}
+export const Delivery = model.define("Delivery", {
+  id: model.id({
+    prefix: "del",
+  }),
+  transaction_id: model.text(),
+  driver_id: model.text(),
+  restaurant_id: model.text(),
+  cart_id: model.text(),
+  order_id: model.text(),
+  delivery_status: model.enum(DeliveryStatus),
+  eta: model.dateTime().nullable(),
+  delivered_at: model.dateTime().nullable(),
+});

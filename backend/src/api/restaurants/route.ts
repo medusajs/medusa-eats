@@ -30,7 +30,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   );
 
   try {
-    const restaurant = await restaurantModuleService.createRestaurant(
+    const restaurant = await restaurantModuleService.createRestaurants(
       validatedBody
     );
 

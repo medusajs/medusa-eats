@@ -53,7 +53,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   );
 
   // Create the product
-  const product: ProductDTO = await productModuleService.create(
+  const product: ProductDTO = await productModuleService.createProducts(
     productData as CreateProductDTO
   );
 

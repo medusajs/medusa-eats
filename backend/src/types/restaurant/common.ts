@@ -15,7 +15,9 @@ export interface IRestaurantModuleService extends IModuleService {
     options?: any
   ): Promise<RestaurantAdminDTO[]>;
   listRestaurantProducts(filter: any): Promise<RestaurantProductDTO[]>;
-  create(data: CreateRestaurantDTO): Promise<RestaurantDTO>;
+  createRestaurants(
+    data: CreateRestaurantDTO | CreateRestaurantDTO[]
+  ): Promise<RestaurantDTO>;
   createRestaurantAdmins(
     data: CreateRestaurantAdminDTO
   ): Promise<RestaurantAdminDTO>;

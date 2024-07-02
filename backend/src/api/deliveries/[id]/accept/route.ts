@@ -25,6 +25,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       },
     })
     .catch((error) => {
+      console.log(error);
       return MedusaError.Types.UNEXPECTED_STATE;
     });
 

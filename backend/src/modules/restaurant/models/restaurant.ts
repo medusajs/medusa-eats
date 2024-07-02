@@ -1,44 +1,15 @@
-import { generateEntityId } from "@medusajs/utils"
-import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
+import { model } from "@medusajs/utils";
 
-@Entity()
-export default class Restaurant {
-  @PrimaryKey({ columnType: "text" })
-  id!: string
-
-  @Property({ columnType: "text" })
-  handle!: string
-
-  @Property({ columnType: "boolean", default: false })
-  is_open!: boolean
-
-  @Property({ columnType: "text" })
-  name!: string
-
-  @Property({ columnType: "text", nullable: true })
-  description: string
-
-  @Property({ columnType: "text" })
-  address!: string
-
-  @Property({ columnType: "text" })
-  phone!: string
-
-  @Property({ columnType: "text" })
-  email!: string
-
-  @Property({ columnType: "text", nullable: true })
-  image_url?: string
-
-  @Property({ columnType: "timestamptz", defaultRaw: "now()", type: "date" })
-  created_at = new Date()
-
-  @Property({ onUpdate: () => new Date(), type: "date" })
-  updated_at = new Date()
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "res")
-    this.handle = this.handle || this.name.toLowerCase().replace(/\s/g, "-")
-  }
-}
+export const Restaurant = model.define("Restaurant", {
+  id: model.id({
+    prefix: "res",
+  }),
+  handle: model.text(),
+  is_open: model.boolean(),
+  name: model.text(),
+  description: model.text().nullable(),
+  phone: model.text(),
+  email: model.text(),
+  address: model.text(),
+  image_url: model.text().nullable(),
+});

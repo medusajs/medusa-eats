@@ -1,38 +1,11 @@
-import { generateEntityId } from "@medusajs/utils";
-import {
-  BeforeCreate,
-  Entity,
-  ManyToOne,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core";
-import Restaurant from "./restaurant";
+import { model } from "@medusajs/utils";
 
-@Entity()
-export default class RestaurantAdmin {
-  @PrimaryKey({ columnType: "text" })
-  id!: string;
-
-  @Property({ columnType: "text" })
-  first_name!: string;
-
-  @Property({ columnType: "text" })
-  last_name!: string;
-
-  @Property({ columnType: "text" })
-  restaurant_id!: string;
-
-  @Property({ columnType: "text" })
-  email!: string;
-
-  @Property({ columnType: "timestamptz", defaultRaw: "now()", type: "date" })
-  created_at = new Date();
-
-  @Property({ onUpdate: () => new Date(), type: "date" })
-  updated_at = new Date();
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "resadm");
-  }
-}
+export const RestaurantAdmin = model.define("RestaurantAdmin", {
+  id: model.id({
+    prefix: "resadm",
+  }),
+  first_name: model.text(),
+  last_name: model.text(),
+  restaurant_id: model.text(),
+  email: model.text(),
+});
