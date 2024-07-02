@@ -33,6 +33,7 @@
     "@medusajs/inventory-next": "preview",
     "@medusajs/medusa": "preview",
     "@medusajs/notification": "preview",
+    "@medusajs/notification-local": "^0.0.2-preview-20240702120643",
     "@medusajs/order": "preview",
     "@medusajs/payment": "preview",
     "@medusajs/pricing": "preview",

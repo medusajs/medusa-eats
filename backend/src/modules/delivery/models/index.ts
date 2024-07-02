@@ -1,3 +1,3 @@
-export { default as Delivery } from "./delivery"
-export { default as Driver } from "./driver"
-export { default as DeliveryDriver } from "./delivery-driver"
+export { Delivery } from "./delivery";
+export { Driver } from "./driver";
+export { DeliveryDriver } from "./delivery-driver";

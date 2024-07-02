@@ -1,9 +1,11 @@
 import { model } from "@medusajs/utils";
 
 export const Driver = model.define("Driver", {
-  id: model.id({
-    prefix: "drv",
-  }),
+  id: model
+    .id({
+      prefix: "drv",
+    })
+    .primaryKey(),
   first_name: model.text(),
   last_name: model.text(),
   email: model.text(),

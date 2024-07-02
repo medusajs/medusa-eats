@@ -1,3 +1,3 @@
-export { default as Restaurant } from "./restaurant"
-export { default as RestaurantAdmin } from "./restaurant-admin"
-export { default as RestaurantProduct } from "./restaurant-product"
+export { Restaurant } from "./restaurant";
+export { RestaurantAdmin } from "./restaurant-admin";
+export { RestaurantProduct } from "./restaurant-product";

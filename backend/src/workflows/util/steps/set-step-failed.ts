@@ -10,7 +10,7 @@ type SetStepFailedtepInput = {
   updatedDelivery: DeliveryDTO;
 };
 
-export const setStepFailedStepId = "set-step-success-step";
+export const setStepFailedStepId = "set-step-failed-step";
 export const setStepFailedStep = createStep(
   setStepFailedStepId,
   async function (

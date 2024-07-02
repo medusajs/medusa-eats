@@ -1,9 +1,11 @@
 import { model } from "@medusajs/utils";
 
 export const Restaurant = model.define("Restaurant", {
-  id: model.id({
-    prefix: "res",
-  }),
+  id: model
+    .id({
+      prefix: "res",
+    })
+    .primaryKey(),
   handle: model.text(),
   is_open: model.boolean(),
   name: model.text(),
