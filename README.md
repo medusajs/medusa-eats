@@ -96,7 +96,7 @@ The Next.js frontend is now running on http://localhost:3000.
 
 - [Website](https://www.medusajs.com/)
 - [GitHub](https://github.com/medusajs)
-- [Documentation](https://docs.medusajs.com/)
+- [2.0 Documentation](https://docs.medusajs.com/v2)
 
 ## Learn more about Next.js
 
