@@ -64,11 +64,6 @@ In `/backend` run:
 yarn
 ```
 
-To run locally:
-in backend folder: yarn -> medusa develop
-in frontend folder:  yarn -> yarn dev
-Frontend runs on port 3000.
-
 ### Set up the database
 
 // TBD
