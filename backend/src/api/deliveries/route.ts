@@ -47,7 +47,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   if (filters.hasOwnProperty("driver_id")) {
     const driverQuery = remoteQueryObjectFromString({
-      entryPoint: "deliveryDrivers",
+      entryPoint: "delivery_driver",
       fields: ["driver_id", "delivery_id"],
       variables: {
         filters: {

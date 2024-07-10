@@ -15,7 +15,7 @@ export const updateDeliveryStep = createStep(
     );
 
     const delivery = await deliveryService
-      .update([input.data])
+      .updateDeliveries([input.data])
       .then((res) => res[0]);
 
     return new StepResponse(delivery, delivery.id);

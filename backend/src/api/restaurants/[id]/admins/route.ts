@@ -73,7 +73,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
 
   const restaurantAdminsQuery = remoteQueryObjectFromString({
-    entryPoint: "restaurantAdmins",
+    entryPoint: "restaurant_admin",
     fields: ["id", "email", "first_name", "last_name"],
     variables: {
       filters: {

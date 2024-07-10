@@ -47,6 +47,6 @@ export const createDeliveryStep = createStep(
       "deliveryModuleService"
     );
 
-    return service.delete(deliveryId);
+    return service.softDeleteDeliveries(deliveryId);
   }
 );

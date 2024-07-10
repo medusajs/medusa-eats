@@ -22,7 +22,7 @@ export const claimDeliveryWorkflow = createWorkflow<WorkflowInput, DeliveryDTO>(
     });
 
     // Delete the delivery drivers as they are no longer needed
-    deleteDeliveryDriversStep({ delivery_id: input.delivery_id });
+    deleteDeliveryDriversStep({ delivery_id: claimedDelivery.id });
 
     // Set the step success for the find driver step
     setStepSuccessStep({

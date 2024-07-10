@@ -67,7 +67,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         currency_code: "usd",
       },
     ],
-    rules: [],
   });
 
   // Add the product to the restaurant
@@ -91,7 +90,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
 
   const restaurantProductsQuery = remoteQueryObjectFromString({
-    entryPoint: "restaurantProducts",
+    entryPoint: "restaurant_product",
     variables: {
       filters: {
         restaurant_id: restaurantId,
@@ -155,7 +154,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     "productModuleService"
   );
 
-  await productModuleService.delete([validatedBody.product_id]);
+  await productModuleService.deleteProducts([validatedBody.product_id]);
 
   await restaurantModuleService.deleteRestaurantProducts({
     restaurant_id: restaurantId,

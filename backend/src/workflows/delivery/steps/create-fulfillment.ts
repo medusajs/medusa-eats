@@ -33,6 +33,6 @@ export const createFulfillmentStep = createStep(
     const fulfillmentModuleService =
       container.resolve<IFulfillmentModuleService>("fulfillmentModuleService");
 
-    return fulfillmentModuleService.delete(input);
+    return fulfillmentModuleService.softDeleteFulfillmentSets([input]);
   }
 );

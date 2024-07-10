@@ -11,13 +11,17 @@ import { handleDeliveryWorkflowId } from "../../../workflows/delivery/workflows/
 import { AuthUserScopedMedusaRequest } from "../../types";
 
 type RestaurantNotificationData = {
-  restaurant_id: string;
-  delivery_id: string;
+  data: {
+    restaurant_id: string;
+    delivery_id: string;
+  };
 };
 
 type DriverNotificationData = {
-  drivers: string[];
-  delivery_id: string;
+  data: {
+    drivers: string[];
+    delivery_id: string;
+  };
 };
 
 export const GET = async (
@@ -96,7 +100,7 @@ export const GET = async (
   if (restaurant_id) {
     eventBus.subscribe(
       "notify.restaurant",
-      async (data: RestaurantNotificationData) => {
+      async ({ data }: RestaurantNotificationData) => {
         if (data.restaurant_id !== restaurant_id) {
           return;
         }
@@ -135,7 +139,7 @@ export const GET = async (
   if (driver_id) {
     eventBus.subscribe(
       "notify.drivers",
-      async (data: DriverNotificationData) => {
+      async ({ data }: DriverNotificationData) => {
         if (!data.drivers.includes(driver_id)) {
           return;
         }
