@@ -19,13 +19,11 @@ export default function RestaurantDeliveryButtons({
   const handleProceedDelivery = async () => {
     setProceedIsLoading(true);
     await proceedDelivery(delivery);
-    setProceedIsLoading(false);
   };
 
   const handleDeclineDelivery = async () => {
     setDeclineIsLoading(true);
     await declineDelivery(delivery.id);
-    setDeclineIsLoading(false);
   };
 
   return (

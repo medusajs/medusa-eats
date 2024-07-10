@@ -22,13 +22,11 @@ export default function DriverDeliveryButtons({
   const handleProceedDelivery = async () => {
     setProceedIsLoading(true);
     await proceedDelivery(delivery, driver.id);
-    setProceedIsLoading(false);
   };
 
   const handleDeclineDelivery = async () => {
     setDeclineIsLoading(true);
     await passDelivery(delivery.id, driver.id);
-    setDeclineIsLoading(false);
   };
 
   return (
