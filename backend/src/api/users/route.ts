@@ -1,6 +1,6 @@
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { IAuthModuleService } from "@medusajs/types";
+import { ModuleRegistrationName } from "@medusajs/utils";
 import jwt from "jsonwebtoken";
 import zod from "zod";
 
@@ -53,7 +53,7 @@ export const POST = async (
     ModuleRegistrationName.AUTH
   );
 
-  const authUser = await authService.retrieve(auth_identity_id);
+  const authUser = await authService.retrieveAuthIdentity(auth_identity_id);
   const { jwtSecret } = req.scope.resolve("configModule").projectConfig.http;
   const token = jwt.sign(authUser, jwtSecret);
 

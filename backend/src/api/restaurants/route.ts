@@ -44,6 +44,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const queryFilters = req.query;
 
   const remoteQuery = req.scope.resolve("remoteQuery");
+  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
+    "restaurantModuleService"
+  );
 
   const restaurantsQuery = remoteQueryObjectFromString({
     entryPoint: "restaurants",
@@ -66,7 +69,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   for (const restaurant of restaurants) {
     const restaurantProductsQuery = remoteQueryObjectFromString({
-      entryPoint: "restaurantProducts",
+      entryPoint: "restaurant_product",
       variables: {
         filters: {
           restaurant_id: restaurant.id,

@@ -25,7 +25,7 @@ export interface IDeliveryModuleService extends IModuleService {
   listDrivers(filter?: any, options?: any): Promise<DriverDTO[]>;
   listDeliveries(filter?: any, options?: any): Promise<DeliveryDTO[]>;
   listDeliveryDrivers(filter: any): Promise<DeliveryDriverDTO[]>;
-  create(data: CreateDeliveryDTO): Promise<DeliveryDTO>;
+  createDeliveries(data: CreateDeliveryDTO): Promise<DeliveryDTO>;
   createDrivers(data: CreateDriverDTO | CreateDriverDTO[]): Promise<DriverDTO>;
   createDeliveryDrivers(
     data: {

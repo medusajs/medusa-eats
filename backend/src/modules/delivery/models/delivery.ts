@@ -8,11 +8,11 @@ export const Delivery = model.define("Delivery", {
     })
     .primaryKey(),
   transaction_id: model.text(),
-  driver_id: model.text(),
+  driver_id: model.text().nullable(),
   restaurant_id: model.text(),
   cart_id: model.text(),
-  order_id: model.text(),
-  delivery_status: model.enum(Object.entries(DeliveryStatus)),
+  order_id: model.text().nullable(),
+  delivery_status: model.enum(DeliveryStatus).default(DeliveryStatus.PENDING),
   eta: model.dateTime().nullable(),
   delivered_at: model.dateTime().nullable(),
 });

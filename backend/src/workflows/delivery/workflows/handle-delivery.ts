@@ -18,7 +18,10 @@ type WorkflowInput = {
 
 const TWO_HOURS = 60 * 60 * 2;
 export const handleDeliveryWorkflowId = "handle-delivery-workflow";
-export const handleDeliveryWorkflow = createWorkflow<WorkflowInput, Delivery>(
+export const handleDeliveryWorkflow = createWorkflow<
+  WorkflowInput,
+  typeof Delivery
+>(
   {
     name: handleDeliveryWorkflowId,
     store: true,

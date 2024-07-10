@@ -1,6 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { IEventBusModuleService } from "@medusajs/types";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import {
+  ModuleRegistrationName,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils";
 import { createStep } from "@medusajs/workflows-sdk";
 import {
   DriverDTO,
@@ -41,9 +43,12 @@ export const findDriverStep = createStep<string, DriverDTO, string>(
       ModuleRegistrationName.EVENT_BUS
     );
 
-    await eventBus.emit("notify.drivers", {
-      drivers: idsToNotify,
-      delivery_id: deliveryId,
+    await eventBus.emit({
+      eventName: "notify.drivers",
+      data: {
+        drivers: idsToNotify,
+        delivery_id: deliveryId,
+      },
     });
   },
   (input, { container }) => {

@@ -1,10 +1,12 @@
 import { MedusaResponse } from "@medusajs/medusa";
-import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import {
   IEventBusModuleService,
   IWorkflowEngineService,
 } from "@medusajs/types";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import {
+  ModuleRegistrationName,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../../workflows/delivery/workflows/handle-delivery";
 import { AuthUserScopedMedusaRequest } from "../../../types";
 

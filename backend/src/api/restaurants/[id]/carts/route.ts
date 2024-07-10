@@ -1,7 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { ICartModuleService } from "@medusajs/types";
-import { MedusaError } from "@medusajs/utils";
+import { ModuleRegistrationName } from "@medusajs/utils";
 import zod from "zod";
 
 const schema = zod.object({
@@ -20,7 +19,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   );
 
   // update the cart with the restaurant id in the metadata
-  const cart = await cartModuleService.update(cart_id, {
+  const cart = await cartModuleService.updateCarts(cart_id, {
     metadata: {
       restaurant_id: restaurant_id,
     },
