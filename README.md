@@ -66,7 +66,21 @@ yarn
 
 ### Set up the database
 
-// TBD
+Make sure your local Postgres server is running.
+
+1. Create a new Postgres database called `medusa-eats`, e.g.:
+  ```shell
+  createdb medusa-eats
+  ```
+2. Build your project. In `/backend` run: 
+  ```shell
+  npx medusa build
+  ```
+3. Run migrations. In `/backend` run: 
+  ```shell
+  npx medusa migrations run
+  ```
+4. Your database should be ready to go!
 
 ### Start developing
 
