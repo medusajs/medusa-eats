@@ -14,9 +14,6 @@ export const deleteDeliveryDriversStepId = "delete-delivery-drivers-step";
 export const deleteDeliveryDriversStep = createStep(
   deleteDeliveryDriversStepId,
   async function (input: CreateDeliveryStepInput, { container, context }) {
-    console.log("deleteDeliveryDriversStep");
-    console.log({ input });
-
     const remoteQuery = container.resolve("remoteQuery");
 
     const driverQuery = remoteQueryObjectFromString({
@@ -32,8 +29,6 @@ export const deleteDeliveryDriversStep = createStep(
     const drivers = await remoteQuery(driverQuery)
       .then((res) => res.map((d: DriverDTO) => d.id))
       .catch(() => []);
-
-    console.log({ drivers });
 
     const deliveryModuleService = container.resolve<IDeliveryModuleService>(
       "deliveryModuleService"

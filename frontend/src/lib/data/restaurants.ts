@@ -41,7 +41,6 @@ export async function retrieveRestaurantByHandle(
       },
     }
   ).then((res) => {
-    console.log({ res });
     return res.json();
   });
 
