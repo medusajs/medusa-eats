@@ -19,7 +19,7 @@ export default function CartModal({
         Your order
       </Heading>
       <div className="flex flex-col gap-4">
-        {cart.items.length !== 0 ? (
+        {cart && cart.items.length ? (
           cart?.items?.map((item: any) => (
             <CartItem key={item.id} item={item} />
           ))
@@ -31,7 +31,7 @@ export default function CartModal({
           className="w-full"
           size="large"
           onClick={handleCheckoutClick}
-          disabled={cart.items?.length === 0}
+          disabled={!cart || cart?.items?.length === 0}
         >
           Go to checkout
         </Button>
