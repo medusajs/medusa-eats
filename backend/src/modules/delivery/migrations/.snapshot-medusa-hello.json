@@ -48,7 +48,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "order_id": {
@@ -60,19 +60,9 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "delivered_at": {
-          "name": "delivered_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
         "delivery_status": {
           "name": "delivery_status",
-          "type": "enum",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -100,6 +90,16 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "delivered_at": {
+          "name": "delivered_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -113,12 +113,23 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
           "mappedType": "datetime"
         }
       },
@@ -140,6 +151,15 @@
     },
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "delivery_id": {
           "name": "delivery_id",
           "type": "text",
@@ -157,6 +177,38 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "delivery_driver",
@@ -165,10 +217,9 @@
         {
           "keyName": "delivery_driver_pkey",
           "columnNames": [
-            "delivery_id",
-            "driver_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }
@@ -229,7 +280,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "created_at": {
@@ -245,12 +296,23 @@
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "timestamptz",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
           "mappedType": "datetime"
         }
       },
