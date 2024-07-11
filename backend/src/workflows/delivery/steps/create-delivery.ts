@@ -38,7 +38,7 @@ export const createDeliveryStep = createStep(
       "deliveryModuleService"
     );
 
-    const delivery = await service.create(data);
+    const delivery = await service.createDeliveries(data);
 
     return new StepResponse(delivery, delivery.id);
   },
@@ -47,6 +47,6 @@ export const createDeliveryStep = createStep(
       "deliveryModuleService"
     );
 
-    return service.delete(deliveryId);
+    return service.softDeleteDeliveries(deliveryId);
   }
 );

@@ -566,6 +566,11 @@
   resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.11.17-preview-20240510084332.tgz#873f6a7a6e046fdaf4322bcf923b8015224f614d"
   integrity sha512-oQdcCaFeHoieYCB7zlrkD7gyW/P6g3BzynvtWylVsjGrP0MfW6k5DCnFPWLYLLD2TTTWQBATGdgA86QhwNDBBQ==
 
+"@medusajs/types@preview":
+  version "1.12.0-preview-20240624150456"
+  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.12.0-preview-20240624150456.tgz#9bfb1152879c6db1cebc7dd7a828212564cca490"
+  integrity sha512-xNkQiv6vWYKDGeCvXSzDI8U6K0I+CBtbm3FS0vEsHXGhwp9M3+IAcPtCcHXwryL6Gz0RbCJBT2FfxKaoBmk9dg==
+
 "@medusajs/ui-preset@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@medusajs/ui-preset/-/ui-preset-1.1.3.tgz#7a7d9bcc879952fad8f46375d73cfdf2c965f408"

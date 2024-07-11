@@ -10,6 +10,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const data = {
     id,
     delivery_status: DeliveryStatus.DELIVERED,
+    delivered_at: new Date(),
   };
 
   const updatedDelivery = await updateDeliveryWorkflow(req.scope)

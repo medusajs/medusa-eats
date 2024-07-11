@@ -1,34 +1,14 @@
-import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/utils"
+import { model } from "@medusajs/utils";
 
-@Entity()
-export default class Driver {
-  @PrimaryKey({ columnType: "text" })
-  id!: string
-
-  @Property({ columnType: "text" })
-  first_name!: string
-
-  @Property({ columnType: "text" })
-  last_name!: string
-
-  @Property({ columnType: "text" })
-  email!: string
-
-  @Property({ columnType: "text" })
-  phone!: string
-
-  @Property({ columnType: "text" })
-  avatar_url?: string
-
-  @Property({ columnType: "timestamptz", defaultRaw: "now()", type: "date" })
-  created_at = new Date()
-
-  @Property({ onUpdate: () => new Date(), type: "date" })
-  updated_at = new Date()
-
-  @BeforeCreate()
-  onCreate() {
-    this.id = generateEntityId(this.id, "drv")
-  }
-}
+export const Driver = model.define("Driver", {
+  id: model
+    .id({
+      prefix: "drv",
+    })
+    .primaryKey(),
+  first_name: model.text(),
+  last_name: model.text(),
+  email: model.text(),
+  phone: model.text(),
+  avatar_url: model.text().nullable(),
+});

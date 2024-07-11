@@ -40,6 +40,10 @@ export async function retrieveRestaurantByHandle(
         tags: ["restaurants"],
       },
     }
-  ).then((res) => res.json());
+  ).then((res) => {
+    console.log({ res });
+    return res.json();
+  });
+
   return restaurants[0];
 }

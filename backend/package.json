@@ -32,6 +32,8 @@
     "@medusajs/fulfillment-manual": "preview",
     "@medusajs/inventory-next": "preview",
     "@medusajs/medusa": "preview",
+    "@medusajs/notification": "preview",
+    "@medusajs/notification-local": "^0.0.2-preview-20240702120643",
     "@medusajs/order": "preview",
     "@medusajs/payment": "preview",
     "@medusajs/pricing": "preview",
@@ -49,6 +51,7 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.379.0",
+    "medusa-core-utils": "preview",
     "prism-react-renderer": "^2.0.4",
     "zod": "^3.22.4"
   },

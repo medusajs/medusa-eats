@@ -1,6 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk";
 import { IEventBusModuleService } from "@medusajs/types";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import {
+  ModuleRegistrationName,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils";
 import { createStep } from "@medusajs/workflows-sdk";
 
 export const notifyRestaurantStepId = "notify-restaurant-step";
@@ -27,9 +29,12 @@ export const notifyRestaurantStep = createStep(
       ModuleRegistrationName.EVENT_BUS
     );
 
-    await eventBus.emit("notify.restaurant", {
-      restaurant_id,
-      delivery_id: delivery.id,
+    await eventBus.emit({
+      eventName: "notify.restaurant",
+      data: {
+        restaurant_id,
+        delivery_id: delivery.id,
+      },
     });
   },
   function (input: string, { container }) {

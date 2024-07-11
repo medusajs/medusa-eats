@@ -30,7 +30,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   );
 
   try {
-    const restaurant = await restaurantModuleService.createRestaurant(
+    const restaurant = await restaurantModuleService.createRestaurants(
       validatedBody
     );
 
@@ -66,7 +66,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   for (const restaurant of restaurants) {
     const restaurantProductsQuery = remoteQueryObjectFromString({
-      entryPoint: "restaurantProducts",
+      entryPoint: "restaurant_product",
       variables: {
         filters: {
           restaurant_id: restaurant.id,
