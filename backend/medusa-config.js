@@ -19,7 +19,7 @@ const STORE_CORS = `${
 }https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app`;
 
 const DATABASE_URL =
-  process.env.DATABASE_URL || "postgres://localhost/medusa-food";
+  process.env.DATABASE_URL || "postgres://localhost/medusa-eats";
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
