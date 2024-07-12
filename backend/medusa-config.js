@@ -23,9 +23,11 @@ const DATABASE_URL =
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+
 export default defineConfig({
   admin: {
-    backendUrl: "http://localhost:9000",
+    backendUrl: BACKEND_URL,
   },
   projectConfig: {
     databaseUrl: DATABASE_URL,

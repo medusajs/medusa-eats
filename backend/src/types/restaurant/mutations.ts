@@ -1,12 +1,10 @@
-import { RestaurantDTO } from "./common";
-
 export interface CreateRestaurantDTO {
   name: string;
+  handle: string;
   address: string;
   phone: string;
   email: string;
-  image?: Buffer;
-  admin?: CreateRestaurantAdminDTO;
+  image_url?: string;
   is_open?: boolean;
 }
 

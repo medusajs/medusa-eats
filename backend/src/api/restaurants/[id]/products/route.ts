@@ -58,7 +58,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   );
 
   // Create and link a price set to the product variant
-  const priceSet = await createVariantPriceSet({
+  await createVariantPriceSet({
     container: req.scope,
     variantId: product.variants[0].id,
     prices: [

@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@dotlottie/react-player": "^1.6.19",
-    "@medusajs/ui": "^2.4.3",
+    "@medusajs/ui": "preview",
     "jose": "^5.2.4",
     "next": "14.1.4",
     "next-view-transitions": "^0.1.1",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@medusajs/medusa": "preview",
     "@medusajs/types": "preview",
-    "@medusajs/ui-preset": "^1.1.3",
+    "@medusajs/ui-preset": "preview",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

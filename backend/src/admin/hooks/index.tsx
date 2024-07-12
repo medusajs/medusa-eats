@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { DeliveryDTO, DriverDTO } from "../../types/delivery/common";
 import { RestaurantDTO } from "../../types/restaurant/common";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+const BACKEND_URL = import.meta.env.BACKEND_URL || "http://localhost:9000";
 
 export const useDrivers = (
   query?: Record<string, any>
