@@ -7,9 +7,11 @@ import {
 import { Badge, Text } from "@medusajs/ui";
 import Image from "next/image";
 
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+
 async function getDeliveries(query: string) {
   const { deliveries } = await fetch(
-    `http://localhost:9000/deliveries?${query}&delivery_status=${DeliveryStatus.DELIVERED}`,
+    `${BACKEND_URL}/deliveries?${query}&delivery_status=${DeliveryStatus.DELIVERED}`,
     {
       next: {
         tags: ["deliveries"],

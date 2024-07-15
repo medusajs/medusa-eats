@@ -6,6 +6,8 @@ import { promises as fs } from "fs";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+const FRONTEND_URL =
+  `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || "http://localhost:3000";
 
 export async function setRestaurantStatus(
   restaurantId: string,
@@ -49,7 +51,7 @@ export async function createProduct(
     await saveFile(image, fileName as string);
   }
 
-  createProductData.set("thumbnail", `http://localhost:3000/${fileName}`);
+  createProductData.set("thumbnail", `${FRONTEND_URL}/${fileName}`);
 
   createProductData.delete("image");
 

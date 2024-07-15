@@ -4,6 +4,8 @@ import { StatusBadge } from "@medusajs/ui";
 import { useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+
 export default function RealtimeClient({
   restaurantId,
   driverId,
@@ -18,7 +20,7 @@ export default function RealtimeClient({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  let serverUrl = "http://localhost:9000/deliveries/subscribe";
+  let serverUrl = BACKEND_URL + "/deliveries/subscribe";
 
   if (restaurantId) {
     serverUrl += `?restaurant_id=${restaurantId}`;
