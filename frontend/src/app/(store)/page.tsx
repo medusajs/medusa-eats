@@ -1,4 +1,4 @@
-import { RestaurantDTO } from "../../../../backend/src/types/restaurant/common";
+import { RestaurantDTO } from "@frontend/lib/types";
 import RestaurantCategory from "@frontend/components/store/restaurant/restaurant-category";
 import { Heading } from "@medusajs/ui";
 

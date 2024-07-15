@@ -1,4 +1,4 @@
-import { DeliveryStatus } from "../../../../../backend/src/types/delivery/common";
+import { DeliveryStatus } from "@frontend/lib/types";
 import AccountBadge from "@frontend/components/dashboard/account-badge";
 import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
