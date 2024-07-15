@@ -1,7 +1,7 @@
 "use server";
 
 import { listDeliveries } from "@frontend/lib/data";
-import { UpsertAddressDTO } from "@medusajs/cart/dist/types";
+import { UpsertAddressDTO } from "@medusajs/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
