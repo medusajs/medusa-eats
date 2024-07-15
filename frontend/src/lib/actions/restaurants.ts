@@ -1,10 +1,7 @@
 "use server";
 
-import {
-  RestaurantDTO,
-  RestaurantProductDTO,
-} from "@backend/src/types/restaurant/common";
 import { retrieveSession } from "@frontend/lib/data/sessions";
+import { RestaurantDTO, RestaurantProductDTO } from "@frontend/lib/types";
 import { promises as fs } from "fs";
 import { revalidatePath, revalidateTag } from "next/cache";
 

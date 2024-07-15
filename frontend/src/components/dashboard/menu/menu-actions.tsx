@@ -1,6 +1,6 @@
 "use client";
 
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { RestaurantDTO } from "@frontend/lib/types";
 import { ProductCategoryDTO } from "@medusajs/types";
 import { CreateCategoryDrawer } from "./create-category-drawer";
 import { CreateProductDrawer } from "./create-product-drawer";

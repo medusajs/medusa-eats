@@ -1,7 +1,6 @@
 "use client";
 
-import { DriverDTO } from "@backend/src/types/delivery/common";
-import { RestaurantAdminDTO } from "@backend/src/types/restaurant/common";
+import { DriverDTO, RestaurantAdminDTO } from "@frontend/lib/types";
 import { logout } from "@frontend/lib/actions";
 import { Avatar, Button, Text } from "@medusajs/ui";
 import { Link } from "next-view-transitions";

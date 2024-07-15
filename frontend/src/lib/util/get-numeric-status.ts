@@ -1,4 +1,4 @@
-import { DeliveryStatus } from "@backend/src/types/delivery/common";
+import { DeliveryStatus } from "@frontend/lib/types";
 
 export const getNumericStatus = (status: DeliveryStatus) => {
   switch (status) {

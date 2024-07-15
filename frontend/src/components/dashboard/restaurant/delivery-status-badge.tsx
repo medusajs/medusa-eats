@@ -1,10 +1,6 @@
+import { DeliveryDTO, DeliveryStatus } from "@frontend/lib/types";
 import { CircleQuarterSolid } from "@medusajs/icons";
 import { Badge } from "@medusajs/ui";
-import React from "react";
-import {
-  DeliveryDTO,
-  DeliveryStatus,
-} from "@backend/src/types/delivery/common";
 
 export async function RestaurantDeliveryStatusBadge({
   delivery,

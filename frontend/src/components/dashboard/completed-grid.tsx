@@ -1,9 +1,5 @@
+import { DeliveryDTO, DeliveryStatus, DriverDTO } from "@frontend/lib/types";
 import { Heading } from "@medusajs/ui";
-import {
-  DeliveryDTO,
-  DeliveryStatus,
-  DriverDTO,
-} from "@backend/src/types/delivery/common";
 import DeliveryCard from "./delivery-card";
 
 export default async function CompletedGrid({

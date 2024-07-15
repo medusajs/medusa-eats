@@ -1,4 +1,4 @@
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { RestaurantDTO } from "@frontend/lib/types";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 

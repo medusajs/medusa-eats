@@ -1,11 +1,11 @@
 "use client";
 
 import { signup } from "@frontend/lib/actions";
-import { useFormState, useFormStatus } from "react-dom";
-import { Label, Input, Button, Badge, Select } from "@medusajs/ui";
+import { RestaurantDTO } from "@frontend/lib/types";
+import { Badge, Button, Input, Label, Select } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
 import { useState } from "react";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { useFormState, useFormStatus } from "react-dom";
 
 function Submit() {
   const status = useFormStatus();

@@ -1,11 +1,8 @@
 "use client";
 
-import { Button } from "@medusajs/ui";
-import {
-  DeliveryDTO,
-  DeliveryStatus,
-} from "@backend/src/types/delivery/common";
 import { declineDelivery, proceedDelivery } from "@frontend/lib/actions";
+import { DeliveryDTO, DeliveryStatus } from "@frontend/lib/types";
+import { Button } from "@medusajs/ui";
 import { useState } from "react";
 
 export default function RestaurantDeliveryButtons({

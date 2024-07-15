@@ -1,6 +1,6 @@
 "use client";
 
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { RestaurantDTO } from "@frontend/lib/types";
 import { ProductDTO } from "@medusajs/types";
 import { Button, Heading } from "@medusajs/ui";
 import { RefObject, createRef, useEffect, useState } from "react";

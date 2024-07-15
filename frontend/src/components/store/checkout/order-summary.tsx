@@ -1,8 +1,6 @@
-import { CartDTO, CartLineItemDTO } from "@medusajs/types";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { retrieveCart, retrieveRestaurant } from "@frontend/lib/data";
-import { cookies } from "next/headers";
 import { Container, Heading, Text } from "@medusajs/ui";
+import { cookies } from "next/headers";
 import Image from "next/image";
 
 export async function OrderSummary() {

@@ -1,9 +1,9 @@
 "use client";
 
-import { Button, Drawer, Text } from "@medusajs/ui";
+import { RestaurantDTO } from "@frontend/lib/types";
 import { Plus } from "@medusajs/icons";
 import { ProductCategoryDTO } from "@medusajs/types";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+import { Button, Drawer, Text } from "@medusajs/ui";
 import { CreateProductForm } from "./create-product-form";
 
 export function CreateProductDrawer({

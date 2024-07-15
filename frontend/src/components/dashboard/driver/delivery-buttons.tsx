@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  DeliveryDTO,
-  DeliveryStatus,
-  DriverDTO,
-} from "@backend/src/types/delivery/common";
 import { passDelivery, proceedDelivery } from "@frontend/lib/actions";
+import { DeliveryDTO, DeliveryStatus, DriverDTO } from "@frontend/lib/types";
 import { Button } from "@medusajs/ui";
 import { useState } from "react";
 

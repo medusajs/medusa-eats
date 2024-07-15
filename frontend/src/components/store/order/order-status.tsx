@@ -1,4 +1,4 @@
-import { DeliveryDTO } from "@backend/src/types/delivery/common";
+import { DeliveryDTO } from "@frontend/lib/types";
 import { lottieMap } from "@frontend/lib/util/constants";
 import { getNumericStatus } from "@frontend/lib/util/get-numeric-status";
 import {

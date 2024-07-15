@@ -1,7 +1,7 @@
 "use client";
 
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { createProduct } from "@frontend/lib/actions";
+import { RestaurantDTO } from "@frontend/lib/types";
 import { ProductCategoryDTO } from "@medusajs/types";
 import { Input, Label, Select, Textarea } from "@medusajs/ui";
 import { useFormState } from "react-dom";

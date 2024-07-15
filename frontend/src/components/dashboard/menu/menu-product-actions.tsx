@@ -1,15 +1,15 @@
 "use client";
 
+import { deleteProduct } from "@frontend/lib/actions";
+import { RestaurantDTO } from "@frontend/lib/types";
 import {
   EllipsisHorizontal,
   PencilSquare,
   Spinner,
   Trash,
 } from "@medusajs/icons";
-import { DropdownMenu, IconButton } from "@medusajs/ui";
 import { ProductDTO } from "@medusajs/types";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
-import { deleteProduct } from "@frontend/lib/actions";
+import { DropdownMenu, IconButton } from "@medusajs/ui";
 import { useState } from "react";
 
 export function MenuProductActions({

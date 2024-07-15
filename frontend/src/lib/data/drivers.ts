@@ -1,4 +1,4 @@
-import { DriverDTO } from "@backend/src/types/delivery/common";
+import { DriverDTO } from "@frontend/lib/types";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 

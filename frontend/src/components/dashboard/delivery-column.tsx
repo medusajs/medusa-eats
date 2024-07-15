@@ -1,9 +1,5 @@
-import { Heading, Text, Container } from "@medusajs/ui";
-import {
-  DeliveryDTO,
-  DeliveryStatus,
-  DriverDTO,
-} from "@backend/src/types/delivery/common";
+import { DeliveryDTO, DeliveryStatus, DriverDTO } from "@frontend/lib/types";
+import { Container, Heading, Text } from "@medusajs/ui";
 import DeliveryCard from "./delivery-card";
 
 export default async function DeliveryColumn({

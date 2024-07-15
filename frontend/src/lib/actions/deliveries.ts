@@ -1,10 +1,7 @@
 "use server";
 
+import { DeliveryDTO, DeliveryStatus } from "@frontend/lib/types";
 import { revalidateTag } from "next/cache";
-import {
-  DeliveryDTO,
-  DeliveryStatus,
-} from "@backend/src/types/delivery/common";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 

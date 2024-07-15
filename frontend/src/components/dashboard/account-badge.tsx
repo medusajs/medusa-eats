@@ -2,8 +2,8 @@ import {
   DeliveryDTO,
   DeliveryStatus,
   DriverDTO,
-} from "@backend/src/types/delivery/common";
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
+  RestaurantDTO,
+} from "@frontend/lib/types";
 import { Badge, Text } from "@medusajs/ui";
 import Image from "next/image";
 

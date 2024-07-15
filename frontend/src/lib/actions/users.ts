@@ -1,6 +1,8 @@
 "use server";
 
 import { getToken } from "@frontend/lib/data/users";
+import { CreateDriverDTO, CreateRestaurantAdminDTO } from "@frontend/lib/types";
+import { JWTPayload } from "jose";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -8,9 +10,6 @@ import {
   decrypt,
   destroySession,
 } from "../../lib/data/sessions";
-import { CreateDriverDTO } from "@backend/src/types/delivery/mutations";
-import { CreateRestaurantAdminDTO } from "@backend/src/types/restaurant/mutations";
-import { JWTPayload } from "jose";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 

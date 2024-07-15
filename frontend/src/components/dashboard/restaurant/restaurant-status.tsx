@@ -1,7 +1,7 @@
 "use client";
 
-import { RestaurantDTO } from "@backend/src/types/restaurant/common";
 import { setRestaurantStatus } from "@frontend/lib/actions";
+import { RestaurantDTO } from "@frontend/lib/types";
 import { Switch } from "@medusajs/ui";
 import { useState } from "react";
 

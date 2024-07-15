@@ -1,4 +1,4 @@
-import { DeliveryDTO } from "@backend/src/types/delivery/common";
+import { DeliveryDTO } from "@frontend/lib/types";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 
