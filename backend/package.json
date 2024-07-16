@@ -17,7 +17,7 @@
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "medusa start",
     "dev": "medusa develop",
-    "setup-db": "createdb medusa-eats && npx medusa build && npx medusa migrations run"
+    "setup-db": "createdb medusa-eats && npx medusa build && npx medusa migrations run && medusa exec ./src/scripts/seed.ts"
   },
   "dependencies": {
     "@medusajs/api-key": "preview",
