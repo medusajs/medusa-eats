@@ -7,7 +7,9 @@ import { revalidatePath, revalidateTag } from "next/cache";
 
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
 const FRONTEND_URL =
-  `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || "http://localhost:3000";
+  (process.env.NEXT_PUBLIC_VERCEL_URL &&
+    `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`) ||
+  "http://localhost:3000";
 
 export async function setRestaurantStatus(
   restaurantId: string,

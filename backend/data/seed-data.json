@@ -9,7 +9,7 @@
     "address": "Falafelgatan 1, 123 45 Copenhagen",
     "email": "hello@medusa-falafel.dk",
     "phone": "+45 1234 5678",
-    "image_url": "http://localhost:3000/_de4759b3-096f-47f6-936a-ea291df53f9f.jpeg",
+    "image_url": "/_de4759b3-096f-47f6-936a-ea291df53f9f.jpeg",
     "is_open": true
   },
   "categories": [
@@ -40,7 +40,7 @@
       "description": "Experience the simplicity and elegance of our Margherita Delight.",
       "is_giftcard": false,
       "status": "published",
-      "thumbnail": "http://localhost:3000/_1ed747de-53f1-4915-aaba-92c046039beb.jpeg",
+      "thumbnail": "/_1ed747de-53f1-4915-aaba-92c046039beb.jpeg",
       "discountable": true,
       "category": "pizzas"
     },
@@ -51,7 +51,7 @@
       "description": "Indulge in the bold flavors of our Spicy Pepperoni Extravaganza.",
       "is_giftcard": false,
       "status": "published",
-      "thumbnail": "http://localhost:3000/_35841975-1e89-4c07-adb8-208cc8c59e17.jpeg",
+      "thumbnail": "/_35841975-1e89-4c07-adb8-208cc8c59e17.jpeg",
       "discountable": true,
       "category": "pizzas"
     },
@@ -62,7 +62,7 @@
       "description": "Enjoy the Falafel Wrap Supreme, a delectable blend of crispy falafel balls all wrapped in a warm, soft pita.",
       "is_giftcard": false,
       "status": "published",
-      "thumbnail": "http://localhost:3000/_de4759b3-096f-47f6-936a-ea291df53f9f.jpeg",
+      "thumbnail": "/_de4759b3-096f-47f6-936a-ea291df53f9f.jpeg",
       "discountable": true,
       "category": "falafel"
     },
@@ -73,7 +73,7 @@
       "description": "Delight in the fresh and vibrant Mediterranean Falafel Salad.",
       "is_giftcard": false,
       "status": "published",
-      "thumbnail": "http://localhost:3000/_411c260a-d6e5-4989-9a00-1cd8b80265fb.jpeg",
+      "thumbnail": "/_411c260a-d6e5-4989-9a00-1cd8b80265fb.jpeg",
       "discountable": true,
       "category": "falafel"
     },
@@ -84,7 +84,7 @@
       "description": "Refresh yourself with our Craft Lager Beer, a perfectly balanced brew with a smooth, crisp finish.",
       "is_giftcard": false,
       "status": "published",
-      "thumbnail": "http://localhost:3000/_ca16b6a2-9c4c-4a6a-98fa-620f12f6123f.jpeg",
+      "thumbnail": "/_ca16b6a2-9c4c-4a6a-98fa-620f12f6123f.jpeg",
       "discountable": true,
       "category": "drinks"
     },
@@ -95,7 +95,7 @@
       "description": "Quench your thirst with an ice-cold Coke Zero",
       "is_giftcard": false,
       "status": "published",
-      "thumbnail": "http://localhost:3000/_4476ce30-b852-402d-b65f-e3db54165e4c.jpeg",
+      "thumbnail": "{{FRONTEND_URL}}_4476ce30-b852-402d-b65f-e3db54165e4c.jpeg",
       "discountable": true,
       "category": "drinks"
     }

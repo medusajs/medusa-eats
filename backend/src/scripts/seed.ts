@@ -11,6 +11,11 @@ import { IRestaurantModuleService } from "../../src/types/restaurant/common";
 import seedData from "../../data/seed-data.json";
 import { createVariantPriceSet } from "../../src/utils";
 
+const FRONTEND_URL =
+  (process.env.NEXT_PUBLIC_VERCEL_URL &&
+    `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`) ||
+  "http://localhost:3000";
+
 dotenv.config();
 const directory = process.cwd();
 
@@ -30,8 +35,12 @@ const seed = async function () {
     "restaurantModuleService"
   );
 
-  const restaurant = await restaurantModuleService.createRestaurants(
-    seedData.restaurant
+  const { restaurant } = seedData;
+
+  restaurant.image_url = FRONTEND_URL + restaurant.image_url;
+
+  const createdRestaurant = await restaurantModuleService.createRestaurants(
+    restaurant
   );
 
   const productModule = container.resolve<IProductModuleService>(
@@ -49,6 +58,7 @@ const seed = async function () {
     delete product.category;
     productData.push({
       ...product,
+      thumbnail: FRONTEND_URL + product.thumbnail,
       variants: [
         {
           title: product.title,
@@ -76,7 +86,7 @@ const seed = async function () {
   }
 
   const restaurantProducts = products.map((p) => ({
-    restaurant_id: restaurant.id,
+    restaurant_id: createdRestaurant.id,
     product_id: p.id,
   }));
 
