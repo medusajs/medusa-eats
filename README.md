@@ -89,7 +89,7 @@ Make sure that Redis and Postgres servers are running locally.
 
 The Medusa server is now running on http://localhost:9000.
 
-**Start Next,js dev server**
+**Start Next.js dev server**
 In a separate terminal, cd to `/frontend` and run:
 ```shell
 yarn dev
