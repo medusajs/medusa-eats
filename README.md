@@ -47,11 +47,16 @@ Features include:
 - Medusa Workflows
 - Realtime Server Sent Event
 
+# Project structure
+
+The project consists of two main directories:
+- `/backend` contains the Medusa 2.0 project with all the customizations.
+- `/frontend` contains the Next.js project.
+
 # Quickstart
 
 ### Install dependencies
 
-The project contains two main directories: `/backend` (containing the Medusa project) and `/frontend` (containing the Next.js project). 
 Use Yarn to install dependencies in both directories.
 
 In `/frontend` run:
@@ -62,6 +67,20 @@ yarn
 In `/backend` run: 
 ```shell
 yarn
+```
+
+### Set up environment variables
+
+The project comes with `.env.template` files to quickly set up your environment variables. Copy them to a `.env` file by running the following commands:
+
+In `/frontend` run:
+```shell
+cp .env.template .env 
+```
+
+In `/backend` run: 
+```shell
+cp .env.template .env 
 ```
 
 ### Set up the database
