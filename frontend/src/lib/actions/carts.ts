@@ -74,7 +74,6 @@ export async function addToCart(
     cart = await createCart(
       {
         currency_code: "USD",
-        region_id: "reg_01J2H9W8QB7KMC86ZAKMN70QY1",
       },
       restaurantId
     );

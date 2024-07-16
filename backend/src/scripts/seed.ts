@@ -14,10 +14,7 @@ import { createVariantPriceSet } from "../../src/utils";
 dotenv.config();
 const directory = process.cwd();
 
-const FRONTEND_URL =
-  (process.env.NEXT_PUBLIC_VERCEL_URL &&
-    `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`) ||
-  "http://localhost:3000";
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
 const seed = async function () {
   const app = express();
