@@ -11,13 +11,13 @@ import { IRestaurantModuleService } from "../../src/types/restaurant/common";
 import seedData from "../../data/seed-data.json";
 import { createVariantPriceSet } from "../../src/utils";
 
+dotenv.config();
+const directory = process.cwd();
+
 const FRONTEND_URL =
   (process.env.NEXT_PUBLIC_VERCEL_URL &&
     `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`) ||
   "http://localhost:3000";
-
-dotenv.config();
-const directory = process.cwd();
 
 const seed = async function () {
   const app = express();
