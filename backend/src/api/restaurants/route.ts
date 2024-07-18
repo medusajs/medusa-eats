@@ -1,11 +1,13 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
+import { createRestaurantWorkflow } from "../../workflows/restaurant/workflows";
 import zod from "zod";
-import { IRestaurantModuleService } from "../../types/restaurant/common";
+import { CreateRestaurantDTO } from "../../types/restaurant/mutations";
 import { getPricesByPriceSetId } from "../../utils/get-prices-by-price-set-id";
 
 const schema = zod.object({
   name: zod.string(),
+  handle: zod.string(),
   address: zod.string(),
   phone: zod.string(),
   email: zod.string(),
@@ -13,31 +15,19 @@ const schema = zod.object({
 });
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body) as {
-    name: string;
-    address: string;
-    phone: string;
-    email: string;
-    image_url: string;
-  };
+  const validatedBody = schema.parse(req.body) as CreateRestaurantDTO;
 
   if (!validatedBody) {
-    return res.status(400).json({ message: "Missing restaurant data" });
+    return MedusaError.Types.INVALID_DATA;
   }
 
-  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
+  const { transaction } = await createRestaurantWorkflow(req.scope).run({
+    input: {
+      restaurant: validatedBody,
+    },
+  });
 
-  try {
-    const restaurant = await restaurantModuleService.createRestaurants(
-      validatedBody
-    );
-
-    return res.status(200).json({ restaurant });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+  return res.status(200).json({ message: "Restaurant created", transaction });
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
@@ -107,7 +97,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
       const productsWithPrices = await getPricesByPriceSetId({
         products,
-        currency_code: "usd",
+        currency_code: "EUR",
         pricingService: req.scope.resolve("pricingModuleService"),
       });
 

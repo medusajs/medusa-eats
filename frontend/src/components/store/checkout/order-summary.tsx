@@ -37,7 +37,7 @@ export async function OrderSummary() {
                 {item.title}
               </Heading>
               <Text className="text-sm text-ui-fg-subtle">
-                {item.quantity} x ${item.unit_price / 100}
+                {item.quantity} x €{item.unit_price}
               </Text>
             </div>
           </div>
@@ -46,11 +46,7 @@ export async function OrderSummary() {
         <div className="flex justify-between w-full">
           <Text className="text-md text-ui-fg-subtle">Order total</Text>
           <Text className="text-base text-ui-fg-subtle">
-            $
-            {
-              //@ts-ignore
-              cart.total / 100
-            }
+            €{cart.total as number}
           </Text>
         </div>
       </div>

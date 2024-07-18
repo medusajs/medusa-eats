@@ -11,12 +11,19 @@ export async function createCart(
   data: CreateCartDTO,
   restaurant_id: string
 ): Promise<CartDTO | undefined> {
-  console.log("Creating cart");
-
   const user = await retrieveUser();
+
+  const { regions } = await fetch(`${BACKEND_URL}/store/regions`).then((res) =>
+    res.json()
+  );
+
+  console.log({ regions });
+
+  const region = regions[0];
 
   const body = {
     email: user?.email || null,
+    region_id: region.id,
     ...data,
   };
 
@@ -73,7 +80,7 @@ export async function addToCart(
   if (!cartId) {
     cart = await createCart(
       {
-        currency_code: "USD",
+        currency_code: "EUR",
       },
       restaurantId
     );

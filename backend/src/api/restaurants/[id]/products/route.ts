@@ -1,83 +1,28 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { IProductModuleService } from "@medusajs/types";
 import {
-  MedusaError,
   ContainerRegistrationKeys,
+  MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
-import { CreateProductDTO, ProductDTO } from "@medusajs/types";
 import zod from "zod";
-import { createVariantPriceSet } from "../../../../utils/create-variant-price-set";
-import { IProductModuleService } from "@medusajs/types";
 import { IRestaurantModuleService } from "../../../../types/restaurant/common";
-
-const schema = zod.object({
-  title: zod.string(),
-  description: zod.string().optional(),
-  category_id: zod.string(),
-  price: zod.string(),
-  sku: zod.string().optional(),
-  thumbnail: zod.string().optional(),
-});
+import { createRestaurantProductsWorkflow } from "../../../../workflows/restaurant/workflows";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const validatedBody = schema.parse(req.body);
+  const { products } = JSON.parse(req.body as string);
 
-  if (!validatedBody) {
-    return res.status(400).json({ message: "Missing restaurant admin data" });
-  }
-
-  const { price, category_id, ...rest } = validatedBody;
-  const productData = rest as CreateProductDTO & { categories: any[] };
-
-  const restaurantId = req.params.id;
-
-  productData.categories = [{ id: category_id }];
-
-  productData.variants = [
-    {
-      title: validatedBody.title,
-      manage_inventory: false,
+  const { result: restaurantProducts } = await createRestaurantProductsWorkflow(
+    req.scope
+  ).run({
+    input: {
+      products,
+      restaurant_id: req.params.id,
     },
-  ];
-
-  if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" });
-  }
-
-  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
-
-  const productModuleService = req.scope.resolve<IProductModuleService>(
-    "productModuleService"
-  );
-
-  // Create the product
-  const product: ProductDTO = await productModuleService.createProducts(
-    productData as CreateProductDTO
-  );
-
-  // Create and link a price set to the product variant
-  await createVariantPriceSet({
-    container: req.scope,
-    variantId: product.variants[0].id,
-    prices: [
-      {
-        amount: price,
-        currency_code: "usd",
-      },
-    ],
   });
 
-  // Add the product to the restaurant
-  const restaurantProduct =
-    await restaurantModuleService.createRestaurantProducts({
-      restaurant_id: restaurantId,
-      product_id: product.id,
-    });
-
   // Return the product
-  return res.status(200).json({ restaurant_product: restaurantProduct });
+  return res.status(200).json({ restaurant_products: restaurantProducts });
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {

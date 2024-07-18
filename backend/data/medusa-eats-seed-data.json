@@ -1,13 +1,9 @@
 {
-  "regions": [
-    { "name": "EU", "currency_code": "EUR" },
-    { "name": "US", "currency_code": "USD" }
-  ],
   "restaurant": {
     "name": "Medusa Falafel",
     "handle": "medusa-falafel",
     "address": "Falafelgatan 1, 123 45 Copenhagen",
-    "email": "hello@medusa-falafel.dk",
+    "email": "hello@medusa-falafel.com",
     "phone": "+45 1234 5678",
     "image_url": "/_de4759b3-096f-47f6-936a-ea291df53f9f.jpeg",
     "is_open": true
@@ -34,7 +30,6 @@
   ],
   "products": [
     {
-      "id": "prod_01HY2XDY3HWMEMVYASAZ1XYQB7",
       "title": "Margherita Delight",
       "handle": "margherita-delight",
       "description": "Experience the simplicity and elegance of our Margherita Delight.",
@@ -42,10 +37,26 @@
       "status": "published",
       "thumbnail": "/_1ed747de-53f1-4915-aaba-92c046039beb.jpeg",
       "discountable": true,
-      "category": "pizzas"
+      "category": "pizzas",
+      "variants": [
+        {
+          "title": "Margherita Delight",
+          "manage_inventory": false,
+          "sku": "MARGHERITA-DELIGHT",
+          "prices": [
+            {
+              "amount": 12.99,
+              "currency_code": "USD"
+            },
+            {
+              "amount": 9.99,
+              "currency_code": "EUR"
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "prod_01HY2XEVQBE33V1XPN6EYKZ8RX",
       "title": "Spicy Pepperoni Extravaganza",
       "handle": "spicy-pepperoni-extravaganza",
       "description": "Indulge in the bold flavors of our Spicy Pepperoni Extravaganza.",
@@ -53,10 +64,26 @@
       "status": "published",
       "thumbnail": "/_35841975-1e89-4c07-adb8-208cc8c59e17.jpeg",
       "discountable": true,
-      "category": "pizzas"
+      "category": "pizzas",
+      "variants": [
+        {
+          "title": "Spicy Pepperoni Extravaganza",
+          "manage_inventory": false,
+          "sku": "SPICY-PEPPERONI-EXTRAVAGANZA",
+          "prices": [
+            {
+              "amount": 14.99,
+              "currency_code": "USD"
+            },
+            {
+              "amount": 11.99,
+              "currency_code": "EUR"
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "prod_01HY2XG0JD0ZSZME81KV64VZJQ",
       "title": "Falafel Wrap Supreme",
       "handle": "falafel-wrap-supreme",
       "description": "Enjoy the Falafel Wrap Supreme, a delectable blend of crispy falafel balls all wrapped in a warm, soft pita.",
@@ -64,10 +91,26 @@
       "status": "published",
       "thumbnail": "/_de4759b3-096f-47f6-936a-ea291df53f9f.jpeg",
       "discountable": true,
-      "category": "falafel"
+      "category": "falafel",
+      "variants": [
+        {
+          "title": "Falafel Wrap Supreme",
+          "manage_inventory": false,
+          "sku": "FALAFEL-WRAP-SUPREME",
+          "prices": [
+            {
+              "amount": 9.99,
+              "currency_code": "USD"
+            },
+            {
+              "amount": 7.99,
+              "currency_code": "EUR"
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "prod_01HY2XH0W3YVG7MYKVXVHWAYYJ",
       "title": "Mediterranean Falafel Salad",
       "handle": "mediterranean-falafel-salad",
       "description": "Delight in the fresh and vibrant Mediterranean Falafel Salad.",
@@ -75,10 +118,26 @@
       "status": "published",
       "thumbnail": "/_411c260a-d6e5-4989-9a00-1cd8b80265fb.jpeg",
       "discountable": true,
-      "category": "falafel"
+      "category": "falafel",
+      "variants": [
+        {
+          "title": "Mediterranean Falafel Salad",
+          "manage_inventory": false,
+          "sku": "MEDITERRANEAN-FALAFEL-SALAD",
+          "prices": [
+            {
+              "amount": 11.99,
+              "currency_code": "USD"
+            },
+            {
+              "amount": 8.99,
+              "currency_code": "EUR"
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "prod_01HY2XHR3P8SBVN6V0DQ5P9RVD",
       "title": "Craft Lager Beer",
       "handle": "craft-lager-beer",
       "description": "Refresh yourself with our Craft Lager Beer, a perfectly balanced brew with a smooth, crisp finish.",
@@ -86,18 +145,51 @@
       "status": "published",
       "thumbnail": "/_ca16b6a2-9c4c-4a6a-98fa-620f12f6123f.jpeg",
       "discountable": true,
-      "category": "drinks"
+      "category": "drinks",
+      "variants": [
+        {
+          "title": "Craft Lager Beer",
+          "manage_inventory": false,
+          "sku": "CRAFT-LAGER-BEER",
+          "prices": [
+            {
+              "amount": 5.99,
+              "currency_code": "USD"
+            },
+            {
+              "amount": 4.99,
+              "currency_code": "EUR"
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "prod_01HY2XJE3G85V7TTEJ0ZPHMKXK",
       "title": "Chilled Coke Zero",
       "handle": "chilled-coke-zero",
       "description": "Quench your thirst with an ice-cold Coke Zero",
       "is_giftcard": false,
       "status": "published",
-      "thumbnail": "{{FRONTEND_URL}}_4476ce30-b852-402d-b65f-e3db54165e4c.jpeg",
+      "thumbnail": "/_4476ce30-b852-402d-b65f-e3db54165e4c.jpeg",
       "discountable": true,
-      "category": "drinks"
+      "category": "drinks",
+      "variants": [
+        {
+          "title": "Chilled Coke Zero",
+          "manage_inventory": false,
+          "sku": "CHILLED-COKE-ZERO",
+          "prices": [
+            {
+              "amount": 2.99,
+              "currency_code": "USD"
+            },
+            {
+              "amount": 1.99,
+              "currency_code": "EUR"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

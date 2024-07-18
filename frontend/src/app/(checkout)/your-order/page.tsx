@@ -101,7 +101,7 @@ export default async function YourOrderPage() {
                   {item.title}
                 </Text>
                 <Text className="text-sm text-ui-fg-subtle text-nowrap">
-                  {item.quantity} x ${item.unit_price / 100}
+                  {item.quantity} x €{item.unit_price}
                 </Text>
               </div>
             </div>

@@ -8,7 +8,7 @@ import {
 export interface IRestaurantModuleService extends IModuleService {
   createRestaurantProducts(
     data: RestaurantProductDTO | RestaurantProductDTO[]
-  ): Promise<void>;
+  ): Promise<RestaurantProductDTO>;
   listRestaurants(filter?: any, options?: any): Promise<RestaurantDTO[]>;
   listRestaurantAdmins(
     filter?: any,
@@ -34,7 +34,7 @@ export interface IRestaurantModuleService extends IModuleService {
     adminId: string,
     data: Partial<RestaurantAdminDTO>
   ): Promise<RestaurantAdminDTO>;
-  deleteRestaurants(restaurantId: string): Promise<void>;
+  deleteRestaurants(restaurantId: string[]): Promise<void>;
   deleteRestaurantAdmin(adminId: string): Promise<void>;
   deleteRestaurantProducts(
     data: RestaurantProductDTO | RestaurantProductDTO[]

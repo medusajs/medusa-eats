@@ -4,7 +4,7 @@ import {
   IPricingModuleService,
   PriceSetDTO,
 } from "@medusajs/types";
-import { Modules } from "@medusajs/utils";
+import { Modules, remoteQueryObjectFromString } from "@medusajs/utils";
 
 export const createVariantPriceSet = async ({
   container,
@@ -16,6 +16,7 @@ export const createVariantPriceSet = async ({
   prices: CreatePriceSetDTO["prices"];
 }): Promise<PriceSetDTO> => {
   const remoteLink = container.resolve("remoteLink");
+  const remoteQuery = container.resolve("remoteQuery");
   const pricingModuleService: IPricingModuleService = container.resolve(
     "pricingModuleService"
   );
@@ -29,7 +30,15 @@ export const createVariantPriceSet = async ({
     [Modules.PRICING]: { price_set_id: priceSet.id },
   });
 
-  return await pricingModuleService.retrievePriceSet(priceSet.id, {
-    relations: ["prices"],
+  const pricingQuery = remoteQueryObjectFromString({
+    entryPoint: "price",
+    fields: ["*"],
+    variables: {
+      filters: {
+        id: priceSet.id,
+      },
+    },
   });
+
+  return await remoteQuery(pricingQuery);
 };

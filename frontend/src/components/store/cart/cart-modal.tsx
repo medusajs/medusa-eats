@@ -64,7 +64,7 @@ function CartItem({ item }: { item: Record<string, any> }) {
             {item.title}
           </Heading>
           <Text className="text-sm text-ui-fg-subtle">
-            {item.quantity} x ${item.unit_price / 100}
+            {item.quantity} x €{item.unit_price}
           </Text>
         </div>
         <IconButton
