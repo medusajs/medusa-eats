@@ -32,8 +32,6 @@ export async function getPricesByPriceSetId({
         }
       )) as unknown as CalculatedPriceSetDTO[];
 
-      console.log({ price });
-
       delete variant.price;
 
       if (!price) continue;

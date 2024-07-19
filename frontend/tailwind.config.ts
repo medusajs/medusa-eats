@@ -18,5 +18,6 @@ const config: Config = {
   },
   plugins: [],
   presets: [require("@medusajs/ui-preset")],
+  darkMode: "selector",
 };
 export default config;

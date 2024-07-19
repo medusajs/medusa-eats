@@ -17,8 +17,6 @@ export async function createCart(
     res.json()
   );
 
-  console.log({ regions });
-
   const region = regions[0];
 
   const body = {
@@ -26,8 +24,6 @@ export async function createCart(
     region_id: region.id,
     ...data,
   };
-
-  console.log({ body });
 
   let cart;
 
