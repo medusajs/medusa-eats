@@ -13,18 +13,18 @@ const Drivers = () => {
       <div className="p-6">
         <Heading className="txt-large-plus">Drivers</Heading>
       </div>
-      {loading && <Text>Loading...</Text>}
-      {data?.drivers && (
-        <Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Phone</Table.HeaderCell>
-              <Table.HeaderCell>Email</Table.HeaderCell>
-              <Table.HeaderCell>Completed deliveries</Table.HeaderCell>
-              <Table.HeaderCell>Actions</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Phone</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+            <Table.HeaderCell>Completed deliveries</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        {loading && <Text>Loading...</Text>}
+        {data?.drivers && (
           <Table.Body>
             {data.drivers.map((driver) => {
               return (
@@ -50,8 +50,8 @@ const Drivers = () => {
               );
             })}
           </Table.Body>
-        </Table>
-      )}
+        )}
+      </Table>
       <div className="p-6"></div>
     </Container>
   );

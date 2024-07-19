@@ -13,17 +13,17 @@ const Restaurants = () => {
         <Heading className="txt-large-plus">Restaurants</Heading>
       </div>
       {loading && <Text>Loading...</Text>}
-      {data?.restaurants && (
-        <Table>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Status</Table.HeaderCell>
-              <Table.HeaderCell>Phone</Table.HeaderCell>
-              <Table.HeaderCell>Email</Table.HeaderCell>
-              <Table.HeaderCell>Actions</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Status</Table.HeaderCell>
+            <Table.HeaderCell>Phone</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        {data?.restaurants && (
           <Table.Body>
             {data.restaurants.map((restaurant) => (
               <Table.Row key={restaurant.id}>
@@ -41,8 +41,8 @@ const Restaurants = () => {
               </Table.Row>
             ))}
           </Table.Body>
-        </Table>
-      )}
+        )}
+      </Table>
       <div className="p-6"></div>
     </Container>
   );
