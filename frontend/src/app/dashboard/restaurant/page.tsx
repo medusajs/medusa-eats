@@ -76,18 +76,18 @@ export default async function RestaurantDashboardPage() {
               >
                 Edit menu
               </Link>
-              <Link
-                href="/dashboard/restaurant/settings"
-                className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover text-sm"
+              <Text
+                className="text-ui-fg-disabled text-sm"
+                aria-disabled={true}
               >
                 Edit settings
-              </Link>
-              <Link
-                href="/dashboard/restaurant/profile"
-                className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover text-sm"
+              </Text>
+              <Text
+                className="text-ui-fg-disabled text-sm"
+                aria-disabled={true}
               >
                 Edit profile
-              </Link>
+              </Text>
             </div>
           </div>
           <div className="flex justify-end">
