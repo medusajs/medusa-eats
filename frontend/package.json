@@ -11,6 +11,7 @@
   "dependencies": {
     "@dotlottie/react-player": "^1.6.19",
     "@medusajs/ui": "preview",
+    "eventsource": "^2.0.2",
     "jose": "^5.2.4",
     "next": "14.1.4",
     "next-view-transitions": "^0.1.1",
@@ -20,6 +21,7 @@
     "react-lottie": "^1.2.4"
   },
   "devDependencies": {
+    "@types/eventsource": "^1.1.15",
     "@medusajs/medusa": "preview",
     "@medusajs/types": "preview",
     "@medusajs/ui-preset": "preview",

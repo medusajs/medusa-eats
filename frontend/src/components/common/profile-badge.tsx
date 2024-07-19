@@ -11,7 +11,7 @@ type ProfileBadgeProps = {
 
 export function ProfileBadge({ user }: ProfileBadgeProps) {
   const dashboardPath = user
-    ? user.hasOwnProperty("restaurant")
+    ? user.hasOwnProperty("restaurant_id")
       ? "/dashboard/restaurant"
       : "/dashboard/driver"
     : "/dashboard/login";

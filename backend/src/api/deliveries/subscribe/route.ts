@@ -30,14 +30,16 @@ export const GET = async (
 ) => {
   const remoteQuery = req.scope.resolve("remoteQuery");
 
-  const { restaurant_id, driver_id } = req.query as {
+  const { restaurant_id, driver_id, delivery_id } = req.query as {
     restaurant_id: string;
     driver_id: string;
+    delivery_id: string;
   };
 
   const filters = {
     ...(restaurant_id && { restaurant_id }),
     ...(driver_id && { driver_id }),
+    ...(delivery_id && { id: delivery_id }),
   };
 
   const take = parseInt(req.query.take as string) || null,
@@ -63,7 +65,6 @@ export const GET = async (
     "Content-Type": "text/event-stream",
     Connection: "keep-alive",
     "Cache-Control": "no-cache",
-    "Access-Control-Allow-Origin": "*",
   };
 
   res.writeHead(200, headers);

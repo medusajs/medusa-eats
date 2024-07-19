@@ -15,7 +15,7 @@ const ADMIN_CORS = `${
 const STORE_CORS = `${
   process.env.STORE_CORS?.length
     ? `${process.env.STORE_CORS},`
-    : "http://localhost:8000,"
+    : "http://localhost:3000,"
 }https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app`;
 
 const DATABASE_URL =

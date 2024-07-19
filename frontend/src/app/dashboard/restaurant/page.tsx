@@ -1,4 +1,3 @@
-import { DeliveryStatus } from "@frontend/lib/types";
 import AccountBadge from "@frontend/components/dashboard/account-badge";
 import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
@@ -8,8 +7,8 @@ import {
   retrieveRestaurant,
   retrieveUser,
 } from "@frontend/lib/data";
+import { DeliveryStatus } from "@frontend/lib/types";
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui";
-import { revalidateTag } from "next/cache";
 import { Link } from "next-view-transitions";
 import { notFound, redirect } from "next/navigation";
 
@@ -31,11 +30,6 @@ export default async function RestaurantDashboardPage() {
     restaurant_id: restaurantId,
   });
   const openStatus = restaurant.is_open;
-
-  async function revalidateCacheTag(tag: string) {
-    "use server";
-    revalidateTag(tag);
-  }
 
   return (
     <>
@@ -61,10 +55,7 @@ export default async function RestaurantDashboardPage() {
             </div>
             <div className="flex gap-2">
               <Text>Connection status: </Text>{" "}
-              <RealtimeClient
-                restaurantId={restaurantId}
-                revalidate={revalidateCacheTag}
-              />
+              <RealtimeClient restaurantId={restaurantId} />
             </div>
           </div>
           <div className="flex justify-center">

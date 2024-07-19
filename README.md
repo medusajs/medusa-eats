@@ -89,7 +89,9 @@ cp .env.template .env
 
 ### Set up and seed the database
 
-The repo contains a setup script to create a database, build the project, run migrations and seed dummy data.
+Create a Postgres database called `medusa-eats`.
+
+The repo contains a setup script to build the project, run migrations and seed dummy data.
 
 > Make sure your local Postgres server is running.
 
@@ -111,13 +113,13 @@ pasword: supersecret
 You are now ready to start up your project.
 
 **Start Medusa dev server**
+Make sure that Redis and Postgres servers are running locally on their default ports.
+
 In `/backend` run:
 
 ```shell
 yarn dev
 ```
-
-Make sure that Redis and Postgres servers are running locally.
 
 The Medusa server is now running on http://localhost:9000.
 

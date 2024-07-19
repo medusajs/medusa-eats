@@ -8,15 +8,9 @@ import {
 } from "@frontend/lib/data";
 import { Clock } from "@medusajs/icons";
 import { Container, Heading, Text } from "@medusajs/ui";
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-
-async function revalidateCacheTag(tag: string) {
-  "use server";
-  revalidateTag(tag);
-}
 
 export default async function YourOrderPage() {
   const deliveryId = cookies().get("_medusa_delivery_id")?.value;
@@ -68,10 +62,7 @@ export default async function YourOrderPage() {
             Your order from {restaurant.name} | Medusa Eats
           </Heading>
           <Text>View your realtime order status.</Text>
-          <RealtimeClient
-            deliveryId={delivery.id}
-            revalidate={revalidateCacheTag}
-          />
+          <RealtimeClient deliveryId={delivery.id} />
         </div>
         {driver && <AccountBadge data={driver} type="driver" />}
         <Container className="flex gap-3 items-center w-fit h-fit p-4 bg-ui-bg-subtle self-center">

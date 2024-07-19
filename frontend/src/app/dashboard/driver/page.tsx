@@ -1,4 +1,3 @@
-import { DeliveryStatus } from "@frontend/lib/types";
 import AccountBadge from "@frontend/components/dashboard/account-badge";
 import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
@@ -7,8 +6,8 @@ import {
   retrieveDriver,
   retrieveUser,
 } from "@frontend/lib/data";
+import { DeliveryStatus } from "@frontend/lib/types";
 import { Container, Heading, Text } from "@medusajs/ui";
-import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export default async function DriverDashboardPage() {
@@ -23,11 +22,6 @@ export default async function DriverDashboardPage() {
     driver_id: driver.id,
   });
 
-  async function revalidateCacheTag(tag: string) {
-    "use server";
-    revalidateTag(tag);
-  }
-
   return (
     <div className="flex flex-col gap-20">
       <Container className="flex justify-between p-8">
@@ -36,10 +30,7 @@ export default async function DriverDashboardPage() {
             {driver.first_name} {driver.last_name} | Driver Dashboard
           </Heading>
           <Text>View and manage your Medusa Eats deliveries.</Text>
-          <RealtimeClient
-            driverId={driver.id}
-            revalidate={revalidateCacheTag}
-          />
+          <RealtimeClient driverId={driver.id} />
         </div>
         <AccountBadge data={driver} type="driver" />
       </Container>

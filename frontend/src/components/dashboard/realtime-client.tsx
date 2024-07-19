@@ -4,23 +4,19 @@ import { StatusBadge } from "@medusajs/ui";
 import { useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
-
 export default function RealtimeClient({
   restaurantId,
   driverId,
   deliveryId,
-  revalidate,
 }: {
   restaurantId?: string;
   driverId?: string;
   deliveryId?: string;
-  revalidate: (tag: string) => void;
 }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  let serverUrl = BACKEND_URL + "/deliveries/subscribe";
+  let serverUrl = "/api/subscribe";
 
   if (restaurantId) {
     serverUrl += `?restaurant_id=${restaurantId}`;
@@ -41,7 +37,6 @@ export default function RealtimeClient({
     source.onmessage = (message: Record<string, any>) => {
       const data = JSON.parse(message.data);
 
-      revalidate("deliveries");
       data.new && audio.play();
 
       startTransition(() => {
