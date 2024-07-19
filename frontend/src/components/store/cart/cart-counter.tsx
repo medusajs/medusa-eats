@@ -9,7 +9,7 @@ export function CartCounter({ cart }: { cart: any }) {
     <Text
       key={numberOfItems}
       className={clx(
-        "absolute flex bottom-2 right-2 rounded-full bg-ui-bg-base group-hover:bg-ui-fg-base group-hover:text-ui-bg-base p-1 h-4 items-center justify-center txt-compact-xsmall-plus",
+        "absolute flex bottom-2 right-2 rounded-full bg-ui-bg-base group-hover:bg-ui-fg-base group-hover:text-ui-bg-base p-1 h-4 w-4 items-center justify-center text-[10px]",
         {
           "animate-bounce duration-300 repeat-1": numberOfItems > 0,
         }

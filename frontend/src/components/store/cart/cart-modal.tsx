@@ -14,7 +14,7 @@ export default function CartModal({
   handleCheckoutClick: () => void;
 }) {
   return (
-    <Container className="flex flex-col gap-4 w-fit min-w-72 max-h-[80vh] overflow-y-scroll m-0">
+    <Container className="flex flex-col gap-4 w-fit min-w-72 max-h-[80vh] overflow-y-auto m-0">
       <Heading level="h2" className="text-lg font-semibold text-ui-fg-base">
         Your order
       </Heading>
