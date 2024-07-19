@@ -101,7 +101,7 @@ You are now ready to start up your project.
 **Start Medusa dev server**
 In `/backend` run: 
 ```shell
-medusa develop
+yarn dev
 ```
 
 Make sure that Redis and Postgres servers are running locally.
