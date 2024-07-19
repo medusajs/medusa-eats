@@ -149,7 +149,7 @@ We're gonna create a restaurant admin and driver account so we'll have access to
 
 ### Place an order and handle a delivery
 
-> To go through the entire delivery workflow in realtim, you'll need to log into both a restaurant and a driver account. To do so, use an icognito window or second browser.
+> To go through the entire delivery workflow in realtime, you'll need to log into both a restaurant and a driver account. To do so, use an icognito window or second browser.
 
 1. Go to the storefront at http://localhost:3000/.
 2. Select a restaurant from the list.
