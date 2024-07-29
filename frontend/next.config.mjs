@@ -13,7 +13,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: process.env.VERCEL_URL,
+        hostname: "medusa-eats.vercel.app",
       },
     ],
   },
