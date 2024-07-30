@@ -4,6 +4,9 @@ import { cookies } from "next/headers";
 import "server-only";
 
 const jwtSecret = process.env.JWT_SECRET || "supersecret";
+
+console.log("jwtSecret", jwtSecret);
+
 const encodedKey = new TextEncoder().encode(jwtSecret);
 
 export function createSession(token: string) {
