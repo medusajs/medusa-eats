@@ -55,7 +55,11 @@ export const POST = async (
 
   const authUser = await authService.retrieveAuthIdentity(auth_identity_id);
   const { jwtSecret } = req.scope.resolve("configModule").projectConfig.http;
-  const token = jwt.sign(authUser, jwtSecret);
+
+  const token = jwt.sign(authUser, jwtSecret, {
+    encoding: "utf-8",
+    algorithm: "HS256",
+  });
 
   res.status(201).json({ user: result, token });
 };
