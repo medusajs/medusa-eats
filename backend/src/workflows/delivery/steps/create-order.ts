@@ -1,8 +1,9 @@
-import { CreateOrderShippingMethodDTO } from "@medusajs/types";
-import { IOrderModuleService } from "@medusajs/types";
+import {
+  CreateOrderShippingMethodDTO,
+  IOrderModuleService,
+} from "@medusajs/types";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { IDeliveryModuleService } from "../../../types/delivery/common";
 
 export const createOrderStepId = "create-order-step";
 export const createOrderStep = createStep(
@@ -52,9 +53,7 @@ export const createOrderStep = createStep(
 
     delivery.order_id = order?.id;
 
-    const deliveryModuleService = container.resolve<IDeliveryModuleService>(
-      "deliveryModuleService"
-    );
+    const deliveryModuleService = container.resolve("deliveryModuleService");
 
     await deliveryModuleService.updateDeliveries([
       {
@@ -78,9 +77,7 @@ export const createOrderStep = createStep(
     },
     { container }
   ) => {
-    const deliveryService = container.resolve<IDeliveryModuleService>(
-      "deliveryModuleService"
-    );
+    const deliveryService = container.resolve("deliveryModuleService");
 
     await deliveryService.updateDeliveries([
       {

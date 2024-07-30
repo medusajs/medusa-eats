@@ -1,6 +1,5 @@
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { IDeliveryModuleService } from "../../../types/delivery/common";
 
 export type CreateDeliveryStepInput = {
   cart_id: string;
@@ -34,18 +33,14 @@ export const createDeliveryStep = createStep(
       transaction_id: context.transactionId,
     };
 
-    const service = container.resolve<IDeliveryModuleService>(
-      "deliveryModuleService"
-    );
+    const service = container.resolve("deliveryModuleService");
 
     const delivery = await service.createDeliveries(data);
 
     return new StepResponse(delivery, delivery.id);
   },
   (deliveryId: string, { container }) => {
-    const service = container.resolve<IDeliveryModuleService>(
-      "deliveryModuleService"
-    );
+    const service = container.resolve("deliveryModuleService");
 
     return service.softDeleteDeliveries(deliveryId);
   }

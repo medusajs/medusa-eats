@@ -1,6 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import zod from "zod";
-import { IDeliveryModuleService } from "../../types/delivery/common";
 import { CreateDriverDTO } from "../../types/delivery/mutations";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
 
@@ -26,9 +25,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing driver data" });
   }
 
-  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
-    "deliveryModuleService"
-  );
+  const deliveryModuleService = req.scope.resolve("deliveryModuleService");
 
   try {
     const driver = await deliveryModuleService.createDrivers(validatedBody);

@@ -1,9 +1,6 @@
-import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import {
-  DriverDTO,
-  IDeliveryModuleService,
-} from "../../../types/delivery/common";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { StepResponse, createStep } from "@medusajs/workflows-sdk";
+import { DriverDTO } from "../../../types/delivery/common";
 
 export type CreateDeliveryStepInput = {
   delivery_id: string;
@@ -30,18 +27,14 @@ export const deleteDeliveryDriversStep = createStep(
       .then((res) => res.map((d: DriverDTO) => d.id))
       .catch(() => []);
 
-    const deliveryModuleService = container.resolve<IDeliveryModuleService>(
-      "deliveryModuleService"
-    );
+    const deliveryModuleService = container.resolve("deliveryModuleService");
 
     await deliveryModuleService.softDeleteDeliveryDrivers(drivers);
 
     return new StepResponse(drivers, drivers);
   },
   (deletedDrivers: string[], { container }) => {
-    const service = container.resolve<IDeliveryModuleService>(
-      "deliveryModuleService"
-    );
+    const service = container.resolve("deliveryModuleService");
 
     return service.restoreDeliveryDrivers(deletedDrivers);
   }

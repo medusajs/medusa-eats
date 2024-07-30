@@ -3,7 +3,6 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa";
-import { IAuthModuleService } from "@medusajs/types";
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -12,7 +11,6 @@ import {
 } from "@medusajs/utils";
 import jwt from "jsonwebtoken";
 import zod from "zod";
-import { IRestaurantModuleService } from "../../../../types/restaurant/common";
 import { createUserWorkflow } from "../../../../workflows/user/workflows/create-user";
 
 const schema = zod
@@ -52,9 +50,7 @@ export const POST = async (
     throw errors[0].error;
   }
 
-  const authService = req.scope.resolve<IAuthModuleService>(
-    ModuleRegistrationName.AUTH
-  );
+  const authService = req.scope.resolve(ModuleRegistrationName.AUTH);
 
   const authUser = await authService.retrieveAuthIdentity(authIdentityId);
   const { jwtSecret } = req.scope.resolve("configModule").projectConfig.http;
@@ -95,9 +91,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
+  const restaurantModuleService = req.scope.resolve("restaurantModuleService");
 
   await restaurantModuleService.deleteRestaurantAdmin(adminId);
 

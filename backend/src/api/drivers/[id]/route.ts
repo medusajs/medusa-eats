@@ -1,7 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
-import { IDeliveryModuleService } from "../../../types/delivery/common";
 
 const schema = zod.object({
   first_name: zod.string().optional(),
@@ -18,9 +17,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
-    "deliveryModuleService"
-  );
+  const deliveryModuleService = req.scope.resolve("deliveryModuleService");
 
   const driverId = req.params.id;
 
@@ -67,9 +64,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const deliveryModuleService = req.scope.resolve<IDeliveryModuleService>(
-    "deliveryModuleService"
-  );
+  const deliveryModuleService = req.scope.resolve("deliveryModuleService");
 
   await deliveryModuleService.deleteDrivers(driverId);
 

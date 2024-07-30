@@ -70,3 +70,9 @@ export interface RestaurantProductDTO {
   restaurant_id: string;
   product_id: string;
 }
+
+declare module "@medusajs/types" {
+  export interface ModuleImplementations {
+    restaurantModuleService: IRestaurantModuleService;
+  }
+}

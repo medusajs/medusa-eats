@@ -1,13 +1,7 @@
 import { MedusaError } from "@medusajs/utils";
 import { createStep, StepResponse } from "@medusajs/workflows-sdk";
-import {
-  DriverDTO,
-  IDeliveryModuleService,
-} from "../../../types/delivery/common";
-import {
-  IRestaurantModuleService,
-  RestaurantAdminDTO,
-} from "../../../types/restaurant/common";
+import { DriverDTO } from "../../../types/delivery/common";
+import { RestaurantAdminDTO } from "../../../types/restaurant/common";
 import {
   CreateDriverInput,
   CreateRestaurantAdminInput,
@@ -32,9 +26,7 @@ export const createUserStep = createStep(
     StepResponse<RestaurantAdminDTO | DriverDTO, CompensationStepInput>
   > => {
     if (input.actor_type === "restaurant") {
-      const service = container.resolve<IRestaurantModuleService>(
-        "restaurantModuleService"
-      );
+      const service = container.resolve("restaurantModuleService");
 
       const restaurantAdmin = await service.createRestaurantAdmins(
         input as CreateRestaurantAdminInput
@@ -49,9 +41,7 @@ export const createUserStep = createStep(
     }
 
     if (input.actor_type === "driver") {
-      const service = container.resolve<IDeliveryModuleService>(
-        "deliveryModuleService"
-      );
+      const service = container.resolve("deliveryModuleService");
 
       const driverData = {
         ...input,
@@ -74,17 +64,13 @@ export const createUserStep = createStep(
   },
   function ({ id, actor_type }: CompensationStepInput, { container }) {
     if (actor_type === "restaurant") {
-      const service = container.resolve<IRestaurantModuleService>(
-        "restaurantModuleService"
-      );
+      const service = container.resolve("restaurantModuleService");
 
       return service.deleteRestaurantAdmin(id);
     }
 
     if (actor_type === "driver") {
-      const service = container.resolve<IDeliveryModuleService>(
-        "deliveryModuleService"
-      );
+      const service = container.resolve("deliveryModuleService");
 
       return service.deleteDrivers(id);
     }

@@ -1,5 +1,4 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { IRestaurantModuleService } from "../../../../types/restaurant/common";
 import zod from "zod";
 
 const schema = zod.object({
@@ -10,12 +9,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { id } = req.params;
   const { is_open } = schema.parse(req.body);
 
-  const restaurantService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
+  const restaurantService = req.scope.resolve("restaurantModuleService");
 
   try {
-    const restaurant = await restaurantService.updateRestaurant(id, {
+    const restaurant = await restaurantService.updateRestaurants(id, {
       is_open,
     });
     res.status(200).json({ restaurant });

@@ -6,7 +6,6 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import zod from "zod";
-import { IRestaurantModuleService } from "../../../../types/restaurant/common";
 import { createRestaurantProductsWorkflow } from "../../../../workflows/restaurant/workflows";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -91,9 +90,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     return res.status(400).json({ message: "Missing restaurant id" });
   }
 
-  const restaurantModuleService = req.scope.resolve<IRestaurantModuleService>(
-    "restaurantModuleService"
-  );
+  const restaurantModuleService = req.scope.resolve("restaurantModuleService");
 
   const productModuleService = req.scope.resolve<IProductModuleService>(
     "productModuleService"

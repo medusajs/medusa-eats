@@ -1,5 +1,4 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { IRestaurantModuleService } from "../../../types/restaurant/common";
 
 type StepInput = {
   product_ids: string[];
@@ -10,7 +9,7 @@ export const createRestaurantProductsStepId = "create-restaurant-product-step";
 export const createRestaurantProductsStep = createStep(
   createRestaurantProductsStepId,
   async function (data: StepInput, { container }) {
-    const restaurantModuleService = container.resolve<IRestaurantModuleService>(
+    const restaurantModuleService = container.resolve(
       "restaurantModuleService"
     );
 
@@ -37,7 +36,7 @@ export const createRestaurantProductsStep = createStep(
     },
     { container }
   ) {
-    const restaurantModuleService = container.resolve<IRestaurantModuleService>(
+    const restaurantModuleService = container.resolve(
       "restaurantModuleService"
     );
 
