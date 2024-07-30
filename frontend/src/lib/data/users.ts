@@ -1,6 +1,9 @@
 import { retrieveSession } from "./sessions";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+const BACKEND_URL =
+  process.env.BACKEND_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:9000";
 
 export async function retrieveUser() {
   const token = retrieveSession();

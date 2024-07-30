@@ -1,4 +1,7 @@
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+const BACKEND_URL =
+  process.env.BACKEND_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:9000";
 
 export async function listCategories() {
   const { product_categories } = await fetch(

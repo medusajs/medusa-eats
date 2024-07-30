@@ -4,7 +4,10 @@ import EventSource from "eventsource";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+const BACKEND_URL =
+  process.env.BACKEND_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:9000";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   let responseStream = new TransformStream();

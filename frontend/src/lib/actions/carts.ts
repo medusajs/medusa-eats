@@ -5,7 +5,10 @@ import { CartDTO, CreateCartDTO } from "@medusajs/types";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+const BACKEND_URL =
+  process.env.BACKEND_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:9000";
 
 export async function createCart(
   data: CreateCartDTO,

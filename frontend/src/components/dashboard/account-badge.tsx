@@ -7,7 +7,10 @@ import {
 import { Badge, Text } from "@medusajs/ui";
 import Image from "next/image";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:9000";
+const BACKEND_URL =
+  process.env.BACKEND_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:9000";
 
 async function getDeliveries(query: string) {
   const { deliveries } = await fetch(
