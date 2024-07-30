@@ -1,4 +1,4 @@
-import { JWTPayload, jwtVerify } from "jose";
+import { jwtVerify } from "jose";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import "server-only";
@@ -6,8 +6,6 @@ import "server-only";
 const jwtSecret = process.env.JWT_SECRET || "supersecret";
 
 console.log("jwtSecret", jwtSecret);
-
-const encodedKey = new TextEncoder().encode(jwtSecret);
 
 export function createSession(token: string) {
   if (!token) {
@@ -42,11 +40,23 @@ export function destroySession() {
 
 export async function decrypt(
   session: string | undefined = ""
-): Promise<JWTPayload | { message: string }> {
+): Promise<object | { message: string }> {
   try {
-    const { payload } = await jwtVerify(session, encodedKey, {
+    // Convert the secret to a CryptoKey
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(jwtSecret);
+    const cryptoKey = await crypto.subtle.importKey(
+      "raw",
+      keyData,
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"]
+    );
+
+    const { payload } = await jwtVerify(session, cryptoKey, {
       algorithms: ["HS256"],
     });
+
     return payload;
   } catch (error) {
     console.error(error);

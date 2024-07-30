@@ -920,7 +920,15 @@
     "@mikro-orm/postgresql" "5.9.7"
     awilix "^8.0.0"
 
-"@medusajs/medusa-cli@1.3.23-preview-20240709090451", "@medusajs/medusa-cli@preview":
+"@medusajs/medusa-cli@1.3.23-preview-20240709090451":
+  version "0.0.0"
+  uid ""
+
+"@medusajs/medusa-cli@link:./node_modules/@medusajs/medusa-cli":
+  version "0.0.0"
+  uid ""
+
+"@medusajs/medusa-cli@preview":
   version "1.3.23-preview-20240709090451"
   resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.3.23-preview-20240709090451.tgz#dfef67bfd26c86d9692a60e5d3b8b813b1867182"
   integrity sha512-ZKm+/PifFtmLKEedZb8viWXErcWsTq9ieOSHYqqDuwPrGngNFC+r1QU1tNEQ836YZD0MEdsv+QhPcnMTu7kpTw==
@@ -4243,6 +4251,13 @@
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-2.0.4.tgz#7eb47726c391b7345a6ec35ad7f4de469cf5ba4f"
   integrity sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==
+
+"@types/jsonwebtoken@^9.0.6":
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-9.0.6.tgz#d1af3544d99ad992fb6681bbe60676e06b032bd3"
+  integrity sha512-/5hndP5dCjloafCXns6SZyESp3Ldq7YjH3zwzwczYnjxIT0Fqzk5ROSYVGfFyczIue7IUEj8hkvLbPoLQ18vQw==
+  dependencies:
+    "@types/node" "*"
 
 "@types/mime@1.3.5", "@types/mime@^1":
   version "1.3.5"

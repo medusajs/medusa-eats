@@ -57,7 +57,6 @@ export const POST = async (
   const { jwtSecret } = req.scope.resolve("configModule").projectConfig.http;
 
   const token = jwt.sign(authUser, jwtSecret, {
-    encoding: "utf-8",
     algorithm: "HS256",
   });
 
