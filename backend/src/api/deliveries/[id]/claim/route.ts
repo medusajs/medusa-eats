@@ -11,7 +11,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = schema.parse(req.body);
   const deliveryId = req.params.id;
 
-  if (!deliveryId || !validatedBody.driver_id) {
+  if (!validatedBody.driver_id) {
     return MedusaError.Types.INVALID_DATA;
   }
 
