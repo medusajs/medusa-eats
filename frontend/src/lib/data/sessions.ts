@@ -49,6 +49,7 @@ export async function decrypt(
     });
     return payload;
   } catch (error) {
+    console.error(error);
     return { message: "Error decrypting session" };
   }
 }
