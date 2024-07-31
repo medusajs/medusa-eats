@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 export default async function DriverDashboardPage() {
   const user = await retrieveUser();
 
-  if (!user || user.actor_type !== "driver") {
+  if (!user || !user.id.includes("drv_")) {
     redirect("/login");
   }
 

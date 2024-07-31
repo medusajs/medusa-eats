@@ -15,10 +15,10 @@ export const useDrivers = (
   const filterQuery = new URLSearchParams(query).toString();
 
   useEffect(() => {
-    const fetchRestaurants = async () => {
+    const fetchDrivers = async () => {
       try {
         const response = await fetch(
-          BACKEND_URL + (query ? `?${filterQuery}` : "")
+          BACKEND_URL + "/drivers" + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);
@@ -29,7 +29,7 @@ export const useDrivers = (
       }
     };
 
-    fetchRestaurants();
+    fetchDrivers();
   }, []);
 
   return { data, loading };
