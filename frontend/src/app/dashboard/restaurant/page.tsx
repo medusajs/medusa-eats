@@ -15,7 +15,7 @@ import { notFound, redirect } from "next/navigation";
 export default async function RestaurantDashboardPage() {
   const user = await retrieveUser();
 
-  if (!user) {
+  if (!user || user.actor_type !== "restaurant") {
     redirect("/login");
   }
 
