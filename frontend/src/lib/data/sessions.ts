@@ -57,6 +57,8 @@ export async function decrypt(
       algorithms: ["HS256"],
     });
 
+    console.log("frontend payload", payload);
+
     return payload;
   } catch (error) {
     console.error(error);

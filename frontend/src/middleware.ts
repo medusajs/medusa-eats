@@ -3,11 +3,18 @@ import { decrypt } from "./lib/data/sessions";
 import { JWTPayload } from "jose";
 
 export async function middleware(request: NextRequest) {
+  const token = request.cookies.get("_medusa_jwt")?.value;
+
+  if (!token) {
+    console.log("no token");
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   const payload = (await decrypt(
     request.cookies.get("_medusa_jwt")?.value
   )) as JWTPayload;
 
-  console.log(payload);
+  console.log({ payload });
 
   // If the user is authenticated with the appropriate role, continue as normal
   if (
@@ -22,10 +29,6 @@ export async function middleware(request: NextRequest) {
     console.log("driver");
     return NextResponse.next();
   }
-
-  // Redirect to login page if not authenticated
-  console.log("redirecting to login");
-  return NextResponse.redirect(new URL("/login", request.url));
 }
 
 export const config = {
