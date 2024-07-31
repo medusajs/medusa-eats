@@ -9,11 +9,8 @@ export async function retrieveUser() {
   const token = retrieveSession();
 
   if (!token) {
-    console.log("no token in retrieveUser");
     return null;
   }
-
-  console.log("token in retrieveUser", token);
 
   const { user } = await fetch(`${BACKEND_URL}/users/me`, {
     headers: {
@@ -29,8 +26,6 @@ export async function retrieveUser() {
     .catch((err) => {
       console.error(err);
     });
-
-  console.log("user in retrieveUser", user);
 
   return user;
 }

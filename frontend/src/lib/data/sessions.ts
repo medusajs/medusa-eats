@@ -5,8 +5,6 @@ import "server-only";
 
 const jwtSecret = process.env.JWT_SECRET || "supersecret";
 
-console.log("jwtSecret", jwtSecret);
-
 export function createSession(token: string) {
   if (!token) {
     return;
@@ -56,8 +54,6 @@ export async function decrypt(
     const { payload } = await jwtVerify(session, cryptoKey, {
       algorithms: ["HS256"],
     });
-
-    console.log("frontend payload", payload);
 
     return payload;
   } catch (error) {
