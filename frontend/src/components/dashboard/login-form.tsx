@@ -55,7 +55,7 @@ export function LoginForm() {
         </Link>
         <Submit />
       </div>
-      {state.message && (
+      {state?.message && (
         <Badge className="justify-center text-center">{state.message}</Badge>
       )}
     </form>

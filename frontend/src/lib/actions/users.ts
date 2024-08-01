@@ -125,13 +125,7 @@ export async function login(prevState: FormState, data: FormData) {
     };
   }
 
-  const payload = (await decrypt(token!)) as JWTPayload;
-
-  redirecter(payload?.actor_type as "restaurant" | "driver");
-
-  return {
-    message: "User logged in",
-  };
+  redirecter(actor_type);
 }
 
 export async function createAuthUser({

@@ -1,4 +1,8 @@
-import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk";
+import {
+  createWorkflow,
+  WorkflowData,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk";
 import { CreateRestaurantDTO } from "../../../types/restaurant/mutations";
 import { createRestaurantStep } from "../steps";
 
@@ -8,9 +12,9 @@ type WorkflowInput = {
 
 export const createRestaurantWorkflow = createWorkflow(
   "create-restaurant-workflow",
-  (input: WorkflowData<WorkflowInput>) => {
+  function (input: WorkflowData<WorkflowInput>) {
     const restaurant = createRestaurantStep(input.restaurant);
 
-    return restaurant;
+    return new WorkflowResponse(restaurant);
   }
 );

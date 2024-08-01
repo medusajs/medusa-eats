@@ -1,10 +1,6 @@
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { UserDTO } from "@medusajs/types";
 import { DriverDTO } from "../../../types/delivery/common";
-import {
-  IRestaurantModuleService,
-  RestaurantAdminDTO,
-} from "../../../types/restaurant/common";
+import { RestaurantAdminDTO } from "../../../types/restaurant/common";
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -14,7 +10,7 @@ export const GET = async (
     user_id: string;
     actor_type: "restaurant" | "driver";
   };
-  let user = {} as RestaurantAdminDTO | DriverDTO | UserDTO;
+  let user = {} as RestaurantAdminDTO | DriverDTO;
 
   if (actor_type === "restaurant") {
     const service = req.scope.resolve("restaurantModuleService");

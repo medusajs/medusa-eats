@@ -34,7 +34,7 @@
     "@medusajs/inventory-next": "preview",
     "@medusajs/medusa": "preview",
     "@medusajs/notification": "preview",
-    "@medusajs/notification-local": "^0.0.2-preview-20240702120643",
+    "@medusajs/notification-local": "preview",
     "@medusajs/order": "preview",
     "@medusajs/payment": "preview",
     "@medusajs/pricing": "preview",
@@ -54,6 +54,7 @@
     "lucide-react": "^0.379.0",
     "medusa-core-utils": "preview",
     "prism-react-renderer": "^2.0.4",
+    "prop-types": "^15.8.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

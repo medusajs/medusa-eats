@@ -19,9 +19,13 @@ export async function retrieveUser() {
     next: {
       tags: ["user"],
     },
-  }).then((res) => {
-    return res.json();
-  });
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 
   return user;
 }

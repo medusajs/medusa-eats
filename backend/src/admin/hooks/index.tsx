@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { DeliveryDTO, DriverDTO } from "../../types/delivery/common";
 import { RestaurantDTO } from "../../types/restaurant/common";
 
-const BACKEND_URL = import.meta.env.BACKEND_URL || "http://localhost:9000";
+const BACKEND_URL = "https://metabolic-boats-grab.medusajs.app";
 
 export const useDrivers = (
   query?: Record<string, any>
@@ -15,10 +15,10 @@ export const useDrivers = (
   const filterQuery = new URLSearchParams(query).toString();
 
   useEffect(() => {
-    const fetchRestaurants = async () => {
+    const fetchDrivers = async () => {
       try {
         const response = await fetch(
-          BACKEND_URL + (query ? `?${filterQuery}` : "")
+          BACKEND_URL + "/drivers" + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);
@@ -29,7 +29,7 @@ export const useDrivers = (
       }
     };
 
-    fetchRestaurants();
+    fetchDrivers();
   }, []);
 
   return { data, loading };

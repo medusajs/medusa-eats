@@ -2,6 +2,7 @@ import { createProductsWorkflow } from "@medusajs/core-flows";
 import { CreateProductDTO } from "@medusajs/types";
 import {
   WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk";
@@ -14,7 +15,7 @@ type WorkflowInput = {
 
 export const createRestaurantProductsWorkflow = createWorkflow(
   "create-restaurant-products-workflow",
-  (input: WorkflowData<WorkflowInput>) => {
+  function (input: WorkflowData<WorkflowInput>) {
     const products = createProductsWorkflow.runAsStep({
       input: {
         products: input.products,
@@ -30,6 +31,6 @@ export const createRestaurantProductsWorkflow = createWorkflow(
       restaurant_id: input.restaurant_id,
     });
 
-    return restaurantProduct;
+    return new WorkflowResponse(restaurantProduct);
   }
 );

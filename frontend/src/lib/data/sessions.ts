@@ -5,8 +5,6 @@ import "server-only";
 
 const jwtSecret = process.env.JWT_SECRET || "supersecret";
 
-console.log("jwtSecret", jwtSecret);
-
 export function createSession(token: string) {
   if (!token) {
     return;

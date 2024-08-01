@@ -14,7 +14,7 @@ export function ProfileBadge({ user }: ProfileBadgeProps) {
     ? user.hasOwnProperty("restaurant_id")
       ? "/dashboard/restaurant"
       : "/dashboard/driver"
-    : "/dashboard/login";
+    : "/login";
 
   return (
     <div className="flex flex-col relative group w-fit">

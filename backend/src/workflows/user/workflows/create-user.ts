@@ -3,6 +3,7 @@ import {
   createWorkflow,
   transform,
   WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk";
 import { createUserStep } from "../../user/steps";
 
@@ -30,7 +31,7 @@ type WorkflowInput = {
 
 export const createUserWorkflow = createWorkflow(
   "create-user-workflow",
-  (input: WorkflowData<WorkflowInput>) => {
+  function (input: WorkflowData<WorkflowInput>) {
     const user = createUserStep(input.user);
 
     const authUserInput = transform({ input, user }, ({ input, user }) => {
@@ -49,6 +50,6 @@ export const createUserWorkflow = createWorkflow(
 
     setAuthAppMetadataStep(authUserInput);
 
-    return user;
+    return new WorkflowResponse(user);
   }
 );

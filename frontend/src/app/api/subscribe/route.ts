@@ -3,6 +3,7 @@ import EventSource from "eventsource";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 const BACKEND_URL =
   process.env.BACKEND_URL ||

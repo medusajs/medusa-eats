@@ -99,80 +99,77 @@ export const GET = async (
   );
 
   if (restaurant_id) {
-    eventBus.subscribe(
-      "notify.restaurant",
-      async ({ data }: RestaurantNotificationData) => {
-        if (data.restaurant_id !== restaurant_id) {
-          return;
-        }
+    eventBus.subscribe("notify.restaurant", async (event) => {
+      const { data } = event as RestaurantNotificationData;
 
-        const deliveryQuery = remoteQueryObjectFromString({
-          entryPoint: "deliveries",
-          fields: ["*"],
-          variables: {
-            filters: {
-              id: data.delivery_id,
-            },
-          },
-        });
-
-        const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
-
-        await workflowEngine.subscribe({
-          workflowId: handleDeliveryWorkflowId,
-          transactionId: delivery.transaction_id,
-          subscriber: workflowSubHandler,
-        });
-
-        res.write(
-          "data: " +
-            JSON.stringify({
-              message: "Subscribed to workflow",
-              transactionId: delivery.transaction_id,
-              new: true,
-            }) +
-            "\n\n"
-        );
+      if (data.restaurant_id !== restaurant_id) {
+        return;
       }
-    );
+
+      const deliveryQuery = remoteQueryObjectFromString({
+        entryPoint: "deliveries",
+        fields: ["*"],
+        variables: {
+          filters: {
+            id: data.delivery_id,
+          },
+        },
+      });
+
+      const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
+
+      await workflowEngine.subscribe({
+        workflowId: handleDeliveryWorkflowId,
+        transactionId: delivery.transaction_id,
+        subscriber: workflowSubHandler,
+      });
+
+      res.write(
+        "data: " +
+          JSON.stringify({
+            message: "Subscribed to workflow",
+            transactionId: delivery.transaction_id,
+            new: true,
+          }) +
+          "\n\n"
+      );
+    });
   }
 
   if (driver_id) {
-    eventBus.subscribe(
-      "notify.drivers",
-      async ({ data }: DriverNotificationData) => {
-        if (!data.drivers.includes(driver_id)) {
-          return;
-        }
-
-        const deliveryQuery = remoteQueryObjectFromString({
-          entryPoint: "deliveries",
-          fields: ["*"],
-          variables: {
-            filters: {
-              id: data.delivery_id,
-            },
-          },
-        });
-
-        const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
-
-        await workflowEngine.subscribe({
-          workflowId: handleDeliveryWorkflowId,
-          transactionId: delivery.transaction_id,
-          subscriber: workflowSubHandler,
-        });
-
-        res.write(
-          "data: " +
-            JSON.stringify({
-              message: "Subscribed to workflow",
-              transactionId: delivery.transaction_id,
-              new: true,
-            }) +
-            "\n\n"
-        );
+    eventBus.subscribe("notify.drivers", async (event) => {
+      const { data } = event as DriverNotificationData;
+      if (!data.drivers.includes(driver_id)) {
+        return;
       }
-    );
+
+      const deliveryQuery = remoteQueryObjectFromString({
+        entryPoint: "deliveries",
+        fields: ["*"],
+        variables: {
+          filters: {
+            id: data.delivery_id,
+          },
+        },
+      });
+
+      const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
+
+      await workflowEngine.subscribe({
+        workflowId: handleDeliveryWorkflowId,
+        transactionId: delivery.transaction_id,
+        subscriber: workflowSubHandler,
+      });
+
+      res.write(
+        "data: " +
+          JSON.stringify({
+            message: "Subscribed to workflow",
+            transactionId: delivery.transaction_id,
+            new: true,
+          }) +
+          "\n\n"
+      );
+    });
   }
 };
