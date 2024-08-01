@@ -1,4 +1,8 @@
-import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk";
+import {
+  createWorkflow,
+  WorkflowData,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk";
 import { DeliveryDTO } from "../../../types/delivery/common";
 import { deleteDeliveryDriversStep } from "../../delivery/steps";
 
@@ -7,7 +11,7 @@ export type WorkflowInput = {
   delivery_id: string;
 };
 
-export const passDeliveryWorkflow = createWorkflow<WorkflowInput, DeliveryDTO>(
+export const passDeliveryWorkflow = createWorkflow(
   "pass-delivery-workflow",
   function (input: WorkflowData<WorkflowInput>) {
     // Delete the delivery drivers as they are no longer needed
@@ -15,5 +19,7 @@ export const passDeliveryWorkflow = createWorkflow<WorkflowInput, DeliveryDTO>(
       delivery_id: input.delivery_id,
       driver_id: input.driver_id,
     });
+
+    return new WorkflowResponse({} as DeliveryDTO);
   }
 );

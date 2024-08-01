@@ -1,5 +1,8 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk";
-import { Delivery } from "../../../modules/delivery/models";
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk";
 import {
   awaitDeliveryStep,
   awaitPickUpStep,
@@ -18,10 +21,7 @@ type WorkflowInput = {
 
 const TWO_HOURS = 60 * 60 * 2;
 export const handleDeliveryWorkflowId = "handle-delivery-workflow";
-export const handleDeliveryWorkflow = createWorkflow<
-  WorkflowInput,
-  typeof Delivery
->(
+export const handleDeliveryWorkflow = createWorkflow(
   {
     name: handleDeliveryWorkflowId,
     store: true,
@@ -45,5 +45,7 @@ export const handleDeliveryWorkflow = createWorkflow<
     awaitPickUpStep();
 
     awaitDeliveryStep();
+
+    return new WorkflowResponse(delivery);
   }
 );

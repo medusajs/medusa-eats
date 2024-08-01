@@ -1,5 +1,9 @@
-import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk";
-import { DeliveryDTO, DeliveryStatus } from "../../../types/delivery/common";
+import {
+  createWorkflow,
+  WorkflowData,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk";
+import { DeliveryStatus } from "../../../types/delivery/common";
 import { setStepSuccessStep } from "../../util/steps";
 import { deleteDeliveryDriversStep, updateDeliveryStep } from "../steps";
 import { findDriverStepId } from "../steps/find-driver";
@@ -9,7 +13,7 @@ export type WorkflowInput = {
   delivery_id: string;
 };
 
-export const claimDeliveryWorkflow = createWorkflow<WorkflowInput, DeliveryDTO>(
+export const claimDeliveryWorkflow = createWorkflow(
   "claim-delivery-workflow",
   function (input: WorkflowData<WorkflowInput>) {
     // Update the delivery with the provided data
@@ -31,6 +35,6 @@ export const claimDeliveryWorkflow = createWorkflow<WorkflowInput, DeliveryDTO>(
     });
 
     // Return the updated delivery
-    return claimedDelivery;
+    return new WorkflowResponse(claimedDelivery);
   }
 );

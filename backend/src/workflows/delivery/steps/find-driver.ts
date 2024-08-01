@@ -1,4 +1,3 @@
-import { IEventBusModuleService } from "@medusajs/types";
 import {
   ModuleRegistrationName,
   remoteQueryObjectFromString,
@@ -8,7 +7,7 @@ import { DriverDTO } from "../../../types/delivery/common";
 
 export const findDriverStepId = "await-driver-response-step";
 export const findDriverStep = createStep<string, DriverDTO, string>(
-  { name: findDriverStepId, async: true },
+  { name: findDriverStepId, async: true, timeout: 60 * 5, maxRetries: 2 },
   async function (deliveryId: string, { container }) {
     const remoteQuery = container.resolve("remoteQuery");
 
@@ -34,12 +33,10 @@ export const findDriverStep = createStep<string, DriverDTO, string>(
 
     await deliveryService.createDeliveryDrivers(createData);
 
-    const eventBus = container.resolve<IEventBusModuleService>(
-      ModuleRegistrationName.EVENT_BUS
-    );
+    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS);
 
     await eventBus.emit({
-      eventName: "notify.drivers",
+      name: "notify.drivers",
       data: {
         drivers: idsToNotify,
         delivery_id: deliveryId,
