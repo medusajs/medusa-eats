@@ -27,7 +27,8 @@ export default function DishCard({
     <div className="flex items-center justify-between shadow-sm border rounded-xl">
       <div className="flex flex-col gap-2 p-4">
         <Heading>{product.title}</Heading>
-        <Text>{product.description}</Text>
+        {/* cut off the description after 3 lines using css tailwind */}
+        <Text className="line-clamp-3">{product.description}</Text>
         <Text className="text-lg font-semibold">
           €
           {
@@ -36,13 +37,13 @@ export default function DishCard({
           }
         </Text>
       </div>
-      <div className="relative">
+      <div className="relative h-full">
         <Image
           src={product.thumbnail!}
           width={100}
           height={100}
           alt={`Thumbnail of ${product.title}`}
-          className="min-w-40 bg-ui-bg-base rounded-r-lg"
+          className="min-w-40 bg-ui-bg-base rounded-r-lg h-full object-cover"
         />
         <IconButton
           isLoading={isAdding}

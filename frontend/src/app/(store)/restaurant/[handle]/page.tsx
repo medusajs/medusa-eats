@@ -30,7 +30,7 @@ export default async function RestaurantPage({
   });
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col md:gap-10 gap-2">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-2">
           <Heading level="h1" className="text-2xl">

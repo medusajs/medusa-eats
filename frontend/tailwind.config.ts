@@ -16,7 +16,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
   presets: [require("@medusajs/ui-preset")],
   darkMode: "class",
 };

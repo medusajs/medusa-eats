@@ -24,18 +24,22 @@ export function ProfileBadge({ user }: ProfileBadgeProps) {
           variant="transparent"
           className="group group-hover:bg-ui-bg-subtle-hover transition-none"
         >
-          <>
-            <Text className="text-sm text-ui-bg-base group-hover:text-ui-fg-base">
-              {user ? `${user.first_name} ${user.last_name}` : "Login"}
-            </Text>
-            {user && (
+          {user ? (
+            <>
+              <Text className="text-sm text-ui-bg-base group-hover:text-ui-fg-base hidden md:block">
+                {`${user.first_name} ${user.last_name}`}
+              </Text>
               <Avatar
                 src={`https://robohash.org/${user.id}?size=40x40&set=set1&bgset=bg1`}
                 fallback={user.first_name[0] + user.last_name[0]}
                 className="bg-ui-bg-base cursor-pointer"
               />
-            )}
-          </>
+            </>
+          ) : (
+            <Text className="text-sm text-ui-bg-base group-hover:text-ui-fg-base">
+              Login
+            </Text>
+          )}
         </Button>
       </Link>
       {user && (

@@ -24,7 +24,7 @@ export default async function DriverDashboardPage() {
 
   return (
     <div className="flex flex-col gap-20">
-      <Container className="flex justify-between p-8">
+      <Container className="flex flex-col md:flex-row gap-4 justify-between p-8">
         <div className="flex flex-col justify-between">
           <Heading level="h1" className="text-2xl">
             {driver.first_name} {driver.last_name} | Driver Dashboard
@@ -35,7 +35,7 @@ export default async function DriverDashboardPage() {
         <AccountBadge data={driver} type="driver" />
       </Container>
       <div className="overflow-x-auto whitespace-nowrap ">
-        <div className="grid grid-cols-5 gap-4 p-px">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-px">
           <DeliveryColumn
             title="Available jobs"
             deliveries={deliveries}
