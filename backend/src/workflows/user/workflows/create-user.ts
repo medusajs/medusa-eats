@@ -32,7 +32,7 @@ type WorkflowInput = {
 export const createUserWorkflow = createWorkflow(
   "create-user-workflow",
   function (input: WorkflowData<WorkflowInput>) {
-    const user = createUserStep(input.user);
+    let user = createUserStep(input.user);
 
     const authUserInput = transform({ input, user }, ({ input, user }) => {
       const data = {

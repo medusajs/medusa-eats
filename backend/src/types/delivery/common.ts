@@ -22,10 +22,10 @@ export enum DeliveryStatus {
 }
 
 export interface IDeliveryModuleService extends IModuleService {
+  list(filter?: any, options?: any): Promise<DeliveryDTO[]>;
   listDrivers(filter?: any, options?: any): Promise<DriverDTO[]>;
-  listDeliveries(filter?: any, options?: any): Promise<DeliveryDTO[]>;
   listDeliveryDrivers(filter: any): Promise<DeliveryDriverDTO[]>;
-  createDeliveries(data: CreateDeliveryDTO): Promise<DeliveryDTO>;
+  create(data: CreateDeliveryDTO): Promise<DeliveryDTO>;
   createDrivers(data: CreateDriverDTO | CreateDriverDTO[]): Promise<DriverDTO>;
   createDeliveryDrivers(
     data: {
@@ -33,11 +33,9 @@ export interface IDeliveryModuleService extends IModuleService {
       driver_id: string;
     }[]
   ): Promise<DeliveryDriverDTO[]>;
-  retrieveDelivery(deliveryId: string): Promise<DeliveryDTO>;
+  retrieve(deliveryId: string): Promise<DeliveryDTO>;
   retrieveDriver(driverId: string): Promise<DriverDTO>;
-  updateDeliveries(
-    data: UpdateDeliveryDTO | UpdateDeliveryDTO[]
-  ): Promise<DeliveryDTO[]>;
+  update(data: UpdateDeliveryDTO | UpdateDeliveryDTO[]): Promise<DeliveryDTO[]>;
   updateDrivers(data: UpdateDriverDTO | UpdateDriverDTO[]): Promise<DriverDTO>;
   deleteDeliveries(ids: string | string[]): Promise<void>;
   deleteDrivers(ids: string | string[]): Promise<void>;

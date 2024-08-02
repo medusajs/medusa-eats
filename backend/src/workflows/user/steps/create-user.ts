@@ -43,21 +43,19 @@ export const createUserStep = createStep(
     if (input.actor_type === "driver") {
       const service = container.resolve("deliveryModuleService");
 
-      const driverData = {
-        ...input,
-        avatar_url: `https://robohash.org/${input.email}?size=40x40&set=set1&bgset=bg1`,
-      };
+      const driver = await service.createDrivers(input as CreateDriverInput);
 
-      const driver = await service.createDrivers(
-        driverData as CreateDriverInput
-      );
+      const driverWithAvatar = await service.updateDrivers({
+        id: driver.id,
+        avatar_url: `https://robohash.org/${driver.id}?size=40x40&set=set1&bgset=bg1`,
+      });
 
       const compensationData = {
-        id: driver.id,
+        id: driverWithAvatar.id,
         actor_type: "driver",
       };
 
-      return new StepResponse(driver, compensationData);
+      return new StepResponse(driverWithAvatar, compensationData);
     }
 
     throw MedusaError.Types.INVALID_DATA;

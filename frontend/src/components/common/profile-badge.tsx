@@ -30,7 +30,7 @@ export function ProfileBadge({ user }: ProfileBadgeProps) {
             </Text>
             {user && (
               <Avatar
-                src={`https://robohash.org/${user.email}?size=40x40&set=set1&bgset=bg1`}
+                src={`https://robohash.org/${user.id}?size=40x40&set=set1&bgset=bg1`}
                 fallback={user.first_name[0] + user.last_name[0]}
                 className="bg-ui-bg-base cursor-pointer"
               />

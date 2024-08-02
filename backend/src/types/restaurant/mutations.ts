@@ -8,13 +8,20 @@ export interface CreateRestaurantDTO {
   is_open?: boolean;
 }
 
-export type UpdateRestaurantDTO = Partial<CreateRestaurantDTO>;
+export interface UpdateRestaurantsDTO extends Partial<CreateRestaurantDTO> {
+  id: string;
+}
 
 export interface CreateRestaurantAdminDTO {
   email: string;
   first_name: string;
   last_name: string;
   restaurant_id: string;
+}
+
+export interface UpdateRestaurantAdminsDTO
+  extends Partial<CreateRestaurantAdminDTO> {
+  id: string;
 }
 
 export interface CreateAdminInviteDTO {

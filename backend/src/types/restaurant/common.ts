@@ -2,14 +2,15 @@ import { IModuleService, ProductDTO } from "@medusajs/types";
 import {
   CreateRestaurantDTO,
   CreateRestaurantAdminDTO,
-  UpdateRestaurantDTO,
+  UpdateRestaurantsDTO,
+  UpdateRestaurantAdminsDTO,
 } from "./mutations";
 
 export interface IRestaurantModuleService extends IModuleService {
   createRestaurantProducts(
     data: RestaurantProductDTO | RestaurantProductDTO[]
   ): Promise<RestaurantProductDTO>;
-  listRestaurants(filter?: any, options?: any): Promise<RestaurantDTO[]>;
+  list(filter?: any, options?: any): Promise<RestaurantDTO[]>;
   listRestaurantAdmins(
     filter?: any,
     options?: any
@@ -18,7 +19,7 @@ export interface IRestaurantModuleService extends IModuleService {
     filter?: any,
     options?: any
   ): Promise<RestaurantProductDTO[]>;
-  createRestaurants(
+  create(
     data: CreateRestaurantDTO | CreateRestaurantDTO[]
   ): Promise<RestaurantDTO>;
   createRestaurantAdmins(
@@ -26,13 +27,9 @@ export interface IRestaurantModuleService extends IModuleService {
   ): Promise<RestaurantAdminDTO>;
   retrieveRestaurant(restaurantId: string): Promise<RestaurantDTO>;
   retrieveRestaurantAdmin(adminId: string): Promise<RestaurantAdminDTO>;
-  updateRestaurants(
-    restaurantId: string,
-    data: UpdateRestaurantDTO
-  ): Promise<RestaurantDTO>;
+  update(data: UpdateRestaurantsDTO): Promise<RestaurantDTO>;
   updateRestaurantAdmins(
-    adminId: string,
-    data: Partial<RestaurantAdminDTO>
+    data: UpdateRestaurantAdminsDTO
   ): Promise<RestaurantAdminDTO>;
   deleteRestaurants(restaurantId: string[]): Promise<void>;
   deleteRestaurantAdmin(adminId: string): Promise<void>;
