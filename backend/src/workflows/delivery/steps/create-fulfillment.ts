@@ -1,4 +1,4 @@
-import { IFulfillmentModuleService, OrderDTO } from "@medusajs/types";
+import { OrderDTO } from "@medusajs/types";
 import { ModuleRegistrationName } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
 
@@ -32,8 +32,9 @@ export const createFulfillmentStep = createStep(
     return new StepResponse(fulfillment, fulfillment.id);
   },
   function (input: string, { container }) {
-    const fulfillmentModuleService =
-      container.resolve<IFulfillmentModuleService>("fulfillmentModuleService");
+    const fulfillmentModuleService = container.resolve(
+      ModuleRegistrationName.FULFILLMENT
+    );
 
     return fulfillmentModuleService.softDeleteFulfillmentSets([input]);
   }

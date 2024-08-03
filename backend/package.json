@@ -46,6 +46,7 @@
     "@medusajs/store": "preview",
     "@medusajs/tax": "preview",
     "@medusajs/user": "preview",
+    "@medusajs/utils": "preview",
     "@medusajs/workflow-engine-inmemory": "preview",
     "cors": "^2.8.5",
     "dotenv": "16.3.1",

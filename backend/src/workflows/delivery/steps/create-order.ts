@@ -1,8 +1,8 @@
+import { CreateOrderShippingMethodDTO } from "@medusajs/types";
 import {
-  CreateOrderShippingMethodDTO,
-  IOrderModuleService,
-} from "@medusajs/types";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+  ModuleRegistrationName,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
 
 export const createOrderStepId = "create-order-step";
@@ -35,8 +35,7 @@ export const createOrderStep = createStep(
 
     const cart = await remoteQuery(cartQuery).then((res) => res[0]);
 
-    const orderModuleService =
-      container.resolve<IOrderModuleService>("orderModuleService");
+    const orderModuleService = container.resolve(ModuleRegistrationName.ORDER);
 
     const order = await orderModuleService.createOrders({
       currency_code: cart.currency_code,
@@ -86,8 +85,7 @@ export const createOrderStep = createStep(
       },
     ]);
 
-    const orderService =
-      container.resolve<IOrderModuleService>("orderModuleService");
+    const orderService = container.resolve(ModuleRegistrationName.ORDER);
 
     await orderService.softDeleteOrders([orderId]);
   }
