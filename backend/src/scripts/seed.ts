@@ -8,17 +8,11 @@ import {
   createStockLocationsWorkflow,
   createTaxRegionsWorkflow,
   linkSalesChannelsToApiKeyWorkflow,
-  linkSalesChannelsToStockLocationWorkflow,
   updateStoresWorkflow,
 } from "@medusajs/core-flows";
 import { Logger } from "@medusajs/medusa";
 import { RemoteLink } from "@medusajs/modules-sdk";
-import {
-  ExecArgs,
-  IFulfillmentModuleService,
-  ISalesChannelModuleService,
-  IStoreModuleService,
-} from "@medusajs/types";
+import { ExecArgs } from "@medusajs/types";
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
@@ -39,14 +33,13 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const remoteLink: RemoteLink = container.resolve(
     ContainerRegistrationKeys.REMOTE_LINK
   );
-  const fulfillmentModuleService: IFulfillmentModuleService = container.resolve(
+  const fulfillmentModuleService = container.resolve(
     ModuleRegistrationName.FULFILLMENT
   );
-  const salesChannelModuleService: ISalesChannelModuleService =
-    container.resolve(ModuleRegistrationName.SALES_CHANNEL);
-  const storeModuleService: IStoreModuleService = container.resolve(
-    ModuleRegistrationName.STORE
+  const salesChannelModuleService = container.resolve(
+    ModuleRegistrationName.SALES_CHANNEL
   );
+  const storeModuleService = container.resolve(ModuleRegistrationName.STORE);
 
   const countries = ["gb", "de", "dk", "se", "fr", "es", "it"];
 
@@ -167,12 +160,61 @@ export default async function seedDemoData({ container }: ExecArgs) {
     ],
   });
 
+  logger.info("Seeding stock location data...");
+  const { result: stockLocationResult } = await createStockLocationsWorkflow(
+    container
+  ).run({
+    input: {
+      locations: [
+        {
+          name: "European Warehouse",
+          address: {
+            city: "Copenhagen",
+            country_code: "DK",
+            address_1: "",
+          },
+        },
+      ],
+    },
+  });
+  const stockLocation = stockLocationResult[0];
+
+  const fulfillmentProviderId = "manual_manual-provider";
+  await remoteLink.create([
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: stockLocation.id,
+      },
+      [Modules.FULFILLMENT]: {
+        fulfillment_set_id: fulfillmentSet.id,
+      },
+    },
+    {
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: stockLocation.id,
+      },
+      [Modules.FULFILLMENT]: {
+        fulfillment_provider_id: fulfillmentProviderId,
+      },
+    },
+    {
+      [Modules.SALES_CHANNEL]: {
+        sales_channel_id: fulfillmentSet.id,
+      },
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: stockLocation.id,
+      },
+    },
+  ]);
+
+  logger.info("Finished seeding stock location data.");
+
   await createShippingOptionsWorkflow(container).run({
     input: [
       {
         name: "Standard Shipping",
         price_type: "flat",
-        provider_id: "manual_manual",
+        provider_id: fulfillmentProviderId,
         service_zone_id: fulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
@@ -210,7 +252,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
       {
         name: "Express Shipping",
         price_type: "flat",
-        provider_id: "manual_manual",
+        provider_id: fulfillmentProviderId,
         service_zone_id: fulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
@@ -248,42 +290,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
     ],
   });
   logger.info("Finished seeding fulfillment data.");
-
-  logger.info("Seeding stock location data...");
-  const { result: stockLocationResult } = await createStockLocationsWorkflow(
-    container
-  ).run({
-    input: {
-      locations: [
-        {
-          name: "European Warehouse",
-          address: {
-            city: "Copenhagen",
-            country_code: "DK",
-            address_1: "",
-          },
-        },
-      ],
-    },
-  });
-  const stockLocation = stockLocationResult[0];
-
-  await linkSalesChannelsToStockLocationWorkflow(container).run({
-    input: {
-      id: stockLocation.id,
-      add: [defaultSalesChannel[0].id],
-    },
-  });
-
-  await remoteLink.create({
-    [Modules.STOCK_LOCATION]: {
-      stock_location_id: stockLocation.id,
-    },
-    [Modules.FULFILLMENT]: {
-      fulfillment_set_id: fulfillmentSet.id,
-    },
-  });
-  logger.info("Finished seeding stock location data.");
 
   logger.info("Seeding publishable API key data...");
   const { result: publishableApiKeyResult } = await createApiKeysWorkflow(

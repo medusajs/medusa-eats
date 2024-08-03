@@ -1,4 +1,4 @@
-const { defineConfig, loadEnv } = require("@medusajs/utils");
+const { Modules, defineConfig, loadEnv } = require("@medusajs/utils");
 
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
@@ -43,16 +43,18 @@ export default defineConfig({
   modules: {
     restaurantModuleService: {
       resolve: "./modules/restaurant",
-      definition: {
-        key: "restaurantModuleService",
-        isQueryable: true,
-      },
     },
     deliveryModuleService: {
       resolve: "./modules/delivery",
-      definition: {
-        key: "deliveryModuleService",
-        isQueryable: true,
+    },
+    [Modules.FULFILLMENT]: {
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/fulfillment-manual",
+            id: "manual-provider",
+          },
+        ],
       },
     },
   },

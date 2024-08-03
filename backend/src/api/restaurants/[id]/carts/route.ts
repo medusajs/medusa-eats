@@ -1,5 +1,4 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { ICartModuleService } from "@medusajs/types";
 import { ModuleRegistrationName } from "@medusajs/utils";
 import zod from "zod";
 
@@ -14,9 +13,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   const { cart_id } = validatedBody;
 
-  const cartModuleService = req.scope.resolve<ICartModuleService>(
-    ModuleRegistrationName.CART
-  );
+  const cartModuleService = req.scope.resolve(ModuleRegistrationName.CART);
 
   // update the cart with the restaurant id in the metadata
   const cart = await cartModuleService.updateCarts(cart_id, {

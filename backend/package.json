@@ -17,7 +17,7 @@
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "medusa start",
     "dev": "medusa develop",
-    "setup-db": "npx medusa build && npx medusa migrations run && medusa exec ./src/scripts/seed.ts && npx medusa user -e admin@email.com -p supersecret"
+    "setup-db": "npx medusa build && npx medusa migrations run && npx medusa links sync && medusa exec ./src/scripts/seed.ts && npx medusa user -e admin@email.com -p supersecret"
   },
   "dependencies": {
     "@medusajs/api-key": "preview",

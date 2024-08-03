@@ -1,12 +1,14 @@
 import { IFulfillmentModuleService, OrderDTO } from "@medusajs/types";
+import { ModuleRegistrationName } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
 
 export const createFulfillmentStepId = "create-fulfillment-step";
 export const createFulfillmentStep = createStep(
   createFulfillmentStepId,
   async function (order: OrderDTO, { container }) {
-    const fulfillmentModuleService =
-      container.resolve<IFulfillmentModuleService>("fulfillmentModuleService");
+    const fulfillmentModuleService = container.resolve(
+      ModuleRegistrationName.FULFILLMENT
+    );
 
     const items = order.items?.map((lineItem) => {
       return {
@@ -19,7 +21,7 @@ export const createFulfillmentStep = createStep(
     });
 
     const fulfillment = await fulfillmentModuleService.createFulfillment({
-      provider_id: "manual_manual",
+      provider_id: "manual_manual-provider",
       location_id: "1",
       delivery_address: order.shipping_address!,
       items: items || [],
