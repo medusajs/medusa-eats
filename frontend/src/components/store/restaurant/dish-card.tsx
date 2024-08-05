@@ -24,8 +24,8 @@ export default function DishCard({
   };
 
   return (
-    <div className="flex items-center justify-between shadow-sm border rounded-xl">
-      <div className="flex flex-col gap-2 p-4">
+    <div className="flex items-center justify-between shadow-sm border rounded-xl h-fit">
+      <div className="flex flex-col gap-2 px-4">
         <Heading>{product.title}</Heading>
         {/* cut off the description after 3 lines using css tailwind */}
         <Text className="line-clamp-3">{product.description}</Text>
@@ -37,7 +37,7 @@ export default function DishCard({
           }
         </Text>
       </div>
-      <div className="relative h-full">
+      <div className="relative h-fit">
         <Image
           src={product.thumbnail!}
           width={100}
