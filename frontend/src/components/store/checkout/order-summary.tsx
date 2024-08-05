@@ -26,7 +26,7 @@ export async function OrderSummary() {
         {cart?.items?.map((item: any) => (
           <div key={item.id} className="flex items-center gap-4">
             <Image
-              src={item.thumbnail}
+              src={item.product.thumbnail}
               alt={item.title}
               className="w-16 h-16 rounded-md"
               width={64}

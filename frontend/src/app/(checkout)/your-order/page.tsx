@@ -81,7 +81,7 @@ export default async function YourOrderPage() {
           {delivery.items.map((item: any) => (
             <div key={item.id} className="flex items-center gap-4 h-fit">
               <Image
-                src={item.thumbnail}
+                src={item.product.thumbnail}
                 alt={item.title}
                 className="w-16 h-16 rounded-md"
                 width={64}

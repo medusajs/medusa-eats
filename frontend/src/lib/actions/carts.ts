@@ -1,5 +1,6 @@
 "use server";
 
+import { metadata } from "@frontend/app/layout";
 import { retrieveUser } from "@frontend/lib/data";
 import { CartDTO, CreateCartDTO } from "@medusajs/types";
 import { revalidateTag } from "next/cache";
@@ -25,39 +26,26 @@ export async function createCart(
   const body = {
     email: user?.email || null,
     region_id: region.id,
+    metadata: {
+      restaurant_id,
+    },
     ...data,
   };
 
-  let cart;
-
   try {
-    let cartResponse = await fetch(`${BACKEND_URL}/store/carts`, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: {
-        tags: ["cart"],
-      },
-    }).then((res) => res.json());
-
-    cart = cartResponse.cart;
-
-    cartResponse = await fetch(
-      `${BACKEND_URL}/restaurants/${restaurant_id}/carts`,
+    const { cart } = await fetch(
+      `${BACKEND_URL}/store/carts?fields=%2Bmetadata`,
       {
         method: "POST",
+        body: JSON.stringify(body),
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          cart_id: cart.id,
-        }),
+        next: {
+          tags: ["cart"],
+        },
       }
     ).then((res) => res.json());
-
-    cart = cartResponse.cart;
 
     cookies().set("_medusa_cart_id", cart.id);
 
