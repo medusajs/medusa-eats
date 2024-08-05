@@ -6,7 +6,12 @@ import { createStep } from "@medusajs/workflows-sdk";
 
 export const notifyRestaurantStepId = "notify-restaurant-step";
 export const notifyRestaurantStep = createStep(
-  { name: notifyRestaurantStepId, async: true, timeout: 60 * 5, maxRetries: 2 },
+  {
+    name: notifyRestaurantStepId,
+    async: true,
+    timeout: 60 * 15,
+    maxRetries: 2,
+  },
   async function (deliveryId: string, { container, context }) {
     const remoteQuery = container.resolve("remoteQuery");
 
@@ -27,7 +32,7 @@ export const notifyRestaurantStep = createStep(
     const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS);
 
     await eventBus.emit({
-      eventName: "notify.restaurant",
+      name: "notify.restaurant",
       data: {
         restaurant_id,
         delivery_id: delivery.id,

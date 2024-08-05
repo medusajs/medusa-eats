@@ -7,7 +7,7 @@ import { DriverDTO } from "../../../types/delivery/common";
 
 export const findDriverStepId = "await-driver-response-step";
 export const findDriverStep = createStep<string, DriverDTO, string>(
-  { name: findDriverStepId, async: true, timeout: 60 * 5, maxRetries: 2 },
+  { name: findDriverStepId, async: true, timeout: 60 * 15, maxRetries: 2 },
   async function (deliveryId: string, { container }) {
     const remoteQuery = container.resolve("remoteQuery");
 
