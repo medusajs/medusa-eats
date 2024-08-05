@@ -56,7 +56,7 @@ export default async function YourOrderPage() {
 
   return (
     <>
-      <Container className="flex justify-between p-8">
+      <Container className="flex justify-between p-8 flex-col md:flex-row gap-3">
         <div className="flex flex-col justify-between gap-2">
           <Heading level="h1" className="text-2xl">
             Your order from {restaurant.name} | Medusa Eats
@@ -65,7 +65,7 @@ export default async function YourOrderPage() {
           <RealtimeClient deliveryId={delivery.id} />
         </div>
         {driver && <AccountBadge data={driver} type="driver" />}
-        <Container className="flex gap-3 items-center w-fit h-fit p-4 bg-ui-bg-subtle self-center">
+        <Container className="flex gap-3 items-center w-fit h-fit p-4 bg-ui-bg-subtle md:self-center">
           <Clock />
           <div className="flex flex-col justify-center">
             <Text className="text-sm text-ui-fg-subtle">
@@ -75,8 +75,8 @@ export default async function YourOrderPage() {
           </div>
         </Container>
       </Container>
-      <section className="flex justify-between gap-4 h-fit">
-        <Container className="flex flex-col gap-4 flex-wrap w-1/3 overflow-auto">
+      <section className="flex flex-col justify-between gap-4 h-fit md:flex-row">
+        <Container className="flex flex-col gap-4 flex-wrap md:w-1/3 overflow-auto">
           <Heading>Order {delivery.id.slice(-4)}</Heading>
           {delivery.items.map((item: any) => (
             <div key={item.id} className="flex items-center gap-4 h-fit">

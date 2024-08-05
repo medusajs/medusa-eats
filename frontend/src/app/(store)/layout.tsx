@@ -21,10 +21,10 @@ export default async function RootLayout({
 
   return (
     <>
-      <nav className="flex px-2 md:px-12 py-4 h-16 bg-ui-fg-base text-ui-fg-on-inverted justify-between items-center sticky top-0 z-40">
+      <nav className="flex px-4 md:px-10 py-4 h-16 bg-ui-fg-base text-ui-fg-on-inverted justify-between items-center sticky top-0 z-40">
         <Link
           href="/"
-          className="flex gap-2 px-4 items-center text-xl font-semibold hover:text-ui-bg-base-hover"
+          className="flex gap-2 items-center text-xl font-semibold hover:text-ui-bg-base-hover"
         >
           <FlyingBox /> Medusa Eats
         </Link>

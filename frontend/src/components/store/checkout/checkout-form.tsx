@@ -23,7 +23,7 @@ export default function CheckoutForm() {
   const [state, action] = useFormState(placeOrder, { message: "" });
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full gap-3">
       <Heading>Checkout</Heading>
       <form className="flex flex-col gap-2 w-full" action={action}>
         <section className="flex gap-2 w-full justify-between">

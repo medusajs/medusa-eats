@@ -15,7 +15,7 @@ export async function OrderSummary() {
   );
 
   return (
-    <Container className="w-1/2 flex flex-col gap-4">
+    <Container className="flex flex-col gap-4 md:w-3/4 order-first md:order-last">
       <Heading
         level="h2"
         className="text-lg font-semibold text-ui-fg-base text-center"
