@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { IProductModuleService } from "@medusajs/types";
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import zod from "zod";
@@ -92,8 +92,8 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
 
   const restaurantModuleService = req.scope.resolve("restaurantModuleService");
 
-  const productModuleService = req.scope.resolve<IProductModuleService>(
-    "productModuleService"
+  const productModuleService = req.scope.resolve(
+    ModuleRegistrationName.PRODUCT
   );
 
   await productModuleService.deleteProducts([validatedBody.product_id]);

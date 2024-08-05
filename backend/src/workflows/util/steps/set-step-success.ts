@@ -1,4 +1,3 @@
-import { IWorkflowEngineService } from "@medusajs/types";
 import {
   ModuleRegistrationName,
   TransactionHandlerType,
@@ -23,7 +22,7 @@ export const setStepSuccessStep = createStep(
       return;
     }
 
-    const engineService = container.resolve<IWorkflowEngineService>(
+    const engineService = container.resolve(
       ModuleRegistrationName.WORKFLOW_ENGINE
     );
 

@@ -1,9 +1,5 @@
 import { MedusaResponse } from "@medusajs/medusa";
 import {
-  IEventBusModuleService,
-  IWorkflowEngineService,
-} from "@medusajs/types";
-import {
   ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
@@ -69,7 +65,7 @@ export const GET = async (
 
   res.writeHead(200, headers);
 
-  const workflowEngine = req.scope.resolve<IWorkflowEngineService>(
+  const workflowEngine = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
   );
 
@@ -94,9 +90,7 @@ export const GET = async (
     );
   }
 
-  const eventBus = req.scope.resolve<IEventBusModuleService>(
-    ModuleRegistrationName.EVENT_BUS
-  );
+  const eventBus = req.scope.resolve(ModuleRegistrationName.EVENT_BUS);
 
   if (restaurant_id) {
     eventBus.subscribe("notify.restaurant", async (event) => {

@@ -1,4 +1,3 @@
-import { IEventBusModuleService } from "@medusajs/types";
 import {
   ModuleRegistrationName,
   remoteQueryObjectFromString,
@@ -25,9 +24,7 @@ export const notifyRestaurantStep = createStep(
 
     const { restaurant_id } = delivery;
 
-    const eventBus = container.resolve<IEventBusModuleService>(
-      ModuleRegistrationName.EVENT_BUS
-    );
+    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS);
 
     await eventBus.emit({
       eventName: "notify.restaurant",
