@@ -28,8 +28,8 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
       <div className="flex justify-between gap-2 flex-wrap">
         <Heading>Live order status</Heading>
       </div>
-      <div className="overflow-x-auto w-full p-1 scrollbar-hide h-full">
-        <Container className="flex whitespace-pre-wrap w-fit md:w-full h-full p-0">
+      <div className="overflow-x-auto w-full p-1 scrollbar-hide h-full xl:h-24">
+        <Container className="flex whitespace-pre-wrap w-fit md:w-full h-fit p-0">
           <div
             className={clx(
               "border-r rounded-l-lg border-ui-tag-neutral-border w-1/5 p-4 justify-center items-center flex txt-small",
@@ -40,12 +40,12 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
             )}
           >
             {delivery_status === 0 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-blue-text ">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-blue-text ">
                 <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
                 Order received
               </span>
             ) : (
-              <span className="flex flex-col md:flex-row gap-1 text-center md:text-left items-center text-ui-tag-green-text">
+              <span className="flex flex-col lg:flex-row gap-1 text-center lg:text-left items-center text-ui-tag-green-text">
                 <CheckCircleSolid className="text-ui-tag-green-icon" />
                 Confirmed
               </span>
@@ -63,17 +63,17 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
             )}
           >
             {delivery_status < 1 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-fg-muted">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-fg-muted">
                 <CircleDottedLine className="text-ui-tag-neutral" />
                 Finding driver
               </span>
             ) : delivery_status === 1 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-blue-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-blue-text">
                 <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
                 Finding driver
               </span>
             ) : (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-green-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-green-text">
                 <CheckCircleSolid className="text-ui-tag-green-icon" />
                 Driver found
               </span>
@@ -81,7 +81,7 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
           </div>
           <div
             className={clx(
-              "border-r border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+              "border-r border-ui-tag-neutral-border w-1/5 p-4 justify-center items-center flex txt-small",
               {
                 "bg-ui-bg-subtle": delivery_status < 2,
                 "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
@@ -91,17 +91,17 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
             )}
           >
             {delivery_status < 2 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-fg-muted">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-fg-muted">
                 <CircleDottedLine className="text-ui-tag-neutral" />
                 Preparing order
               </span>
             ) : delivery_status >= 2 && delivery_status <= 3 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-blue-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-blue-text">
                 <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
                 Preparing order
               </span>
             ) : (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-green-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-green-text">
                 <CheckCircleSolid className="text-ui-tag-green-icon" />
                 Order prepared
               </span>
@@ -109,7 +109,7 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
           </div>
           <div
             className={clx(
-              "border-r border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+              "border-r border-ui-tag-neutral-border w-1/5 p-4 justify-center items-center flex txt-small",
               {
                 "bg-ui-bg-subtle": delivery_status < 4,
                 "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
@@ -119,17 +119,17 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
             )}
           >
             {delivery_status < 4 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-fg-muted">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-fg-muted">
                 <CircleDottedLine className="text-ui-tag-neutral" />
                 Order ready
               </span>
             ) : delivery_status === 4 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-blue-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-blue-text">
                 <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
                 Awaiting pickup
               </span>
             ) : (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-green-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-green-text">
                 <CheckCircleSolid className="text-ui-tag-green-icon" />
                 Picked up
               </span>
@@ -147,17 +147,17 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
             )}
           >
             {delivery_status < 5 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-fg-muted">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-fg-muted">
                 <CircleDottedLine className="text-ui-tag-neutral" />
                 In transit
               </span>
             ) : delivery_status === 5 ? (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-blue-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-blue-text">
                 <CircleQuarterSolid className="text-ui-tag-neutral animate-spin" />
                 In transit
               </span>
             ) : (
-              <span className="flex flex-col md:flex-row gap-1 items-center text-center md:text-left text-ui-tag-green-text">
+              <span className="flex flex-col lg:flex-row gap-1 items-center text-center lg:text-left text-ui-tag-green-text">
                 <CheckCircleSolid className="text-ui-tag-green-icon" />
                 Delivered
               </span>
