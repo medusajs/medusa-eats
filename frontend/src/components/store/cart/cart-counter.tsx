@@ -1,9 +1,13 @@
 "use client";
 
+import { CartLineItemDTO } from "@medusajs/types";
 import { Text, clx } from "@medusajs/ui";
 
 export function CartCounter({ cart }: { cart: any }) {
-  const numberOfItems = cart?.items?.length || 0;
+  const numberOfItems = cart.items.reduce(
+    (acc: number, item: CartLineItemDTO) => acc + (item.quantity as number),
+    0
+  );
 
   return (
     <Text
