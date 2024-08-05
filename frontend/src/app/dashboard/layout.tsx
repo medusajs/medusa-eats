@@ -43,7 +43,7 @@ export default async function RootLayout({
           <ProfileBadge user={user} />
         </div>
       </nav>
-      <main className="min-h-[vh90] flex flex-col gap-20 p-4 md:p-10">
+      <main className="flex flex-col gap-20 p-4 md:p-10 min-h-[calc(100vh-8rem)]">
         {children}
       </main>
       <footer className="flex justify-center items-center h-16 bg-ui-fg-base text-ui-fg-on-inverted">

@@ -54,10 +54,10 @@ export default async function RootLayout({
           <ProfileBadge user={user} />
         </div>
       </nav>
-      <main className="flex flex-col gap-20 p-4 md:p-10 transition-all duration-150 ease-in-out">
+      <main className="flex flex-col gap-20 p-4 md:p-10 transition-all duration-150 ease-in-out min-h-[calc(100vh-8rem)]">
         {children}
       </main>
-      <footer className="flex justify-center items-center h-16 bg-ui-fg-base text-ui-fg-on-inverted">
+      <footer className="flex w-full justify-center items-center h-16 bg-ui-fg-base text-ui-fg-on-inverted">
         <Text className="flex gap-1 text-sm text-ui-fg">
           © {new Date().getFullYear()}
           <Link

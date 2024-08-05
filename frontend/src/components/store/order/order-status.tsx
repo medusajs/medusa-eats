@@ -29,10 +29,10 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
         <Heading>Live order status</Heading>
       </div>
       <div className="overflow-x-auto w-full p-1 scrollbar-hide h-full">
-        <Container className="flex whitespace-pre-wrap w-fit md:w-full h-20 p-0">
+        <Container className="flex whitespace-pre-wrap w-fit md:w-full h-full p-0">
           <div
             className={clx(
-              "border-r rounded-l-lg border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+              "border-r rounded-l-lg border-ui-tag-neutral-border w-1/5 p-4 justify-center items-center flex txt-small",
               {
                 "bg-ui-tag-blue-bg": delivery_status === 0,
                 "bg-ui-tag-green-bg": delivery_status > 0,
@@ -53,7 +53,7 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
           </div>
           <div
             className={clx(
-              "border-r border-ui-tag-neutral-border h-full w-1/5 p-4 justify-center items-center flex txt-small",
+              "border-r border-ui-tag-neutral-border w-1/5 p-4 justify-center items-center flex txt-small",
               {
                 "bg-ui-bg-subtle": delivery_status < 1,
                 "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
@@ -137,7 +137,7 @@ export default function OrderStatus({ delivery }: { delivery: DeliveryDTO }) {
           </div>
           <div
             className={clx(
-              "h-full rounded-r-lg w-1/5 p-4 justify-center items-center flex txt-small",
+              "rounded-r-lg w-1/5 p-4 justify-center items-center flex txt-small",
               {
                 "bg-ui-bg-subtle": delivery_status < 5,
                 "bg-ui-tag-blue-bg border border-ui-tag-blue-border":
