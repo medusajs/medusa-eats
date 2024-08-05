@@ -10,5 +10,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="justify-center mx-auto w-96">{children}</div>;
+  return <div className="justify-center mx-auto max-w-96">{children}</div>;
 }

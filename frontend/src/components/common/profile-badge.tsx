@@ -44,12 +44,12 @@ export function ProfileBadge({ user }: ProfileBadgeProps) {
       </Link>
       {user && (
         <Button
-          className="hidden group group-hover:block absolute top-10 bg-ui-bg-subtle-hover group w-full py-4 justify-start"
+          className="hidden group group-hover:block absolute top-10 bg-ui-bg-subtle-hover group w-full py-4 px-2 md:px-4 justify-start"
           size="large"
           variant="transparent"
           onClick={async () => logout()}
         >
-          <Text className="text-sm hover:text-ui-fg-interactive-hover text-ui-fg-base text-left">
+          <Text className="text-sm hover:text-ui-fg-interactive-hover text-ui-fg-base text-left p-0 md:p-4">
             Logout
           </Text>
         </Button>
