@@ -1,6 +1,5 @@
 "use server";
 
-import { metadata } from "@frontend/app/layout";
 import { retrieveUser } from "@frontend/lib/data";
 import { CartDTO, CreateCartDTO } from "@medusajs/types";
 import { revalidateTag } from "next/cache";
@@ -67,7 +66,7 @@ export async function addToCart(
   if (!cartId) {
     cart = await createCart(
       {
-        currency_code: "EUR",
+        currency_code: "eur",
       },
       restaurantId
     );
