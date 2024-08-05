@@ -52,7 +52,7 @@ export default function RealtimeClient({
   if (isPending) {
     return (
       <StatusBadge color="orange" className="flex pl-1 pr-2 py-1 gap-1 w-fit">
-        {deliveryId ? "Syncing your order status" : "Syncing deliveries"}
+        {deliveryId ? "Syncing order status" : "Syncing deliveries"}
         <span className="animate-ping inline-flex h-1 w-1 rounded-full bg-orange-400 opacity-75 ml-2"></span>
       </StatusBadge>
     );
@@ -61,7 +61,7 @@ export default function RealtimeClient({
   return (
     <div>
       <StatusBadge color="green" className="flex pl-1 pr-2 py-1 gap-1 w-fit">
-        {deliveryId ? "Order status updated" : "All deliveries up to date"}
+        Up to date
       </StatusBadge>
     </div>
   );
