@@ -113,6 +113,7 @@ pasword: supersecret
 You are now ready to start up your project.
 
 **Start Medusa dev server**
+
 Make sure that Redis and Postgres servers are running locally on their default ports.
 
 In `/backend` run:
@@ -124,6 +125,7 @@ yarn dev
 The Medusa server is now running on http://localhost:9000.
 
 **Start Next.js dev server**
+
 In a separate terminal, cd to `/frontend` and run:
 
 ```shell
