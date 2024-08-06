@@ -17,6 +17,8 @@ const nextConfig = {
       },
     ],
   },
+  // output static assets to `out` dir
+  output: 'export',
 };
 
 export default nextConfig;
