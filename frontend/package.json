@@ -11,6 +11,7 @@
   "dependencies": {
     "@dotlottie/react-player": "^1.6.19",
     "@medusajs/ui": "preview",
+    "@next/third-parties": "^14.2.5",
     "eventsource": "^2.0.2",
     "jose": "^5.2.4",
     "next": "14.1.4",

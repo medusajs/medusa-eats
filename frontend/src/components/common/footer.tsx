@@ -1,10 +1,14 @@
 import { Text } from "@medusajs/ui";
 import Image from "next/image";
 import Link from "next/link";
+import { GoogleAnalytics } from "@next/third-parties/google";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export default function Footer() {
   return (
     <footer className="flex justify-center items-center h-16 bg-ui-fg-base text-ui-fg-on-inverted">
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       <Text className="flex gap-1 text-sm text-ui-fg">
         © {new Date().getFullYear()}
         <Link
