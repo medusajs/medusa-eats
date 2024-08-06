@@ -58,14 +58,13 @@ export default async function RestaurantDashboardPage() {
               <RealtimeClient restaurantId={restaurantId} />
             </div>
           </div>
-          {process.env.NEXT_PUBLIC_DEMO_MODE !== "true" && (
-            <div className="justify-center hidden md:flex">
+          <div className="justify-center hidden md:flex">
+            {process.env.NEXT_PUBLIC_DEMO_MODE !== "true" && (
               <div className="flex flex-col justify-between">
                 <Text className="font-semibold">Quick actions</Text>
                 <Link
                   href="/dashboard/restaurant/menu"
-                  className="text-ui-fg-disabled text-sm"
-                  aria-disabled={true}
+                  className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover text-sm"
                 >
                   Edit menu
                 </Link>
@@ -82,8 +81,8 @@ export default async function RestaurantDashboardPage() {
                   Edit profile
                 </Text>
               </div>
-            </div>
-          )}
+            )}
+          </div>
           <div className="flex md:justify-end">
             <AccountBadge data={restaurant} type="restaurant" />
           </div>
