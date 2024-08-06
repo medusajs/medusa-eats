@@ -14,7 +14,7 @@ export function createSession(token: string) {
 
   cookies().set("_medusa_jwt", token, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     expires: expiresAt,
     sameSite: "strict",
     path: "/",
