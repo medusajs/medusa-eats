@@ -58,7 +58,7 @@ export default async function RestaurantDashboardPage() {
               <RealtimeClient restaurantId={restaurantId} />
             </div>
           </div>
-          {process.env.NEXT_PUBLIC_VERCEL_URL !== "medusa-eats.vercel.app" && (
+          {process.env.NEXT_PUBLIC_DEMO_MODE !== "true" && (
             <div className="justify-center hidden md:flex">
               <div className="flex flex-col justify-between">
                 <Text className="font-semibold">Quick actions</Text>
