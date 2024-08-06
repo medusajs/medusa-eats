@@ -51,13 +51,12 @@ export default async function AccountBadge({
   return (
     <div className="flex flex-col justify-between">
       <div className="flex gap-4 items-center">
-        <div className="flex flex-col md:text-right justify-between">
+        <div className="flex flex-col h-28 md:text-right justify-between">
           <Text className="font-semibold">{name}</Text>
           <Text>{data.email}</Text>
           <Text>{data.phone}</Text>
           <Badge size="small" className="w-fit md:self-end">
-            Completed deliveries:{" "}
-            <span className="font-bold">{deliveries?.length}</span>
+            Deliveries: <span className="font-bold">{deliveries?.length}</span>
           </Badge>
         </div>
         <Image

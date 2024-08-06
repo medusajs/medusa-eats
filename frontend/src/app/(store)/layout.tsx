@@ -1,3 +1,4 @@
+import Footer from "@frontend/components/common/footer";
 import { ProfileBadge } from "@frontend/components/common/profile-badge";
 import NavCart from "@frontend/components/store/cart/nav-cart";
 import { retrieveUser } from "@frontend/lib/data";
@@ -57,24 +58,7 @@ export default async function RootLayout({
       <main className="flex flex-col gap-20 p-4 md:p-10 transition-all duration-150 ease-in-out min-h-[calc(100vh-8rem)]">
         {children}
       </main>
-      <footer className="flex w-full justify-center items-center h-16 bg-ui-fg-base text-ui-fg-on-inverted">
-        <Text className="flex gap-1 text-sm text-ui-fg">
-          © {new Date().getFullYear()}
-          <Link
-            href="https://medusajs.com/"
-            className="flex gap-1 items-center hover:text-ui-bg-base-hover"
-          >
-            <Image
-              src="/medusa-logo.svg"
-              alt="Medusa"
-              className="h-4"
-              height={15}
-              width={15}
-            />
-            Medusa
-          </Link>
-        </Text>
-      </footer>
+      <Footer />
     </>
   );
 }
