@@ -58,29 +58,32 @@ export default async function RestaurantDashboardPage() {
               <RealtimeClient restaurantId={restaurantId} />
             </div>
           </div>
-          <div className="justify-center hidden md:flex">
-            <div className="flex flex-col justify-between">
-              <Text className="font-semibold">Quick actions</Text>
-              <Link
-                href="/dashboard/restaurant/menu"
-                className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover text-sm"
-              >
-                Edit menu
-              </Link>
-              <Text
-                className="text-ui-fg-disabled text-sm"
-                aria-disabled={true}
-              >
-                Edit settings
-              </Text>
-              <Text
-                className="text-ui-fg-disabled text-sm"
-                aria-disabled={true}
-              >
-                Edit profile
-              </Text>
+          {process.env.NEXT_PUBLIC_VERCEL_URL !== "medusa-eats.vercel.app" && (
+            <div className="justify-center hidden md:flex">
+              <div className="flex flex-col justify-between">
+                <Text className="font-semibold">Quick actions</Text>
+                <Link
+                  href="/dashboard/restaurant/menu"
+                  className="text-ui-fg-disabled text-sm"
+                  aria-disabled={true}
+                >
+                  Edit menu
+                </Link>
+                <Text
+                  className="text-ui-fg-disabled text-sm"
+                  aria-disabled={true}
+                >
+                  Edit settings
+                </Text>
+                <Text
+                  className="text-ui-fg-disabled text-sm"
+                  aria-disabled={true}
+                >
+                  Edit profile
+                </Text>
+              </div>
             </div>
-          </div>
+          )}
           <div className="flex md:justify-end">
             <AccountBadge data={restaurant} type="restaurant" />
           </div>
