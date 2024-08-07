@@ -27,7 +27,6 @@ export default function DishCard({
     <div className="flex items-center justify-between shadow-sm border rounded-xl h-fit">
       <div className="flex flex-col gap-2 px-4">
         <Heading>{product.title}</Heading>
-        {/* cut off the description after 3 lines using css tailwind */}
         <Text className="line-clamp-3">{product.description}</Text>
         <Text className="text-lg font-semibold">
           €
