@@ -35,8 +35,8 @@ export function MenuProductActions({
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        <DropdownMenu.Item className="gap-x-2">
-          <PencilSquare className="text-ui-fg-subtle" />
+        <DropdownMenu.Item className="gap-x-2" disabled>
+          <PencilSquare className="text-ui-fg-disabled" />
           Edit
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
