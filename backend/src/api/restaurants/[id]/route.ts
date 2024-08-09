@@ -60,7 +60,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const pricedProducts = await getPricesByPriceSetId({
     products,
-    currency_code: "usd",
+    currency_code: "EUR",
     pricingService: req.scope.resolve("pricingModuleService"),
   });
 

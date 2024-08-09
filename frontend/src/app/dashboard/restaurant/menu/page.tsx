@@ -65,6 +65,7 @@ export default async function MenuPage() {
                   price_set: any;
                   price: any;
                 })[];
+
                 return (
                   <Table.Row key={product.id}>
                     <Table.Cell>
@@ -81,7 +82,7 @@ export default async function MenuPage() {
                     <Table.Cell>{product.title}</Table.Cell>
                     <Table.Cell>{product.description}</Table.Cell>
                     <Table.Cell>
-                      ${variants[0].price.calculated_amount}
+                      €{variants[0].price?.calculated_amount}
                     </Table.Cell>
                     <Table.Cell>
                       <MenuProductActions
