@@ -1,9 +1,9 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
-import { createRestaurantWorkflow } from "../../workflows/restaurant/workflows";
 import zod from "zod";
 import { CreateRestaurantDTO } from "../../types/restaurant/mutations";
 import { getPricesByPriceSetId } from "../../utils/get-prices-by-price-set-id";
+import { createRestaurantWorkflow } from "../../workflows/restaurant/workflows";
 
 const schema = zod.object({
   name: zod.string(),
@@ -97,7 +97,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
       const productsWithPrices = await getPricesByPriceSetId({
         products,
-        currency_code: "EUR",
+        currency_code: "eur",
         pricingService: req.scope.resolve("pricingModuleService"),
       });
 
