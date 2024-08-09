@@ -104,7 +104,7 @@ yarn setup-db
 This will also create an admin user with the following credentials:
 
 ```
-email: admin@test.com
+email: admin@email.com
 pasword: supersecret
 ```
 
