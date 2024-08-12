@@ -1,10 +1,12 @@
 "use client";
 
+import { BikeIcon, PizzaIcon } from "@frontend/components/common/icons";
 import { login } from "@frontend/lib/actions";
-import { useFormState, useFormStatus } from "react-dom";
-import { Label, Input, Button, Badge, Select } from "@medusajs/ui";
+import { Spinner } from "@medusajs/icons";
+import { Badge, Button, Input, Label, Select } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
-import { PizzaIcon, BikeIcon } from "@frontend/components/common/icons";
+import { useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 
 function Submit() {
   const status = useFormStatus();
@@ -64,7 +66,14 @@ function DefaultLoginForm() {
 }
 
 function DemoLoginForm() {
+  const [isLoading, setIsLoading] = useState({
+    restaurant: false,
+    driver: false,
+  });
+
   const loginAs = async (actor_type: "restaurant" | "driver") => {
+    setIsLoading((prev) => ({ ...prev, [actor_type]: true }));
+
     const credentials = new FormData();
     credentials.set("email", `${actor_type}@account.com`);
     credentials.set("password", "123");
@@ -78,11 +87,15 @@ function DemoLoginForm() {
   return (
     <div className="flex flex-col gap-3 justify-center items-center">
       <Button size="xlarge" onClick={() => loginAs("restaurant")}>
-        <PizzaIcon />
+        {isLoading.restaurant ? (
+          <Spinner className="animate-spin" />
+        ) : (
+          <PizzaIcon />
+        )}
         Log in as a Restaurant
       </Button>
       <Button size="xlarge" onClick={() => loginAs("driver")}>
-        <BikeIcon />
+        {isLoading.driver ? <Spinner className="animate-spin" /> : <BikeIcon />}
         Log in as a Driver
       </Button>
     </div>
