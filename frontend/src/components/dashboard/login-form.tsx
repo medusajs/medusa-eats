@@ -68,6 +68,8 @@ function DemoLoginForm() {
     const credentials = new FormData();
     credentials.set("email", `${actor_type}@account.com`);
     credentials.set("password", "123");
+    credentials.set("actor_type", actor_type);
+
     await login({}, credentials).catch((error) => {
       console.error(error);
     });
