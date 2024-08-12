@@ -14,6 +14,7 @@
     "@next/third-parties": "^14.2.5",
     "eventsource": "^2.0.2",
     "jose": "^5.2.4",
+    "lucide-react": "^0.427.0",
     "next": "14.1.4",
     "next-view-transitions": "^0.1.1",
     "prop-types": "^15.8.1",

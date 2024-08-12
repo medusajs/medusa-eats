@@ -36,9 +36,15 @@ export function ProfileBadge({ user }: ProfileBadgeProps) {
               />
             </>
           ) : (
-            <Text className="text-sm text-ui-bg-base group-hover:text-ui-fg-base">
-              Login
-            </Text>
+            <>
+              <Text className="text-sm text-ui-bg-base group-hover:text-ui-fg-base">
+                Login
+              </Text>
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ui-bg-interactive opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-ui-bg-interactive"></span>
+              </span>
+            </>
           )}
         </Button>
       </Link>
