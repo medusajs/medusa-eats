@@ -1,6 +1,9 @@
 import { RestaurantDTO } from "@frontend/lib/types";
 import RestaurantCategory from "@frontend/components/store/restaurant/restaurant-category";
-import { Heading } from "@medusajs/ui";
+import { Button, Container, Heading, Text } from "@medusajs/ui";
+import Link from "next/link";
+import { Github } from "@medusajs/icons";
+import DemoModal from "@frontend/components/common/demo-modal";
 
 const BACKEND_URL =
   process.env.BACKEND_URL ||
@@ -18,5 +21,10 @@ export default async function Home() {
     return <Heading level="h1">No restaurants open near you</Heading>;
   }
 
-  return <RestaurantCategory restaurants={restaurants} />;
+  return (
+    <div className="flex flex-col gap-8">
+      {process.env.NEXT_PUBLIC_DEMO_MODE === "true" && <DemoModal />}
+      <RestaurantCategory restaurants={restaurants} />
+    </div>
+  );
 }
