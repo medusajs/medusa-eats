@@ -1,5 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
+import { RemoteQuery } from "@medusajs/modules-sdk";
 import { createRestaurantWorkflow } from "../../workflows/restaurant/workflows";
 import zod from "zod";
 import { CreateRestaurantDTO } from "../../types/restaurant/mutations";
@@ -33,7 +34,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const queryFilters = req.query;
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery: RemoteQuery = req.scope.resolve("remoteQuery");
 
   const restaurantsQuery = remoteQueryObjectFromString({
     entryPoint: "restaurants",
@@ -46,6 +47,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "email",
       "image_url",
       "is_open",
+      "products.*",
+      "products.categories.*",
+      "products.variants.*",
+      "products.variants.price_set",
+      "products.variants.price_set.id",
     ],
     variables: {
       filters: queryFilters,
@@ -55,48 +61,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const restaurants = await remoteQuery(restaurantsQuery);
 
   for (const restaurant of restaurants) {
-    const restaurantProductsQuery = remoteQueryObjectFromString({
-      entryPoint: "restaurant_product",
-      variables: {
-        filters: {
-          restaurant_id: restaurant.id,
-        },
-      },
-      fields: ["restaurant_id", "product_id"],
-    });
-
-    const restaurantProducts = await remoteQuery(restaurantProductsQuery);
-
-    restaurant.products = [];
-
-    if (restaurantProducts.length) {
-      const productsQuery = remoteQueryObjectFromString({
-        entryPoint: "products",
-        fields: [
-          "id",
-          "title",
-          "description",
-          "thumbnail",
-          "categories",
-          "categories.id",
-          "categories.name",
-          "variants",
-          "variants.id",
-          "variants.price_set",
-          "variants.price_set.id",
-        ],
-        variables: {
-          filters: {
-            id: restaurantProducts.map((p) => p.product_id),
-          },
-          relations: ["categories"],
-        },
-      });
-
-      const products = await remoteQuery(productsQuery);
-
+    if (restaurant.products) {
       const productsWithPrices = await getPricesByPriceSetId({
-        products,
+        products: restaurant.products,
         currency_code: "EUR",
         pricingService: req.scope.resolve("pricingModuleService"),
       });

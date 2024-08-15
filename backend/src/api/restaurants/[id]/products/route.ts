@@ -1,12 +1,15 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { RemoteQuery } from "@medusajs/modules-sdk";
 import {
   ContainerRegistrationKeys,
   MedusaError,
-  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import zod from "zod";
-import { createRestaurantProductsWorkflow } from "../../../../workflows/restaurant/workflows";
+import {
+  createRestaurantProductsWorkflow,
+  deleteRestaurantProductsWorkflow,
+} from "../../../../workflows/restaurant/workflows";
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { products } = JSON.parse(req.body as string);
@@ -31,22 +34,17 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.NOT_FOUND;
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
+  const remoteQuery: RemoteQuery = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_QUERY
+  );
 
   const restaurantProductsQuery = remoteQueryObjectFromString({
-    entryPoint: "restaurant_product",
-    variables: {
-      filters: {
-        restaurant_id: restaurantId,
-      },
-    },
-    fields: ["restaurant_id", "product_id"],
-  });
-
-  const restaurantProducts = await remoteQuery(restaurantProductsQuery);
-
-  const productsQuery = remoteQueryObjectFromString({
     entryPoint: "products",
+    // variables: {
+    //   filters: {
+    //     restaurant: restaurantId,
+    //   },
+    // },
     fields: [
       "id",
       "title",
@@ -59,48 +57,27 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "variants.id",
       "variants.price_set",
       "variants.price_set.id",
+      "restaurant.*",
     ],
-    variables: {
-      filters: {
-        id: restaurantProducts.map((p) => p.product_id),
-      },
-    },
   });
 
-  const products = await remoteQuery(productsQuery);
+  const restaurantProducts = await remoteQuery(restaurantProductsQuery);
 
-  return res.status(200).json({ restaurant_products: products });
+  return res.status(200).json({ restaurant_products: restaurantProducts });
 }
 
 const deleteSchema = zod.object({
-  product_id: zod.string(),
+  product_ids: zod.string().array(),
 });
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
-  const parsedBody = JSON.parse(req.body as string);
-  const validatedBody = deleteSchema.parse(parsedBody);
+  const validatedBody = deleteSchema.parse(req.body);
 
-  if (!validatedBody) {
-    return res.status(400).json({ message: "Missing restaurant admin data" });
-  }
-
-  const restaurantId = req.params.id;
-
-  if (!restaurantId) {
-    return res.status(400).json({ message: "Missing restaurant id" });
-  }
-
-  const restaurantModuleService = req.scope.resolve("restaurantModuleService");
-
-  const productModuleService = req.scope.resolve(
-    ModuleRegistrationName.PRODUCT
-  );
-
-  await productModuleService.deleteProducts([validatedBody.product_id]);
-
-  await restaurantModuleService.deleteRestaurantProducts({
-    restaurant_id: restaurantId,
-    product_id: validatedBody.product_id,
+  await deleteRestaurantProductsWorkflow(req.scope).run({
+    input: {
+      product_ids: validatedBody.product_ids,
+      restaurant_id: req.params.id,
+    },
   });
 
   return res.status(200);

@@ -5,6 +5,11 @@ import {
 } from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../../workflows/delivery/workflows/handle-delivery";
 import { AuthUserScopedMedusaRequest } from "../../../types";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
+import {
+  IWorkflowEngineService,
+  IEventBusModuleService,
+} from "@medusajs/types";
 
 type RestaurantNotificationData = {
   data: {
@@ -28,7 +33,7 @@ export const GET = async (
   const restaurantId = req.query.restaurant_id as string;
   const driverId = req.query.driver_id as string;
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
 
   const deliveryQuery = remoteQueryObjectFromString({
     entryPoint: "deliveries",
@@ -55,7 +60,7 @@ export const GET = async (
 
   res.writeHead(200, headers);
 
-  const workflowEngine = req.scope.resolve(
+  const workflowEngine: IWorkflowEngineService = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
   );
 
@@ -78,7 +83,9 @@ export const GET = async (
       "\n\n"
   );
 
-  const eventBus = req.scope.resolve(ModuleRegistrationName.EVENT_BUS);
+  const eventBus: IEventBusModuleService = req.scope.resolve(
+    ModuleRegistrationName.EVENT_BUS
+  );
 
   if (restaurantId) {
     eventBus.subscribe("notify.restaurant", async (event) => {

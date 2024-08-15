@@ -5,6 +5,7 @@ import {
 } from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../workflows/delivery/workflows/handle-delivery";
 import { AuthUserScopedMedusaRequest } from "../../types";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 
 type RestaurantNotificationData = {
   data: {
@@ -24,7 +25,7 @@ export const GET = async (
   req: AuthUserScopedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
 
   const { restaurant_id, driver_id, delivery_id } = req.query as {
     restaurant_id: string;

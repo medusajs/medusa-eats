@@ -1,5 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import zod from "zod";
 import { DeliveryItemDTO } from "../../types/delivery/common";
 import { handleDeliveryWorkflow } from "../../workflows/delivery/workflows/handle-delivery";
@@ -21,7 +22,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
 
   const filters = {};
   let take = parseInt(req.query.take as string) || null;

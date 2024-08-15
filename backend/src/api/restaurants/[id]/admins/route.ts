@@ -12,6 +12,7 @@ import {
 import jwt from "jsonwebtoken";
 import zod from "zod";
 import { createUserWorkflow } from "../../../../workflows/user/workflows/create-user";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 
 const schema = zod
   .object({
@@ -66,7 +67,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.NOT_FOUND, "Restaurant not found";
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_QUERY
+  );
 
   const restaurantAdminsQuery = remoteQueryObjectFromString({
     entryPoint: "restaurant_admin",

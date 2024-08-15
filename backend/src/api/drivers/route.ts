@@ -2,6 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import zod from "zod";
 import { CreateDriverDTO } from "../../types/delivery/mutations";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 
 const schema = zod
   .object({
@@ -37,7 +38,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
   try {
     const driverQuery = remoteQueryObjectFromString({
       entryPoint: "drivers",
