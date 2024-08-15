@@ -1,7 +1,5 @@
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { RemoteLink } from "@medusajs/modules-sdk";
-import { ContainerRegistrationKeys } from "@medusajs/utils";
-import { Modules } from "@medusajs/utils";
 
 type StepInput = {
   product_ids: string[];
@@ -12,9 +10,7 @@ export const createRestaurantProductsStepId = "create-restaurant-product-step";
 export const createRestaurantProductsStep = createStep(
   createRestaurantProductsStepId,
   async function (data: StepInput, { container }) {
-    const remoteLink: RemoteLink = container.resolve(
-      ContainerRegistrationKeys.REMOTE_LINK
-    );
+    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK);
 
     // Add the product to the restaurant
     for (const product_id of data.product_ids) {
@@ -40,9 +36,7 @@ export const createRestaurantProductsStep = createStep(
     },
     { container }
   ) {
-    const remoteLink: RemoteLink = container.resolve(
-      ContainerRegistrationKeys.REMOTE_LINK
-    );
+    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK);
 
     // Dismiss the link between the product and the restaurant
     for (const product_id of input.product_ids) {

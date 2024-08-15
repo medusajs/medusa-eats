@@ -12,7 +12,7 @@ export const notifyRestaurantStep = createStep(
     timeout: 60 * 15,
     maxRetries: 2,
   },
-  async function (deliveryId: string, { container, context }) {
+  async function (deliveryId: string, { container }) {
     const remoteQuery = container.resolve("remoteQuery");
 
     const deliveryQuery = remoteQueryObjectFromString({
@@ -22,19 +22,17 @@ export const notifyRestaurantStep = createStep(
           id: deliveryId,
         },
       },
-      fields: ["id", "restaurant_id"],
+      fields: ["id", "restaurant.id"],
     });
 
     const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
-
-    const { restaurant_id } = delivery;
 
     const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS);
 
     await eventBus.emit({
       name: "notify.restaurant",
       data: {
-        restaurant_id,
+        restaurant_id: delivery.restaurant.id,
         delivery_id: delivery.id,
       },
     });
