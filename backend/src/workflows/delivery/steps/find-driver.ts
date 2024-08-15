@@ -16,7 +16,7 @@ export const findDriverStep = createStep<string, DriverDTO, string>(
       fields: ["id"],
       variables: {
         skip: 0,
-        take: 5,
+        take: null,
       },
     });
 
