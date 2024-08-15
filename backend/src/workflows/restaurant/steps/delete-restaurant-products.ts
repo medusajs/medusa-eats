@@ -8,27 +8,33 @@ type StepInput = {
   restaurant_id: string;
 };
 
-export const createRestaurantProductsStepId = "create-restaurant-product-step";
-export const createRestaurantProductsStep = createStep(
-  createRestaurantProductsStepId,
+export const deleteRestaurantProductsStepId = "delete-restaurant-product-step";
+export const deleteRestaurantProductsStep = createStep(
+  deleteRestaurantProductsStepId,
   async function (data: StepInput, { container }) {
     const remoteLink: RemoteLink = container.resolve(
       ContainerRegistrationKeys.REMOTE_LINK
     );
 
-    // Add the product to the restaurant
+    // Delete the link between the product and the restaurant and all the linked entities
     for (const product_id of data.product_ids) {
-      await remoteLink.create({
+      await remoteLink.dismiss({
+        [Modules.PRODUCT]: {
+          product_id,
+        },
         restaurantModuleService: {
           restaurant_id: data.restaurant_id,
         },
+      });
+
+      await remoteLink.delete({
         [Modules.PRODUCT]: {
           product_id,
         },
       });
     }
 
-    return new StepResponse("Links created", {
+    return new StepResponse("Links deleted", {
       product_ids: data.product_ids,
       restaurant_id: data.restaurant_id,
     });
@@ -44,12 +50,9 @@ export const createRestaurantProductsStep = createStep(
       ContainerRegistrationKeys.REMOTE_LINK
     );
 
-    // Dismiss the link between the product and the restaurant
+    // Restore the link between the product and the restaurant
     for (const product_id of input.product_ids) {
-      await remoteLink.dismiss({
-        restaurantModuleService: {
-          restaurant_id: input.restaurant_id,
-        },
+      await remoteLink.restore({
         [Modules.PRODUCT]: {
           product_id,
         },

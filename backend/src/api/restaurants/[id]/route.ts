@@ -1,4 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -6,13 +7,15 @@ import {
 import { getPricesByPriceSetId } from "../../../utils/get-prices-by-price-set-id";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_QUERY
+  );
 
   const restaurantId = req.params.id;
 
   const restaurantQuery = remoteQueryObjectFromString({
     entryPoint: "restaurants",
-    fields: ["*"],
+    fields: ["*", "products.*", "products.categories.*"],
     variables: {
       filters: {
         id: restaurantId,
@@ -22,44 +25,8 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const restaurant = await remoteQuery(restaurantQuery).then((r) => r[0]);
 
-  const restaurantProductsQuery = remoteQueryObjectFromString({
-    entryPoint: "restaurant_product",
-    fields: ["product_id"],
-    variables: {
-      filters: {
-        restaurant_id: restaurantId,
-      },
-    },
-  });
-
-  const restaurantProducts = await remoteQuery(restaurantProductsQuery);
-
-  const productsQuery = remoteQueryObjectFromString({
-    entryPoint: "products",
-    fields: [
-      "id",
-      "title",
-      "description",
-      "thumbnail",
-      "categories",
-      "categories.id",
-      "categories.handle",
-      "variants",
-      "variants.id",
-      "variants.price_set",
-      "variants.price_set.id",
-    ],
-    variables: {
-      filters: {
-        id: restaurantProducts.map((p) => p.product_id),
-      },
-    },
-  });
-
-  const products = await remoteQuery(productsQuery);
-
   const pricedProducts = await getPricesByPriceSetId({
-    products,
+    products: restaurant.products,
     currency_code: "EUR",
     pricingService: req.scope.resolve("pricingModuleService"),
   });

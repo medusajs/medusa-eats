@@ -7,6 +7,7 @@ import {
 } from "../../../types/delivery/common";
 import { UpdateDeliveryDTO } from "../../../types/delivery/mutations";
 import { updateDeliveryWorkflow } from "../../../workflows/delivery/workflows";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 
 const schema = zod.object({
   driver_id: zod.string().optional(),
@@ -46,7 +47,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const deliveryId = req.params.id;
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
 
   const deliveryQuery = remoteQueryObjectFromString({
     entryPoint: "deliveries",

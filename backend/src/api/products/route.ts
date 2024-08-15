@@ -1,11 +1,14 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_QUERY
+  );
 
   const productIds = req.query.id as string;
 

@@ -1,4 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
 
@@ -42,7 +43,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
 
   const driverQuery = remoteQueryObjectFromString({
     entryPoint: "drivers",
