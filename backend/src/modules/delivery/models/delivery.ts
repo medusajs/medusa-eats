@@ -7,7 +7,7 @@ export const Delivery = model.define("Delivery", {
       prefix: "del",
     })
     .primaryKey(),
-  transaction_id: model.text(),
+  transaction_id: model.text().nullable(),
   driver_id: model.text().nullable(),
   delivery_status: model.enum(DeliveryStatus).default(DeliveryStatus.PENDING),
   eta: model.dateTime().nullable(),

@@ -1,6 +1,7 @@
 "use client";
 
 import { placeOrder } from "@frontend/lib/actions";
+import { CartDTO } from "@medusajs/types";
 import { Badge, Button, Heading, Input, Label, Textarea } from "@medusajs/ui";
 import { useFormState, useFormStatus } from "react-dom";
 
@@ -19,8 +20,10 @@ function Submit() {
   );
 }
 
-export default function CheckoutForm() {
+export default function CheckoutForm({ cart }: { cart: CartDTO }) {
   const [state, action] = useFormState(placeOrder, { message: "" });
+
+  const restaurantId = cart.metadata?.restaurant_id as string;
 
   return (
     <div className="flex flex-col w-full gap-3">
@@ -48,6 +51,7 @@ export default function CheckoutForm() {
         <Input placeholder="john@doe.com" name="email" />
         <Label>Notes</Label>
         <Textarea placeholder="Leave a note for the driver" name="notes" />
+        <input type="hidden" name="restaurant-id" value={restaurantId} />
         <Submit />
         {state.message && (
           <Badge className="justify-center text-center">{state.message}</Badge>

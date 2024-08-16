@@ -1,6 +1,5 @@
 "use server";
 
-import { listDeliveries } from "@frontend/lib/data";
 import { UpsertAddressDTO } from "@medusajs/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -67,13 +66,13 @@ export async function addPaymentSession(cartId: string) {
   return response;
 }
 
-export async function createDelivery(cartId: string) {
-  const delivery = await fetch(`${BACKEND_URL}/deliveries`, {
+export async function createDelivery(cartId: string, restaurantId: string) {
+  const { delivery } = await fetch(`${BACKEND_URL}/deliveries`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ cart_id: cartId }),
+    body: JSON.stringify({ cart_id: cartId, restaurant_id: restaurantId }),
   })
     .then((res) => res.json())
     .catch((error) => {
@@ -97,6 +96,7 @@ export async function placeOrder(prevState: any, data: FormData) {
   const zip = data.get("zip")?.toString();
   const phone = data.get("phone")?.toString();
   const email = data.get("email")?.toString();
+  const restaurantId = data.get("restaurant-id")?.toString();
 
   if (
     !firstName ||
@@ -105,7 +105,8 @@ export async function placeOrder(prevState: any, data: FormData) {
     !city ||
     !zip ||
     !phone ||
-    !email
+    !email ||
+    !restaurantId
   ) {
     return { message: "Please fill in all fields" };
   }
@@ -128,11 +129,7 @@ export async function placeOrder(prevState: any, data: FormData) {
         return { message: "Error updating cart" };
       });
 
-    await createDelivery(cartId);
-
-    const delivery = await listDeliveries({ cart_id: cartId }).then(
-      (res) => res[0]
-    );
+    const delivery = await createDelivery(cartId, restaurantId);
 
     cookies().set("_medusa_cart_id", "", { maxAge: 0 });
     cookies().set("_medusa_delivery_id", delivery.id);

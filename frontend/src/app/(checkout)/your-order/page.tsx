@@ -31,8 +31,6 @@ export default async function YourOrderPage() {
     driver = await retrieveDriver(delivery.driver_id);
   }
 
-  const restaurant = await retrieveRestaurant(delivery.restaurant_id);
-
   let eta = null;
 
   if (delivery.eta) {
@@ -59,7 +57,7 @@ export default async function YourOrderPage() {
       <Container className="flex justify-between p-8 flex-col md:flex-row gap-3">
         <div className="flex flex-col justify-between gap-2">
           <Heading level="h1" className="text-2xl">
-            Your order from {restaurant.name} | Medusa Eats
+            Your order from {delivery.restaurant.name} | Medusa Eats
           </Heading>
           <Text>View your realtime order status.</Text>
           <RealtimeClient deliveryId={delivery.id} />
@@ -78,7 +76,7 @@ export default async function YourOrderPage() {
       <section className="flex flex-col justify-between gap-4 h-fit md:flex-row">
         <Container className="flex flex-col gap-4 flex-wrap md:w-1/3 overflow-auto">
           <Heading>Order {delivery.id.slice(-4)}</Heading>
-          {delivery.items.map((item: any) => (
+          {delivery.cart?.items?.map((item: any) => (
             <div key={item.id} className="flex items-center gap-4 h-fit">
               <Image
                 src={item.thumbnail}

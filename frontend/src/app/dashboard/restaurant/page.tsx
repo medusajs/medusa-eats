@@ -2,11 +2,7 @@ import AccountBadge from "@frontend/components/dashboard/account-badge";
 import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
 import RestaurantStatus from "@frontend/components/dashboard/restaurant/restaurant-status";
-import {
-  listDeliveries,
-  retrieveRestaurant,
-  retrieveUser,
-} from "@frontend/lib/data";
+import { retrieveRestaurant, retrieveUser } from "@frontend/lib/data";
 import { DeliveryStatus } from "@frontend/lib/types";
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
@@ -25,18 +21,14 @@ export default async function RestaurantDashboardPage() {
 
   const restaurantId = user.restaurant_id;
   const restaurant = await retrieveRestaurant(restaurantId);
-
-  const deliveries = await listDeliveries({
-    restaurant_id: restaurantId,
-  });
-  const openStatus = restaurant.is_open;
+  const { name, deliveries, is_open } = restaurant;
 
   return (
     <>
       <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-2">
           <Heading level="h1" className="text-2xl">
-            {restaurant.name} | Restaurant Dashboard
+            {name} | Restaurant Dashboard
           </Heading>
           <Text>View and manage your restaurant&apos;s orders.</Text>
         </div>
@@ -46,10 +38,10 @@ export default async function RestaurantDashboardPage() {
             <div className="flex gap-2">
               <Text>Restaurant status: </Text>{" "}
               <StatusBadge
-                color={openStatus ? "green" : "red"}
+                color={is_open ? "green" : "red"}
                 className="flex pl-1 pr-2 py-1 gap-1 w-fit"
               >
-                {openStatus ? "Taking orders" : "Closed"}
+                {is_open ? "Taking orders" : "Closed"}
               </StatusBadge>
               <RestaurantStatus restaurant={restaurant} />
             </div>

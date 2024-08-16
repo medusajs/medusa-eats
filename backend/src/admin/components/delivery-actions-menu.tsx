@@ -23,16 +23,16 @@ const DeliveryActionsMenu = ({ delivery }: { delivery: DeliveryDTO }) => {
             </DropdownMenu.Item>
           </a>
         )}
-        {delivery.order_id && (
-          <a href={`/app/orders/${delivery.order_id}`}>
+        {delivery.order?.id && (
+          <a href={`/app/orders/${delivery.order.id}`}>
             <DropdownMenu.Item className="gap-x-2">
               <ArrrowRight className="text-ui-fg-subtle" />
               View order
             </DropdownMenu.Item>
           </a>
         )}
-        {delivery.restaurant_id && (
-          <a href={`/app/restaurants/${delivery.restaurant_id}`}>
+        {delivery.restaurant.id && (
+          <a href={`/app/restaurants/${delivery.restaurant.id}`}>
             <DropdownMenu.Item className="gap-x-2">
               <ArrrowRight className="text-ui-fg-subtle" />
               View restaurant
