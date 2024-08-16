@@ -6,6 +6,7 @@ import {
 import { handleDeliveryWorkflowId } from "../../../workflows/delivery/workflows/handle-delivery";
 import { AuthUserScopedMedusaRequest } from "../../types";
 import { RemoteQueryFunction } from "@medusajs/modules-sdk";
+import { DeliveryDTO } from "src/types/delivery/common";
 
 type RestaurantNotificationData = {
   data: {
@@ -33,26 +34,45 @@ export const GET = async (
     delivery_id: string;
   };
 
-  const filters = {
-    ...(restaurant_id && { restaurant_id }),
-    ...(driver_id && { driver_id }),
-    ...(delivery_id && { id: delivery_id }),
-  };
+  let deliveries: DeliveryDTO[] = [];
 
-  const take = parseInt(req.query.take as string) || null,
-    skip = parseInt(req.query.skip as string) || 0;
+  if (restaurant_id) {
+    const restaurantQuery = remoteQueryObjectFromString({
+      entryPoint: "restaurants",
+      fields: ["deliveries.*"],
+      variables: {
+        filters: {
+          id: restaurant_id,
+        },
+      },
+    });
 
-  const deliveriesQuery = remoteQueryObjectFromString({
-    entryPoint: "deliveries",
-    fields: ["*"],
-    variables: {
-      filters,
-      take,
-      skip,
-    },
-  });
+    const { deliveries } = await remoteQuery(restaurantQuery).then((r) => r[0]);
 
-  const { rows: deliveries } = await remoteQuery(deliveriesQuery);
+    deliveries.push(...deliveries);
+  } else {
+    const filters = {
+      ...(driver_id && { driver_id }),
+      ...(delivery_id && { id: delivery_id }),
+    };
+
+    const take = parseInt(req.query.take as string) || null,
+      skip = parseInt(req.query.skip as string) || 0;
+
+    const deliveriesQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveries",
+      fields: ["*"],
+      variables: {
+        filters,
+        take,
+        skip,
+      },
+    });
+
+    const { rows } = await remoteQuery(deliveriesQuery);
+
+    deliveries.push(...rows);
+  }
 
   if (!deliveries) {
     return res.status(404).json({ message: "No deliveries found" });

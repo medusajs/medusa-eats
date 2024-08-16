@@ -51,7 +51,14 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const deliveryQuery = remoteQueryObjectFromString({
     entryPoint: "deliveries",
-    fields: ["*"],
+    fields: [
+      "*",
+      "cart.*",
+      "cart.items.*",
+      "order.*",
+      "order.items.*",
+      "restaurant.*",
+    ],
     variables: {
       filters: {
         id: deliveryId,
@@ -66,40 +73,6 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   }
 
   try {
-    const items = [] as DeliveryItemDTO[];
-
-    if (delivery.cart_id) {
-      const cartQuery = remoteQueryObjectFromString({
-        entryPoint: "carts",
-        fields: ["items.*"],
-        variables: {
-          filters: {
-            id: delivery.cart_id,
-          },
-        },
-      });
-
-      const cart = await remoteQuery(cartQuery).then((r) => r[0]);
-
-      items.push(...(cart.items as DeliveryItemDTO[]));
-    } else if (delivery.order_id) {
-      const orderQuery = remoteQueryObjectFromString({
-        entryPoint: "orders",
-        fields: ["items.*"],
-        variables: {
-          filters: {
-            id: delivery.order_id,
-          },
-        },
-      });
-
-      const order = await remoteQuery(orderQuery).then((r) => r[0]);
-
-      items.push(...order.items);
-    }
-
-    delivery.items = items;
-
     return res.status(200).json({ delivery });
   } catch (error) {
     return res.status(500).json({ message: error.message });

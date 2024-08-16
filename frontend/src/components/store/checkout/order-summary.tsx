@@ -1,17 +1,11 @@
-import { retrieveCart, retrieveRestaurant } from "@frontend/lib/data";
+import { retrieveRestaurant } from "@frontend/lib/data";
+import { CartDTO } from "@medusajs/types";
 import { Container, Heading, Text } from "@medusajs/ui";
-import { cookies } from "next/headers";
 import Image from "next/image";
 
-export async function OrderSummary() {
-  const cartId = cookies().get("_medusa_cart_id")?.value;
-  if (!cartId) {
-    return null;
-  }
-  const cart = await retrieveCart(cartId);
-
+export async function OrderSummary({ cart }: { cart: CartDTO }) {
   const restaurant = await retrieveRestaurant(
-    cart.metadata?.restaurant_id as string
+    cart?.metadata?.restaurant_id as string
   );
 
   return (

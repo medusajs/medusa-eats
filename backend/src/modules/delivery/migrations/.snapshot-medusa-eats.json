@@ -33,33 +33,6 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "restaurant_id": {
-          "name": "restaurant_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "cart_id": {
-          "name": "cart_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "order_id": {
-          "name": "order_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "text"
-        },
         "delivery_status": {
           "name": "delivery_status",
           "type": "text",

@@ -6,7 +6,7 @@ import DeliveryItems from "./delivery-items";
 
 const DeliveryRow = ({ delivery }: { delivery: DeliveryDTO }) => {
   const { data, loading } = useRestaurants({
-    id: delivery.restaurant_id,
+    id: delivery.restaurant.id,
   });
 
   if (loading) {

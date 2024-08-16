@@ -19,6 +19,7 @@ export async function getPricesByPriceSetId({
   pricingService,
 }: Props): Promise<typeof products> {
   for (const product of products) {
+    if (!product.variants) continue;
     for (const variant of product.variants) {
       if (!variant.price_set) continue;
       const priceSetId = variant.price_set.id;

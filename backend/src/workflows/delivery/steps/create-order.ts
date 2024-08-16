@@ -19,7 +19,7 @@ export const createOrderStep = createStep(
           id: deliveryId,
         },
       },
-      fields: ["id", "cart_id", "delivery_status", "driver_id"],
+      fields: ["id", "cart.id", "delivery_status", "driver_id"],
     });
 
     const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
@@ -29,7 +29,7 @@ export const createOrderStep = createStep(
       fields: ["*", "items.*"],
       variables: {
         filters: {
-          id: delivery.cart_id,
+          id: delivery.cart.id,
         },
       },
     });
@@ -50,8 +50,6 @@ export const createOrderStep = createStep(
       shipping_methods:
         cart.shipping_methods as unknown as CreateOrderShippingMethodDTO[],
     });
-
-    delivery.order_id = order?.id;
 
     const remoteLink = container.resolve("remoteLink");
 
