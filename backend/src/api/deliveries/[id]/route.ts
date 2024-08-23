@@ -4,8 +4,8 @@ import zod from "zod";
 import {
   DeliveryItemDTO,
   DeliveryStatus,
-} from "../../../types/delivery/common";
-import { UpdateDeliveryDTO } from "../../../types/delivery/mutations";
+} from "../../../modules/delivery/types/common";
+import { UpdateDeliveryDTO } from "../../../modules/delivery/types/mutations";
 import { updateDeliveryWorkflow } from "../../../workflows/delivery/workflows";
 import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 

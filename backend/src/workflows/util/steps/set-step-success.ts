@@ -3,7 +3,7 @@ import {
   TransactionHandlerType,
 } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { DeliveryDTO } from "src/types/delivery/common";
+import { DeliveryDTO } from "../../../modules/delivery/types/common";
 import { handleDeliveryWorkflowId } from "../../delivery/workflows/handle-delivery";
 
 type SetStepSuccessStepInput = {

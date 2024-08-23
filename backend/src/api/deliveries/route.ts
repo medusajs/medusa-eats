@@ -2,7 +2,6 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
-import { DeliveryDTO, DeliveryItemDTO } from "../../types/delivery/common";
 import {
   createDeliveryWorkflow,
   handleDeliveryWorkflow,

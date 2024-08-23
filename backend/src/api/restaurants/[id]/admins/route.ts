@@ -6,13 +6,13 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
-  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
-import jwt from "jsonwebtoken";
 import zod from "zod";
 import { createUserWorkflow } from "../../../../workflows/user/workflows/create-user";
 import { RemoteQueryFunction } from "@medusajs/modules-sdk";
+import RestaurantModuleService from "../../../../modules/restaurant/service";
+import { RESTAURANT_MODULE } from "../../../../modules/restaurant";
 
 const schema = zod
   .object({
@@ -51,13 +51,7 @@ export const POST = async (
     throw errors[0].error;
   }
 
-  const authService = req.scope.resolve(ModuleRegistrationName.AUTH);
-
-  const authUser = await authService.retrieveAuthIdentity(authIdentityId);
-  const { jwtSecret } = req.scope.resolve("configModule").projectConfig.http;
-  const token = jwt.sign(authUser, jwtSecret);
-
-  res.status(201).json({ user: result, token });
+  res.status(201).json({ user: result });
 };
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
@@ -94,9 +88,10 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const restaurantModuleService = req.scope.resolve("restaurantModuleService");
+  const restaurantModuleService: RestaurantModuleService = 
+    req.scope.resolve(RESTAURANT_MODULE);
 
-  await restaurantModuleService.deleteRestaurantAdmin(adminId);
+  await restaurantModuleService.deleteRestaurantAdmins(adminId);
 
   return res.status(200).json({ message: "Admin deleted" });
 }

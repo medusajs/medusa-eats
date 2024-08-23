@@ -4,7 +4,6 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
-import { getPricesByPriceSetId } from "../../../utils/get-prices-by-price-set-id";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const remoteQuery: RemoteQueryFunction = req.scope.resolve(
@@ -21,7 +20,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "products.categories.*",
       "products.categories.*",
       "products.variants.*",
-      "products.variants.price_set.id",
+      "products.variants.calculated_price.*",
       "deliveries.*",
       "deliveries.cart.*",
       "deliveries.cart.items.*",
@@ -30,20 +29,17 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     ],
     variables: {
       filters: {
-        id: restaurantId,
+        id: restaurantId
       },
+      "products.variants.calculated_price": {
+        context: {
+          currency_code: "eur"
+        }
+      }
     },
   });
 
   const restaurant = await remoteQuery(restaurantQuery).then((r) => r[0]);
-
-  const pricedProducts = await getPricesByPriceSetId({
-    products: restaurant.products,
-    currency_code: "EUR",
-    pricingService: req.scope.resolve("pricingModuleService"),
-  });
-
-  restaurant.products = pricedProducts;
 
   return res.status(200).json({ restaurant });
 }

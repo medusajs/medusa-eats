@@ -21,7 +21,7 @@ export const createFulfillmentStep = createStep(
     });
 
     const fulfillment = await fulfillmentModuleService.createFulfillment({
-      provider_id: "manual_manual-provider",
+      provider_id: "manual_manual",
       location_id: "1",
       delivery_address: order.shipping_address!,
       items: items || [],

@@ -1,11 +1,13 @@
 import { MedusaError } from "@medusajs/utils";
 import { createStep, StepResponse } from "@medusajs/workflows-sdk";
-import { DriverDTO } from "../../../types/delivery/common";
-import { RestaurantAdminDTO } from "../../../types/restaurant/common";
+import { DriverDTO } from "../../../modules/delivery/types/common";
+import { RestaurantAdminDTO } from "../../../modules/restaurant/types/common";
 import {
   CreateDriverInput,
   CreateRestaurantAdminInput,
 } from "../workflows/create-user";
+import { RESTAURANT_MODULE } from "../../../modules/restaurant";
+import { DELIVERY_MODULE } from "../../../modules/delivery";
 
 type CreateUserStepInput = (CreateRestaurantAdminInput | CreateDriverInput) & {
   actor_type: "restaurant" | "driver";
@@ -26,7 +28,7 @@ export const createUserStep = createStep(
     StepResponse<RestaurantAdminDTO | DriverDTO, CompensationStepInput>
   > => {
     if (input.actor_type === "restaurant") {
-      const service = container.resolve("restaurantModuleService");
+      const service = container.resolve(RESTAURANT_MODULE);
 
       const restaurantAdmin = await service.createRestaurantAdmins(
         input as CreateRestaurantAdminInput
@@ -41,7 +43,7 @@ export const createUserStep = createStep(
     }
 
     if (input.actor_type === "driver") {
-      const service = container.resolve("deliveryModuleService");
+      const service = container.resolve(DELIVERY_MODULE);
 
       const driver = await service.createDrivers(input as CreateDriverInput);
 
@@ -62,13 +64,13 @@ export const createUserStep = createStep(
   },
   function ({ id, actor_type }: CompensationStepInput, { container }) {
     if (actor_type === "restaurant") {
-      const service = container.resolve("restaurantModuleService");
+      const service = container.resolve(RESTAURANT_MODULE);
 
-      return service.deleteRestaurantAdmin(id);
+      return service.deleteRestaurantAdmins(id);
     }
 
     if (actor_type === "driver") {
-      const service = container.resolve("deliveryModuleService");
+      const service = container.resolve(DELIVERY_MODULE);
 
       return service.deleteDrivers(id);
     }

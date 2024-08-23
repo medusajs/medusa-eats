@@ -4,7 +4,6 @@ import OrderStatus from "@frontend/components/store/order/order-status";
 import {
   retrieveDelivery,
   retrieveDriver,
-  retrieveRestaurant,
 } from "@frontend/lib/data";
 import { Clock } from "@medusajs/icons";
 import { Container, Heading, Text } from "@medusajs/ui";

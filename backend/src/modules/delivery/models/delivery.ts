@@ -1,7 +1,8 @@
 import { model } from "@medusajs/utils";
-import { DeliveryStatus } from "../../../types/delivery/common";
+import { DeliveryStatus } from "../types/common";
+import { DeliveryDriver } from "./delivery-driver";
 
-export const Delivery = model.define("Delivery", {
+export const Delivery = model.define("delivery", {
   id: model
     .id({
       prefix: "del",
@@ -12,4 +13,7 @@ export const Delivery = model.define("Delivery", {
   delivery_status: model.enum(DeliveryStatus).default(DeliveryStatus.PENDING),
   eta: model.dateTime().nullable(),
   delivered_at: model.dateTime().nullable(),
+  deliveryDriver: model.hasMany(() => DeliveryDriver, {
+    mappedBy: "delivery"
+  })
 });

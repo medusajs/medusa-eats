@@ -83,11 +83,18 @@ export async function signup(prevState: FormState, data: FormData) {
       createUserData.restaurant_id = restaurant_id;
     }
 
-    const { user, token: newToken } = await createUser(createUserData).catch(
+    await createUser(createUserData).catch(
       (error) => {
         throw new Error("Error creating user");
       }
     );
+
+    const newToken = await createAuthUser({
+      email,
+      password,
+      actor_type,
+      provider: "emailpass"
+    })
 
     createSession(newToken);
     revalidateTag("user");

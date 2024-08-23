@@ -3,19 +3,19 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk";
-import { DeliveryStatus } from "../../../types/delivery/common";
+import { DeliveryStatus } from "../../../modules/delivery/types/common";
 import { setStepSuccessStep } from "../../util/steps";
 import { deleteDeliveryDriversStep, updateDeliveryStep } from "../steps";
 import { findDriverStepId } from "../steps/find-driver";
 
-export type WorkflowInput = {
+export type ClaimWorkflowInput = {
   driver_id: string;
   delivery_id: string;
 };
 
 export const claimDeliveryWorkflow = createWorkflow(
   "claim-delivery-workflow",
-  function (input: WorkflowData<WorkflowInput>) {
+  function (input: WorkflowData<ClaimWorkflowInput>) {
     // Update the delivery with the provided data
     const claimedDelivery = updateDeliveryStep({
       data: {

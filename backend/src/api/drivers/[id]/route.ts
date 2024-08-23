@@ -1,7 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
+import DeliveryModuleService from "../../../modules/delivery/service";
+import { DELIVERY_MODULE } from "../../../modules/delivery";
 
 const schema = zod.object({
   first_name: zod.string().optional(),
@@ -18,7 +19,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const deliveryModuleService = req.scope.resolve("deliveryModuleService");
+  const deliveryModuleService: DeliveryModuleService = req.scope.resolve(DELIVERY_MODULE);
 
   const driverId = req.params.id;
 
@@ -43,7 +44,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
+  const remoteQuery = req.scope.resolve("remoteQuery");
 
   const driverQuery = remoteQueryObjectFromString({
     entryPoint: "drivers",
@@ -53,9 +54,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     fields: ["id", "first_name", "last_name", "email", "phone", "avatar_url"],
   });
 
-  const driver = await remoteQuery(driverQuery).then((d) => d[0]);
+  const driver = await remoteQuery(driverQuery)
 
-  return res.status(200).json({ driver });
+  return res.status(200).json({ driver: driver[0] });
 }
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
@@ -65,7 +66,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const deliveryModuleService = req.scope.resolve("deliveryModuleService");
+  const deliveryModuleService: DeliveryModuleService = req.scope.resolve(DELIVERY_MODULE);
 
   await deliveryModuleService.deleteDrivers(driverId);
 
