@@ -6,7 +6,7 @@ export * from "./create-delivery";
 export * from "./create-fulfillment";
 export * from "./create-order";
 export {
-  CreateDeliveryStepInput,
+  DeleteDeliveryDriversStepInput as CreateDeliveryStepInput,
   deleteDeliveryDriversStep,
   deleteDeliveryDriversStepId,
 } from "./delete-delivery-drivers";

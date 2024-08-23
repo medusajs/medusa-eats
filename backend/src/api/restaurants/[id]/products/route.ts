@@ -1,24 +1,32 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { RemoteQuery } from "@medusajs/modules-sdk";
 import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
-import zod from "zod";
+import { 
+  deleteProductsWorkflow
+} from "@medusajs/core-flows";
 import {
   createRestaurantProductsWorkflow,
-  deleteRestaurantProductsWorkflow,
 } from "../../../../workflows/restaurant/workflows";
+import { 
+  AdminCreateProduct,
+} from "@medusajs/medusa/dist/api/admin/products/validators"
+import { z } from "zod";
+
+const createSchema = z.object({
+  products: AdminCreateProduct().array()
+})
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
-  const { products } = JSON.parse(req.body as string);
+  const validatedBody = createSchema.parse(req.body)
 
   const { result: restaurantProducts } = await createRestaurantProductsWorkflow(
     req.scope
   ).run({
     input: {
-      products,
+      products: validatedBody.products as any[],
       restaurant_id: req.params.id,
     },
   });
@@ -34,7 +42,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.NOT_FOUND;
   }
 
-  const remoteQuery: RemoteQuery = req.scope.resolve(
+  const remoteQuery = req.scope.resolve(
     ContainerRegistrationKeys.REMOTE_QUERY
   );
 
@@ -66,19 +74,18 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   return res.status(200).json({ restaurant_products: restaurantProducts });
 }
 
-const deleteSchema = zod.object({
-  product_ids: zod.string().array(),
+const deleteSchema = z.object({
+  product_ids: z.string().array(),
 });
 
 export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
   const validatedBody = deleteSchema.parse(req.body);
 
-  await deleteRestaurantProductsWorkflow(req.scope).run({
+  await deleteProductsWorkflow(req.scope).run({
     input: {
-      product_ids: validatedBody.product_ids,
-      restaurant_id: req.params.id,
+      ids: validatedBody.product_ids,
     },
   });
 
-  return res.status(200);
+  return res.status(200).json({ success: true });
 }

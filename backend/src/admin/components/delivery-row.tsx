@@ -1,5 +1,5 @@
 import { Table, Badge } from "@medusajs/ui";
-import { DeliveryDTO } from "../../types/delivery/common";
+import { DeliveryDTO } from "../../modules/delivery/types/common";
 import { useRestaurants } from "../hooks";
 import DeliveryActionsMenu from "./delivery-actions-menu";
 import DeliveryItems from "./delivery-items";

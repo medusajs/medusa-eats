@@ -3,7 +3,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk";
-import { CreateRestaurantDTO } from "../../../types/restaurant/mutations";
+import { CreateRestaurantDTO } from "../../../modules/restaurant/types/mutations";
 import { createRestaurantStep } from "../steps";
 
 type WorkflowInput = {

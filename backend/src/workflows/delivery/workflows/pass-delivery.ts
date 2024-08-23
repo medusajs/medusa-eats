@@ -3,7 +3,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk";
-import { DeliveryDTO } from "../../../types/delivery/common";
+import { DeliveryDTO } from "../../../modules/delivery/types/common";
 import { deleteDeliveryDriversStep } from "../../delivery/steps";
 
 export type WorkflowInput = {

@@ -1,11 +1,13 @@
 import { MedusaError } from "@medusajs/utils";
 import { createStep, StepResponse } from "@medusajs/workflows-sdk";
-import { DriverDTO } from "../../../types/delivery/common";
-import { RestaurantAdminDTO } from "../../../types/restaurant/common";
+import { DriverDTO } from "../../../modules/delivery/types/common";
+import { RestaurantAdminDTO } from "../../../modules/restaurant/types/common";
 import {
   UpdateRestaurantsDTO,
   UpdateRestaurantAdminsDTO,
-} from "../../../types/restaurant/mutations";
+} from "../../../modules/restaurant/types/mutations";
+import { RESTAURANT_MODULE } from "../../../modules/restaurant";
+import { DELIVERY_MODULE } from "../../../modules/delivery";
 
 type UpdateUserStepInput = (
   | UpdateRestaurantsDTO
@@ -26,7 +28,7 @@ export const updateUserStep = createStep(
     const { actor_type, ...data } = input;
 
     if (actor_type === "restaurant") {
-      const service = container.resolve("restaurantModuleService");
+      const service = container.resolve(RESTAURANT_MODULE);
 
       const compensationData = {
         ...(await service.retrieveRestaurantAdmin(data.id)),
@@ -39,7 +41,7 @@ export const updateUserStep = createStep(
     }
 
     if (actor_type === "driver") {
-      const service = container.resolve("deliveryModuleService");
+      const service = container.resolve(DELIVERY_MODULE);
 
       const compensationData = {
         ...(await service.retrieveDriver(data.id)),
@@ -55,13 +57,13 @@ export const updateUserStep = createStep(
   },
   function ({ actor_type, ...data }: UpdateUserStepInput, { container }) {
     if (actor_type === "restaurant") {
-      const service = container.resolve("restaurantModuleService");
+      const service = container.resolve(RESTAURANT_MODULE);
 
       return service.updateRestaurantAdmins(data);
     }
 
     if (actor_type === "driver") {
-      const service = container.resolve("deliveryModuleService");
+      const service = container.resolve(DELIVERY_MODULE);
 
       return service.updateDrivers(data);
     }

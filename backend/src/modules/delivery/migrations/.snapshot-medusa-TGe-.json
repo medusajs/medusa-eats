@@ -21,7 +21,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "driver_id": {
@@ -111,84 +111,6 @@
       "indexes": [
         {
           "keyName": "delivery_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "delivery_id": {
-          "name": "delivery_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "driver_id": {
-          "name": "driver_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "delivery_driver",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "delivery_driver_pkey",
           "columnNames": [
             "id"
           ],
@@ -304,6 +226,125 @@
       ],
       "checks": [],
       "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "delivery_id": {
+          "name": "delivery_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "driver_id": {
+          "name": "driver_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "delivery_driver",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_delivery_driver_delivery_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_delivery_driver_delivery_id\" ON \"delivery_driver\" (delivery_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_delivery_driver_driver_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_delivery_driver_driver_id\" ON \"delivery_driver\" (driver_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "delivery_driver_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "delivery_driver_delivery_id_foreign": {
+          "constraintName": "delivery_driver_delivery_id_foreign",
+          "columnNames": [
+            "delivery_id"
+          ],
+          "localTableName": "public.delivery_driver",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.delivery",
+          "updateRule": "cascade"
+        },
+        "delivery_driver_driver_id_foreign": {
+          "constraintName": "delivery_driver_driver_id_foreign",
+          "columnNames": [
+            "driver_id"
+          ],
+          "localTableName": "public.delivery_driver",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.driver",
+          "updateRule": "cascade"
+        }
+      }
     }
   ]
 }

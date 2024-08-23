@@ -1,6 +1,6 @@
 import { model } from "@medusajs/utils";
 
-export const RestaurantAdmin = model.define("RestaurantAdmin", {
+export const RestaurantAdmin = model.define("restaurant_admin", {
   id: model
     .id({
       prefix: "resadm",

@@ -1,12 +1,11 @@
-import { MedusaResponse } from "@medusajs/medusa";
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import {
   ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../workflows/delivery/workflows/handle-delivery";
-import { AuthUserScopedMedusaRequest } from "../../types";
 import { RemoteQueryFunction } from "@medusajs/modules-sdk";
-import { DeliveryDTO } from "src/types/delivery/common";
+import { DeliveryDTO } from "../../../modules/delivery/types/common";
 
 type RestaurantNotificationData = {
   data: {
@@ -23,7 +22,7 @@ type DriverNotificationData = {
 };
 
 export const GET = async (
-  req: AuthUserScopedMedusaRequest,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
   const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
@@ -47,9 +46,9 @@ export const GET = async (
       },
     });
 
-    const { deliveries } = await remoteQuery(restaurantQuery).then((r) => r[0]);
+    const { deliveries: restDeliveries } = await remoteQuery(restaurantQuery).then((r) => r[0]);
 
-    deliveries.push(...deliveries);
+    deliveries.push(...restDeliveries);
   } else {
     const filters = {
       ...(driver_id && { driver_id }),

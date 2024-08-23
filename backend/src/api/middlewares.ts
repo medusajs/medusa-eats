@@ -41,12 +41,16 @@ export default defineMiddlewares({
       ],
     },
     {
-      method: ["POST"],
-      matcher: "/restaurants/:id/products",
+      method: ["POST", "DELETE"],
+      matcher: "/restaurants/:id/**",
       middlewares: [
-        authenticate(["restaurant", "admin"], "bearer", {
-          allowUnregistered: true,
-        }),
+        authenticate(["restaurant", "admin"], "bearer"),
+      ],
+    },
+    {
+      matcher: "/restaurants/:id/admin/**",
+      middlewares: [
+        authenticate(["restaurant", "admin"], "bearer"),
       ],
     },
   ],

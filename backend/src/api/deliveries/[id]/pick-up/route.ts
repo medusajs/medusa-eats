@@ -1,6 +1,6 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError } from "@medusajs/utils";
-import { DeliveryStatus } from "../../../../types/delivery/common";
+import { DeliveryStatus } from "../../../../modules/delivery/types/common";
 import { awaitPickUpStepId } from "../../../../workflows/delivery/steps";
 import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows";
 
@@ -20,6 +20,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       },
     })
     .catch((error) => {
+      console.log(error)
       return MedusaError.Types.UNEXPECTED_STATE;
     });
 
