@@ -1,4 +1,5 @@
 import { model } from "@medusajs/utils";
+import { RestaurantAdmin } from "./restaurant-admin";
 
 export const Restaurant = model.define("restaurant", {
   id: model
@@ -14,4 +15,5 @@ export const Restaurant = model.define("restaurant", {
   email: model.text(),
   address: model.text(),
   image_url: model.text().nullable(),
+  admins: model.hasMany(() => RestaurantAdmin)
 });

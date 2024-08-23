@@ -166,15 +166,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "restaurant_id": {
-          "name": "restaurant_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "email": {
           "name": "email",
           "type": "text",
@@ -191,6 +182,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "mappedType": "text"
+        },
+        "restaurant_id": {
+          "name": "restaurant_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
           "mappedType": "text"
         },
         "created_at": {
@@ -230,6 +230,14 @@
       "schema": "public",
       "indexes": [
         {
+          "keyName": "IDX_restaurant_admin_restaurant_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_restaurant_admin_restaurant_id\" ON \"restaurant_admin\" (restaurant_id) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "restaurant_admin_pkey",
           "columnNames": [
             "id"
@@ -240,7 +248,20 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "restaurant_admin_restaurant_id_foreign": {
+          "constraintName": "restaurant_admin_restaurant_id_foreign",
+          "columnNames": [
+            "restaurant_id"
+          ],
+          "localTableName": "public.restaurant_admin",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.restaurant",
+          "updateRule": "cascade"
+        }
+      }
     }
   ]
 }
