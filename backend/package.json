@@ -30,7 +30,7 @@
     "@medusajs/event-bus-local": "preview",
     "@medusajs/file": "preview",
     "@medusajs/file-local-next": "preview",
-    "@medusajs/framework": "preview",
+    "@medusajs/framework": "0.0.2-preview-20240821060607",
     "@medusajs/fulfillment": "preview",
     "@medusajs/fulfillment-manual": "preview",
     "@medusajs/inventory-next": "preview",
