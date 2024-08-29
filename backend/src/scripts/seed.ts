@@ -71,7 +71,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
       update: {
         supported_currencies: [
           {
-            currency_code: "EUR",
+            currency_code: "eur",
             is_default: true,
           },
           {
@@ -88,7 +88,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
       regions: [
         {
           name: "Europe",
-          currency_code: "EUR",
+          currency_code: "eur",
           countries,
           payment_providers: ["pp_system_default"],
         },
@@ -228,7 +228,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
             amount: 10,
           },
           {
-            currency_code: "EUR",
+            currency_code: "eur",
             amount: 10,
           },
           {
@@ -266,7 +266,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
             amount: 10,
           },
           {
-            currency_code: "EUR",
+            currency_code: "eur",
             amount: 10,
           },
           {
