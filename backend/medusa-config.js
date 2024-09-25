@@ -1,6 +1,6 @@
-import { loadEnv, defineConfig, Modules } from '@medusajs/utils'
+import { loadEnv, defineConfig, Modules } from "@medusajs/utils";
 
-loadEnv(process.env.NODE_ENV, process.cwd())
+loadEnv(process.env.NODE_ENV, process.cwd());
 
 module.exports = defineConfig({
   projectConfig: {
@@ -11,7 +11,7 @@ module.exports = defineConfig({
       authCors: process.env.AUTH_CORS,
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
-    }
+    },
   },
   modules: {
     restaurantModuleService: {
@@ -30,5 +30,5 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
-})
+  },
+});

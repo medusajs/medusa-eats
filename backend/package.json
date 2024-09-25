@@ -23,6 +23,7 @@
     "@medusajs/admin-sdk": "preview",
     "@medusajs/api-key": "preview",
     "@medusajs/auth": "preview",
+    "@medusajs/auth-emailpass": "preview",
     "@medusajs/cache-inmemory": "preview",
     "@medusajs/cart": "preview",
     "@medusajs/currency": "preview",

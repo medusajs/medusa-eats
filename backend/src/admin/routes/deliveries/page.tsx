@@ -1,4 +1,4 @@
-import { defineRouteConfig } from "@medusajs/admin-shared";
+import { defineRouteConfig } from "@medusajs/admin-sdk";
 import { Container, Heading, Table, Text } from "@medusajs/ui";
 import DeliveryRow from "../../components/delivery-row";
 import { PizzaIcon } from "../../components/icons";

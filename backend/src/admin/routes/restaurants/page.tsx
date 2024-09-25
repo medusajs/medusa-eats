@@ -1,4 +1,4 @@
-import { defineRouteConfig } from "@medusajs/admin-shared";
+import { defineRouteConfig } from "@medusajs/admin-sdk";
 import { Container, Heading, StatusBadge, Table, Text } from "@medusajs/ui";
 import ActionsMenu from "../../components/actions-menu";
 import { StoreIcon } from "../../components/icons";
