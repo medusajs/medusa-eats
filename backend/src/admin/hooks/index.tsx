@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { DeliveryDTO, DriverDTO } from "../../types/delivery/common";
-import { RestaurantDTO } from "../../types/restaurant/common";
+import { DeliveryDTO, DriverDTO } from "../../modules/delivery/types/common";
+import { RestaurantDTO } from "../../modules/restaurant/types/common";
 
 const BACKEND_URL = "https://metabolic-boats-grab.medusajs.app";
 

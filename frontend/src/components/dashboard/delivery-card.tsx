@@ -14,6 +14,8 @@ export default async function DeliveryCard({
   driver?: DriverDTO;
   type: "restaurant" | "driver";
 }) {
+  const items = delivery.order?.items || delivery.cart?.items;
+
   return (
     <Container className="flex flex-col gap-6 p-4 shadow-elevation-card-rest hover:shadow-elevation-card-hover w-full">
       <div className="flex justify-between gap-2 flex-wrap">
@@ -34,12 +36,14 @@ export default async function DeliveryCard({
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {delivery.items?.map((item) => (
+            {items?.map((item) => (
               <Table.Row
                 key={delivery.transaction_id.slice(-4) + "_" + item.id}
               >
                 <Table.Cell className="text-wrap">{item.title}</Table.Cell>
-                <Table.Cell className="text-right">{item.quantity}</Table.Cell>
+                <Table.Cell className="text-right">
+                  {item.quantity as number}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

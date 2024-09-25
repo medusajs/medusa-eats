@@ -1,7 +1,6 @@
 import { DeliveryDTO, DriverDTO } from "./common";
 
 export interface CreateDeliveryDTO {
-  restaurant_id: string;
   cart_id: string;
 }
 

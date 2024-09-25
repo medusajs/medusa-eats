@@ -1,5 +1,5 @@
 import { Heading, Text, Container } from "@medusajs/ui";
-import { DeliveryDTO } from "../../types/delivery/common";
+import { DeliveryDTO } from "../../modules/delivery/types/common";
 import { useEffect, useRef, useState } from "react";
 
 const DeliveryItems = ({ delivery }: { delivery: DeliveryDTO }) => {

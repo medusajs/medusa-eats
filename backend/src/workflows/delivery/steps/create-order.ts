@@ -1,6 +1,7 @@
 import { CreateOrderShippingMethodDTO } from "@medusajs/types";
 import {
   ModuleRegistrationName,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
@@ -18,7 +19,7 @@ export const createOrderStep = createStep(
           id: deliveryId,
         },
       },
-      fields: ["id", "cart_id", "delivery_status", "driver_id"],
+      fields: ["id", "cart.id", "delivery_status", "driver_id"],
     });
 
     const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
@@ -28,7 +29,7 @@ export const createOrderStep = createStep(
       fields: ["*", "items.*"],
       variables: {
         filters: {
-          id: delivery.cart_id,
+          id: delivery.cart.id,
         },
       },
     });
@@ -50,16 +51,16 @@ export const createOrderStep = createStep(
         cart.shipping_methods as unknown as CreateOrderShippingMethodDTO[],
     });
 
-    delivery.order_id = order?.id;
+    const remoteLink = container.resolve("remoteLink");
 
-    const deliveryModuleService = container.resolve("deliveryModuleService");
-
-    await deliveryModuleService.updateDeliveries([
-      {
-        id: deliveryId,
-        order_id: order?.id,
+    await remoteLink.create({
+      deliveryModuleService: {
+        delivery_id: delivery.id,
       },
-    ]);
+      [Modules.ORDER]: {
+        order_id: order.id,
+      },
+    });
 
     return new StepResponse(order, {
       orderId: order.id,
@@ -76,14 +77,16 @@ export const createOrderStep = createStep(
     },
     { container }
   ) => {
-    const deliveryService = container.resolve("deliveryModuleService");
+    const remoteLink = container.resolve("remoteLink");
 
-    await deliveryService.updateDeliveries([
-      {
-        id: deliveryId,
-        order_id: null,
+    await remoteLink.dismiss({
+      deliveryModuleService: {
+        delivery_id: deliveryId,
       },
-    ]);
+      [Modules.ORDER]: {
+        order_id: orderId,
+      },
+    });
 
     const orderService = container.resolve(ModuleRegistrationName.ORDER);
 

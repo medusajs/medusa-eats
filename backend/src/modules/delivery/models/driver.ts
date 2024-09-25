@@ -1,6 +1,7 @@
 import { model } from "@medusajs/utils";
+import { DeliveryDriver } from "./delivery-driver";
 
-export const Driver = model.define("Driver", {
+export const Driver = model.define("driver", {
   id: model
     .id({
       prefix: "drv",
@@ -11,4 +12,7 @@ export const Driver = model.define("Driver", {
   email: model.text(),
   phone: model.text(),
   avatar_url: model.text().nullable(),
+  deliveryDriver: model.hasMany(() => DeliveryDriver, {
+    mappedBy: "driver"
+  })
 });

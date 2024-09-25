@@ -15,8 +15,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "transaction_id": {
-          "name": "transaction_id",
+        "handle": {
+          "name": "handle",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -24,8 +24,27 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "driver_id": {
-          "name": "driver_id",
+        "is_open": {
+          "name": "is_open",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -33,8 +52,8 @@
           "nullable": true,
           "mappedType": "text"
         },
-        "restaurant_id": {
-          "name": "restaurant_id",
+        "phone": {
+          "name": "phone",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -42,8 +61,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "cart_id": {
-          "name": "cart_id",
+        "email": {
+          "name": "email",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -51,131 +70,22 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "order_id": {
-          "name": "order_id",
+        "address": {
+          "name": "address",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "image_url": {
+          "name": "image_url",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "text"
-        },
-        "delivery_status": {
-          "name": "delivery_status",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'pending'",
-          "enumItems": [
-            "pending",
-            "restaurant_declined",
-            "restaurant_accepted",
-            "pickup_claimed",
-            "restaurant_preparing",
-            "ready_for_pickup",
-            "in_transit",
-            "delivered"
-          ],
-          "mappedType": "enum"
-        },
-        "eta": {
-          "name": "eta",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "delivered_at": {
-          "name": "delivered_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "now()",
-          "mappedType": "datetime"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "timestamptz",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        }
-      },
-      "name": "delivery",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "delivery_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "delivery_id": {
-          "name": "delivery_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "driver_id": {
-          "name": "driver_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
           "mappedType": "text"
         },
         "created_at": {
@@ -211,11 +121,11 @@
           "mappedType": "datetime"
         }
       },
-      "name": "delivery_driver",
+      "name": "restaurant",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "delivery_driver_pkey",
+          "keyName": "restaurant_pkey",
           "columnNames": [
             "id"
           ],
@@ -265,15 +175,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "phone": {
-          "name": "phone",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "avatar_url": {
           "name": "avatar_url",
           "type": "text",
@@ -281,6 +182,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "mappedType": "text"
+        },
+        "restaurant_id": {
+          "name": "restaurant_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
           "mappedType": "text"
         },
         "created_at": {
@@ -316,11 +226,19 @@
           "mappedType": "datetime"
         }
       },
-      "name": "driver",
+      "name": "restaurant_admin",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "driver_pkey",
+          "keyName": "IDX_restaurant_admin_restaurant_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_restaurant_admin_restaurant_id\" ON \"restaurant_admin\" (restaurant_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "restaurant_admin_pkey",
           "columnNames": [
             "id"
           ],
@@ -330,7 +248,20 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "restaurant_admin_restaurant_id_foreign": {
+          "constraintName": "restaurant_admin_restaurant_id_foreign",
+          "columnNames": [
+            "restaurant_id"
+          ],
+          "localTableName": "public.restaurant_admin",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.restaurant",
+          "updateRule": "cascade"
+        }
+      }
     }
   ]
 }

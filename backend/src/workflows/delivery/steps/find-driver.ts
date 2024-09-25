@@ -3,7 +3,8 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import { createStep } from "@medusajs/workflows-sdk";
-import { DriverDTO } from "../../../types/delivery/common";
+import { DriverDTO } from "../../../modules/delivery/types/common";
+import { DELIVERY_MODULE } from "../../../modules/delivery";
 
 export const findDriverStepId = "await-driver-response-step";
 export const findDriverStep = createStep<string, DriverDTO, string>(
@@ -16,7 +17,7 @@ export const findDriverStep = createStep<string, DriverDTO, string>(
       fields: ["id"],
       variables: {
         skip: 0,
-        take: 5,
+        take: null,
       },
     });
 
@@ -29,7 +30,7 @@ export const findDriverStep = createStep<string, DriverDTO, string>(
       driver_id: driverId,
     }));
 
-    const deliveryService = container.resolve("deliveryModuleService");
+    const deliveryService = container.resolve(DELIVERY_MODULE);
 
     await deliveryService.createDeliveryDrivers(createData);
 
@@ -44,7 +45,7 @@ export const findDriverStep = createStep<string, DriverDTO, string>(
     });
   },
   (input, { container }) => {
-    const deliveryService = container.resolve("deliveryModuleService");
+    const deliveryService = container.resolve(DELIVERY_MODULE);
 
     return deliveryService.softDeleteDeliveryDrivers(input);
   }

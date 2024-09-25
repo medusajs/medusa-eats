@@ -2,8 +2,7 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import { createRestaurantWorkflow } from "../../workflows/restaurant/workflows";
 import zod from "zod";
-import { CreateRestaurantDTO } from "../../types/restaurant/mutations";
-import { getPricesByPriceSetId } from "../../utils/get-prices-by-price-set-id";
+import { CreateRestaurantDTO } from "../../modules/restaurant/types/mutations";
 
 const schema = zod.object({
   name: zod.string(),
@@ -11,7 +10,7 @@ const schema = zod.object({
   address: zod.string(),
   phone: zod.string(),
   email: zod.string(),
-  image_url: zod.string(),
+  image_url: zod.string().optional(),
 });
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -21,17 +20,19 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const { transaction } = await createRestaurantWorkflow(req.scope).run({
+  const { result: restaurant } = await createRestaurantWorkflow(req.scope).run({
     input: {
       restaurant: validatedBody,
     },
   });
 
-  return res.status(200).json({ message: "Restaurant created", transaction });
+  return res.status(200).json({ message: "Restaurant created", restaurant });
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const queryFilters = req.query;
+  // Note: currency code should be small letter. However, since
+  // the seed data is using capital letters I've set it here as well.
+  const { currency_code = "EUR", ...queryFilters } = req.query;
 
   const remoteQuery = req.scope.resolve("remoteQuery");
 
@@ -46,64 +47,22 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "email",
       "image_url",
       "is_open",
+      "products.*",
+      "products.categories.*",
+      "products.variants.*",
+      "products.variants.calculated_price.*"
     ],
     variables: {
       filters: queryFilters,
+      "products.variants.calculated_price": {
+        context: {
+          currency_code
+        }
+      }
     },
   });
 
-  const restaurants = await remoteQuery(restaurantsQuery);
-
-  for (const restaurant of restaurants) {
-    const restaurantProductsQuery = remoteQueryObjectFromString({
-      entryPoint: "restaurant_product",
-      variables: {
-        filters: {
-          restaurant_id: restaurant.id,
-        },
-      },
-      fields: ["restaurant_id", "product_id"],
-    });
-
-    const restaurantProducts = await remoteQuery(restaurantProductsQuery);
-
-    restaurant.products = [];
-
-    if (restaurantProducts.length) {
-      const productsQuery = remoteQueryObjectFromString({
-        entryPoint: "products",
-        fields: [
-          "id",
-          "title",
-          "description",
-          "thumbnail",
-          "categories",
-          "categories.id",
-          "categories.name",
-          "variants",
-          "variants.id",
-          "variants.price_set",
-          "variants.price_set.id",
-        ],
-        variables: {
-          filters: {
-            id: restaurantProducts.map((p) => p.product_id),
-          },
-          relations: ["categories"],
-        },
-      });
-
-      const products = await remoteQuery(productsQuery);
-
-      const productsWithPrices = await getPricesByPriceSetId({
-        products,
-        currency_code: "EUR",
-        pricingService: req.scope.resolve("pricingModuleService"),
-      });
-
-      restaurant.products = productsWithPrices;
-    }
-  }
+  const restaurants = await remoteQuery(restaurantsQuery)
 
   return res.status(200).json({ restaurants });
 }

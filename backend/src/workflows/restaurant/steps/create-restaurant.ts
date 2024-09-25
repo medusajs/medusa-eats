@@ -1,12 +1,13 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk";
-import { CreateRestaurantDTO } from "../../../types/restaurant/mutations";
+import { CreateRestaurantDTO } from "../../../modules/restaurant/types/mutations";
+import { RESTAURANT_MODULE } from "../../../modules/restaurant";
 
 export const createRestaurantStepId = "create-restaurant-step";
 export const createRestaurantStep = createStep(
   createRestaurantStepId,
   async function (data: CreateRestaurantDTO, { container }) {
     const restaurantModuleService = container.resolve(
-      "restaurantModuleService"
+      RESTAURANT_MODULE
     );
 
     const restaurant = await restaurantModuleService.createRestaurants(data);
@@ -15,7 +16,7 @@ export const createRestaurantStep = createStep(
   },
   function (input: string, { container }) {
     const restaurantModuleService = container.resolve(
-      "restaurantModuleService"
+      RESTAURANT_MODULE
     );
 
     return restaurantModuleService.deleteRestaurants([input]);

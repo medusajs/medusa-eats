@@ -8,15 +8,15 @@ import {
   awaitPickUpStep,
   awaitPreparationStep,
   awaitStartPreparationStep,
-  createDeliveryStep,
   createFulfillmentStep,
   createOrderStep,
   findDriverStep,
   notifyRestaurantStep,
+  setTransactionIdStep,
 } from "../../delivery/steps";
 
 type WorkflowInput = {
-  cart_id: string;
+  delivery_id: string;
 };
 
 const TWO_HOURS = 60 * 60 * 2;
@@ -27,14 +27,14 @@ export const handleDeliveryWorkflow = createWorkflow(
     store: true,
     retentionTime: TWO_HOURS,
   },
-  function (input: WorkflowData<WorkflowInput>) {
-    const delivery = createDeliveryStep(input);
+  function (input: WorkflowData<WorkflowInput>): WorkflowResponse<string> {
+    setTransactionIdStep(input.delivery_id);
 
-    notifyRestaurantStep(delivery.id);
+    notifyRestaurantStep(input.delivery_id);
 
-    findDriverStep(delivery.id);
+    findDriverStep(input.delivery_id);
 
-    const order = createOrderStep(delivery.id);
+    const order = createOrderStep(input.delivery_id);
 
     awaitStartPreparationStep();
 
@@ -46,6 +46,6 @@ export const handleDeliveryWorkflow = createWorkflow(
 
     awaitDeliveryStep();
 
-    return new WorkflowResponse(delivery);
+    return new WorkflowResponse("Delivery completed");
   }
 );

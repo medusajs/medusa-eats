@@ -3,7 +3,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk";
-import { UpdateDeliveryDTO } from "../../../types/delivery/mutations";
+import { UpdateDeliveryDTO } from "../../../modules/delivery/types/mutations";
 import { updateDeliveryStep } from "../../delivery/steps";
 import { setStepFailedStep, setStepSuccessStep } from "../../util/steps";
 

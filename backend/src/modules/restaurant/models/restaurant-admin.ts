@@ -1,6 +1,7 @@
 import { model } from "@medusajs/utils";
+import { Restaurant } from "./restaurant";
 
-export const RestaurantAdmin = model.define("RestaurantAdmin", {
+export const RestaurantAdmin = model.define("restaurant_admin", {
   id: model
     .id({
       prefix: "resadm",
@@ -11,4 +12,7 @@ export const RestaurantAdmin = model.define("RestaurantAdmin", {
   restaurant_id: model.text(),
   email: model.text(),
   avatar_url: model.text().nullable(),
+  restaurant: model.belongsTo(() => Restaurant, {
+    mappedBy: "admins"
+  }),
 });
