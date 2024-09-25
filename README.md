@@ -67,7 +67,9 @@ Features include:
 The project consists of two main directories:
 
 - `/backend` contains the Medusa 2.0 project with all the customizations.
+  - This handles core functionalities, including user authentication, order management, and more.
 - `/frontend` contains the Next.js project.
+  - This handles the user interface, restaruant storefronts, dashboards, and more.
 
 # Quickstart
 
