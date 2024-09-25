@@ -27,6 +27,23 @@ An Uber Eats style delivery platform running on Medusa 2.0 and Next.js 14.</p>
   </a>
 </p>
 
+# Table of Contents
+
+1. [Overview](#overview)
+2. [Project Structure](#project-structure)
+3. [Quickstart](#quickstart)
+   - [Install dependencies](#install-dependencies)
+   - [Set up environment variables](#set-up-environment-variables)
+   - [Set up and seed the database](#set-up-and-seed-the-database)
+   - [Start developing](#start-developing)
+4. [Create User Accounts](#create-user-accounts)
+   - [Create restaurant admin account](#create-restaurant-admin-account)
+   - [Create driver account](#create-driver-account)
+5. [Place an Order and Handle a Delivery](#place-an-order-and-handle-a-delivery)
+6. [Resources](#resources)
+   - [Learn more about Medusa](#learn-more-about-medusa)
+   - [Learn more about Next.js](#learn-more-about-nextjs)
+
 # Overview
 
 Medusa Eats is built with:
