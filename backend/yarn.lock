@@ -1849,7 +1849,7 @@
   resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.12.0-preview-20240925090259.tgz#8960855926bc3c2e57fabe4119e809fad669b97e"
   integrity sha512-QRyJnMEwVBPxaIt40nXfSsIWCKaXTkhIbrlu9fZ5qfeQzRwbAmaM1l6U8rSVuLyDApAn0xXXE7sW2qdf7qIBjA==
 
-"@medusajs/ui@3.0.1-preview-20240925090259", "@medusajs/ui@^3.0.1-preview-20240925090259":
+"@medusajs/ui@3.0.1-preview-20240925090259", "@medusajs/ui@preview":
   version "3.0.1-preview-20240925090259"
   resolved "https://registry.yarnpkg.com/@medusajs/ui/-/ui-3.0.1-preview-20240925090259.tgz#93eaf5aa027969c4c869c67fd4d2b289c28bd5b6"
   integrity sha512-R4asIT9bJ9hmUHWlUF0N3yuKTLCaslpb13jgJN0T12uoxh8VgyAkm+37Gc0zkh9o9uq5f+6YQQR+3ynWOlsPuQ==
