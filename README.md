@@ -38,7 +38,8 @@ An Uber Eats style delivery platform running on Medusa 2.0 and Next.js 14.</p>
    - [Start developing](#start-developing)
    - [Create User Accounts](#create-user-accounts)
    - [Place an Order and Handle a Delivery](#place-an-order-and-handle-a-delivery)
-6. [Resources](#resources)
+4. [Contribute](#contribute)
+5. [Resources](#resources)
    - [Learn more about Medusa](#learn-more-about-medusa)
    - [Learn more about Next.js](#learn-more-about-nextjs)
 
@@ -181,6 +182,8 @@ We're gonna create a restaurant admin and driver account so we'll have access to
 9. In an incognito window, go to http://localhost:3000/dashboard/driver and log in as a driver.
 10. The accepted order will show up on your dashboard. Click the button to claim it.
 11. The order will go through the different stages on all dashboards in realtime. You can progress the order by marking each stage as complete on the relevant dashboard.
+
+# Contribute
 
 # Resources
 
