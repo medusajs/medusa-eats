@@ -185,6 +185,32 @@ We're gonna create a restaurant admin and driver account so we'll have access to
 
 # Contribute
 
+Follow the steps below to contribute to this project:
+
+### 1. Fork the Repository
+
+- Start by forking the repository to create your own copy. 
+
+### 2. Browse the Issues
+
+- Head over to the [Issues tab](link-to-issues) to view open issues. 
+- If you find an issue you want to work on, leave a comment to request being assigned to it. 
+
+### 3. Open a New Issue 
+
+- If you find a bug or have a feature idea that isn’t already listed, [open a new issue](link-to-create-an-issue).
+- In your issue, provide a clear description and reasoning behind the bug or idea. 
+
+### 4. Make Changes in Your Fork
+
+- After being assigned an issue, clone your forked repository to your local machine.
+- Create a new branch for your changes, using a descriptive name.
+
+### 6. Merging Code
+
+- Make sure your changes don't conflict with existing functionalities
+- Push your changes to your forked repository and raise a pull request to the original repository
+
 # Resources
 
 ## Learn more about Medusa
