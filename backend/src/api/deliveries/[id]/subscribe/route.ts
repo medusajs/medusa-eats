@@ -5,7 +5,6 @@ import {
 } from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../../workflows/delivery/workflows/handle-delivery";
 import { AuthUserScopedMedusaRequest } from "../../../types";
-import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import {
   IWorkflowEngineService,
   IEventBusModuleService,
@@ -33,7 +32,7 @@ export const GET = async (
   const restaurantId = req.query.restaurant_id as string;
   const driverId = req.query.driver_id as string;
 
-  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
+  const remoteQuery = req.scope.resolve("remoteQuery");
 
   const deliveryQuery = remoteQueryObjectFromString({
     entryPoint: "deliveries",

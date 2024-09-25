@@ -20,6 +20,7 @@
     "setup-db": "npx medusa build && npx medusa migrations run && npx medusa links sync && medusa exec ./src/scripts/seed.ts && npx medusa user -e admin@email.com -p supersecret"
   },
   "dependencies": {
+    "@medusajs/admin-sdk": "preview",
     "@medusajs/api-key": "preview",
     "@medusajs/auth": "preview",
     "@medusajs/cache-inmemory": "preview",
@@ -33,6 +34,7 @@
     "@medusajs/fulfillment-manual": "preview",
     "@medusajs/inventory-next": "preview",
     "@medusajs/medusa": "preview",
+    "@medusajs/medusa-cli": "preview",
     "@medusajs/notification": "preview",
     "@medusajs/notification-local": "preview",
     "@medusajs/order": "preview",
@@ -45,10 +47,10 @@
     "@medusajs/stock-location-next": "preview",
     "@medusajs/store": "preview",
     "@medusajs/tax": "preview",
+    "@medusajs/ui": "preview",
     "@medusajs/user": "preview",
     "@medusajs/utils": "preview",
     "@medusajs/workflow-engine-inmemory": "preview",
-    "@medusajs/medusa-cli": "preview",
     "cors": "^2.8.5",
     "dotenv": "16.3.1",
     "express": "^4.17.2",

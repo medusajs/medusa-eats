@@ -1,4 +1,4 @@
-import { defineRouteConfig } from "@medusajs/admin-shared";
+import { defineRouteConfig } from "@medusajs/admin-sdk";
 import { Container, Heading, Table, Text } from "@medusajs/ui";
 import { DriverDTO } from "../../../modules/delivery/types/common";
 import DriverActionsMenu from "../../components/driver-actions-menu";

@@ -4,7 +4,6 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../workflows/delivery/workflows/handle-delivery";
-import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import { DeliveryDTO } from "../../../modules/delivery/types/common";
 
 type RestaurantNotificationData = {
@@ -25,7 +24,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
+  const remoteQuery = req.scope.resolve("remoteQuery");
 
   const { restaurant_id, driver_id, delivery_id } = req.query as {
     restaurant_id: string;
@@ -46,7 +45,9 @@ export const GET = async (
       },
     });
 
-    const { deliveries: restDeliveries } = await remoteQuery(restaurantQuery).then((r) => r[0]);
+    const { deliveries: restDeliveries } = await remoteQuery(
+      restaurantQuery
+    ).then((r) => r[0]);
 
     deliveries.push(...restDeliveries);
   } else {

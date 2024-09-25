@@ -1,5 +1,4 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import { RemoteQueryFunction } from "@medusajs/modules-sdk";
 import { remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
 import {
@@ -34,7 +33,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery: RemoteQueryFunction = req.scope.resolve("remoteQuery");
+  const remoteQuery = req.scope.resolve("remoteQuery");
 
   const filters = {} as Record<string, any>;
   let take = parseInt(req.query.take as string) || null;
