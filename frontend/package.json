@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@dotlottie/react-player": "^1.6.19",
+    "@medusajs/icons": "^1.2.2-preview-20240925090259",
     "@medusajs/ui": "preview",
     "@next/third-parties": "^14.2.5",
     "eventsource": "^2.0.2",
@@ -25,7 +26,6 @@
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
-    "@medusajs/medusa": "preview",
     "@medusajs/types": "preview",
     "@medusajs/ui-preset": "preview",
     "@types/eventsource": "^1.1.15",
