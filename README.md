@@ -13,7 +13,7 @@
 </h1>
 
 <p align="center">
-An Uber Eats style delivery platform running on Medusa 2.0 and Next.js 14.</p>
+Medusa Eats ia a fullstack food delivery platform, inspired by Uber Eats, running on Medusa 2.0 and Next.js 14.</p>
 
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
