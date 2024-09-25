@@ -188,7 +188,7 @@ We're gonna create a restaurant admin and driver account so we'll have access to
 # Contribute
 
 We happily welcome contributions to this project!
- - Note: Please review the source code and ensure you have a thorough understanding of it before making any changes.
+<p style="font-size: smaller;">Note: Please review the source code and ensure you have a thorough understanding of it before making any changes </p>
 
 Follow the steps below to contribute to this project:
 
