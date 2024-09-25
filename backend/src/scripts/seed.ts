@@ -30,7 +30,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
 export default async function seedDemoData({ container }: ExecArgs) {
   const logger: Logger = container.resolve(ContainerRegistrationKeys.LOGGER);
-  const remoteLink = container.resolve(
+  const remoteLink: RemoteLink = container.resolve(
     ContainerRegistrationKeys.REMOTE_LINK
   );
   const fulfillmentModuleService = container.resolve(
@@ -179,7 +179,12 @@ export default async function seedDemoData({ container }: ExecArgs) {
   });
   const stockLocation = stockLocationResult[0];
 
-  const fulfillmentProviderId = "manual_manual-provider";
+  const fulfillmentProvider = await fulfillmentModuleService
+    .listFulfillmentProviders({}, { take: 1 })
+    .then((res) => res[0]);
+
+  const fulfillmentProviderId = fulfillmentProvider.id;
+
   await remoteLink.create([
     {
       [Modules.STOCK_LOCATION]: {
