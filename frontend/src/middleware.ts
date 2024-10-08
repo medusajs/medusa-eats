@@ -23,3 +23,8 @@ export async function middleware(request: NextRequest) {
 
   return response;
 }
+
+export const config = {
+  // Match all paths except for the ones that are static assets
+  matcher: "/((?!api|_next/static|_next/image|favicon.ico).*)",
+};
