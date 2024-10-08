@@ -2,7 +2,7 @@
 
 import { RestaurantDTO } from "@frontend/lib/types";
 import { Plus } from "@medusajs/icons";
-import { ProductCategoryDTO } from "@medusajs/types";
+import { HttpTypes } from "@medusajs/types";
 import { Button, Drawer, Text } from "@medusajs/ui";
 import { CreateProductForm } from "./create-product-form";
 
@@ -11,7 +11,7 @@ export function CreateProductDrawer({
   categories,
 }: {
   restaurant: RestaurantDTO;
-  categories: ProductCategoryDTO[];
+  categories: HttpTypes.StoreProductCategory[];
 }) {
   return (
     <Drawer>

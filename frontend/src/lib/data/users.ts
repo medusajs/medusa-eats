@@ -1,11 +1,12 @@
 import { UserDTO } from "@medusajs/types";
 import { sdk } from "../config";
 import { getAuthHeaders, getCacheHeaders } from "./cookies";
+import { DriverDTO, RestaurantAdminDTO } from "../types";
 
 export async function retrieveUser() {
   try {
     const { user } = await sdk.client.fetch<{
-      user: UserDTO;
+      user: RestaurantAdminDTO | DriverDTO | null;
     }>("/store/users/me", {
       headers: {
         ...getAuthHeaders(),

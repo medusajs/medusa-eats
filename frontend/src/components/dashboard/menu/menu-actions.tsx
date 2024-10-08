@@ -1,7 +1,7 @@
 "use client";
 
 import { RestaurantDTO } from "@frontend/lib/types";
-import { ProductCategoryDTO } from "@medusajs/types";
+import { HttpTypes, ProductCategoryDTO } from "@medusajs/types";
 import { CreateCategoryDrawer } from "./create-category-drawer";
 import { CreateProductDrawer } from "./create-product-drawer";
 
@@ -10,7 +10,7 @@ export function MenuActions({
   categories,
 }: {
   restaurant: RestaurantDTO;
-  categories: ProductCategoryDTO[];
+  categories: HttpTypes.StoreProductCategory[];
 }) {
   return (
     <div className="flex gap-4">

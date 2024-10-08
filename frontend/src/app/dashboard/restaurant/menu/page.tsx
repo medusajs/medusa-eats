@@ -5,13 +5,14 @@ import {
   retrieveRestaurant,
   retrieveUser,
 } from "@frontend/lib/data";
+import { RestaurantAdminDTO } from "@frontend/lib/types";
 import { ProductDTO, ProductVariantDTO } from "@medusajs/types";
 import { Heading, Table, Text } from "@medusajs/ui";
 import Image from "next/image";
 
 export default async function MenuPage() {
-  const user = await retrieveUser();
-  const restaurantId = user.restaurant_id;
+  const user = (await retrieveUser()) as RestaurantAdminDTO;
+  const restaurantId = user?.restaurant_id;
 
   const restaurant = await retrieveRestaurant(restaurantId);
   const categories = await listCategories();

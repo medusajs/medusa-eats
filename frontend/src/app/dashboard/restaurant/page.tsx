@@ -3,13 +3,13 @@ import DeliveryColumn from "@frontend/components/dashboard/delivery-column";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
 import RestaurantStatus from "@frontend/components/dashboard/restaurant/restaurant-status";
 import { retrieveRestaurant, retrieveUser } from "@frontend/lib/data";
-import { DeliveryStatus } from "@frontend/lib/types";
+import { DeliveryStatus, RestaurantAdminDTO } from "@frontend/lib/types";
 import { Container, Heading, StatusBadge, Text } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
 import { notFound, redirect } from "next/navigation";
 
 export default async function RestaurantDashboardPage() {
-  const user = await retrieveUser();
+  const user = (await retrieveUser()) as RestaurantAdminDTO;
 
   if (!user || !user.id.includes("resadm_")) {
     redirect("/login");

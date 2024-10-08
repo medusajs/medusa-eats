@@ -2,7 +2,7 @@
 
 import { createProduct } from "@frontend/lib/actions";
 import { RestaurantDTO } from "@frontend/lib/types";
-import { ProductCategoryDTO } from "@medusajs/types";
+import { HttpTypes } from "@medusajs/types";
 import { Input, Label, Select, Textarea } from "@medusajs/ui";
 import { useFormState } from "react-dom";
 
@@ -11,7 +11,7 @@ export function CreateProductForm({
   categories,
 }: {
   restaurant: RestaurantDTO;
-  categories: ProductCategoryDTO[];
+  categories: HttpTypes.StoreProductCategory[];
 }) {
   const [state, formAction] = useFormState(createProduct, null);
 

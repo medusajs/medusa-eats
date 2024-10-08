@@ -6,7 +6,7 @@ import { Avatar, Button, Text } from "@medusajs/ui";
 import { Link } from "next-view-transitions";
 
 type ProfileBadgeProps = {
-  user?: RestaurantAdminDTO | DriverDTO;
+  user: RestaurantAdminDTO | DriverDTO | null;
 };
 
 export function ProfileBadge({ user }: ProfileBadgeProps) {
