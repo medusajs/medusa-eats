@@ -12,7 +12,7 @@ export const getAuthHeaders = (): { authorization: string } | {} => {
 };
 
 export const getCacheTag = (tag: string): string => {
-  const cacheId = headers().get("x-medusa-cache-id");
+  const cacheId = headers().get("_medusa_cache_id");
 
   if (cacheId) {
     return `${tag}-${cacheId}`;
