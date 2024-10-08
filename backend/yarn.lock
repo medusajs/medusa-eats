@@ -1850,11 +1850,6 @@
     "@medusajs/modules-sdk" "1.13.0-preview-20240925125714"
     "@medusajs/utils" "1.12.0-preview-20240925125714"
 
-"@medusajs/types@1.12.0-preview-20240925090259":
-  version "1.12.0-preview-20240925090259"
-  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.12.0-preview-20240925090259.tgz#8960855926bc3c2e57fabe4119e809fad669b97e"
-  integrity sha512-QRyJnMEwVBPxaIt40nXfSsIWCKaXTkhIbrlu9fZ5qfeQzRwbAmaM1l6U8rSVuLyDApAn0xXXE7sW2qdf7qIBjA==
-
 "@medusajs/types@1.12.0-preview-20240925125714":
   version "1.12.0-preview-20240925125714"
   resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.12.0-preview-20240925125714.tgz#5827ff5cd8bae8c33945a32a449324f88c62fd29"
@@ -1900,26 +1895,6 @@
   dependencies:
     "@medusajs/utils" "1.12.0-preview-20240925125714"
     jsonwebtoken "^9.0.2"
-
-"@medusajs/utils@1.12.0-preview-20240925090259":
-  version "1.12.0-preview-20240925090259"
-  resolved "https://registry.yarnpkg.com/@medusajs/utils/-/utils-1.12.0-preview-20240925090259.tgz#ea409881c5f12d11bde311b5227db278adc146aa"
-  integrity sha512-b1rSX/l0Crsj3eBTC/ofqWavYoh/dY7+tLd2YHlLkbSBsZyB8v1p3xnfjXHL5iUd4brgvOAXJtRC50noGLlaBA==
-  dependencies:
-    "@medusajs/types" "1.12.0-preview-20240925090259"
-    "@mikro-orm/core" "5.9.7"
-    "@mikro-orm/migrations" "5.9.7"
-    "@mikro-orm/postgresql" "5.9.7"
-    awilix "^8.0.1"
-    bignumber.js "^9.1.2"
-    dotenv "^16.4.5"
-    dotenv-expand "^11.0.6"
-    graphql "^16.9.0"
-    jsonwebtoken "^9.0.2"
-    pg "^8.13.0"
-    pg-connection-string "^2.7.0"
-    pluralize "^8.0.0"
-    ulid "^2.3.0"
 
 "@medusajs/utils@1.12.0-preview-20240925125714", "@medusajs/utils@preview":
   version "1.12.0-preview-20240925125714"
@@ -7703,22 +7678,6 @@ medusa-core-utils@preview:
   integrity sha512-xmr7KKPc1AziRQNiGZYOnZp3PXv/aViJfw2obEz2i10Ds5lsysl7My8L0vRVAbplFMiLhe4VN6BMePi5Xcn5cQ==
   dependencies:
     awilix "^8.0.0"
-
-medusa-telemetry@0.0.18-preview-20240925090259:
-  version "0.0.18-preview-20240925090259"
-  resolved "https://registry.yarnpkg.com/medusa-telemetry/-/medusa-telemetry-0.0.18-preview-20240925090259.tgz#4c832e6d10f8138165e140e5b72702131d03e01c"
-  integrity sha512-SWBwtv9bKhnaEZeZfVIv/7VNaS9oou7ET072OUdYO3MgzhWjYuXVXTdhQZG55H/zYlFYIGD7ZGFpFNkEtSqXDA==
-  dependencies:
-    "@babel/runtime" "^7.22.10"
-    axios "^0.21.4"
-    axios-retry "^3.1.9"
-    boxen "^5.0.1"
-    ci-info "^3.2.0"
-    configstore "5.0.1"
-    global "^4.4.0"
-    is-docker "^2.2.1"
-    remove-trailing-slash "^0.1.1"
-    uuid "^8.3.2"
 
 medusa-telemetry@0.0.18-preview-20240925125714:
   version "0.0.18-preview-20240925125714"

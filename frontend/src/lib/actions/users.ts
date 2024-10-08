@@ -1,20 +1,11 @@
 "use server";
 
-import { getToken } from "@frontend/lib/data/users";
 import { CreateDriverDTO, CreateRestaurantAdminDTO } from "@frontend/lib/types";
-import { JWTPayload } from "jose";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import {
-  createSession,
-  decrypt,
-  destroySession,
-} from "../../lib/data/sessions";
-
-const BACKEND_URL =
-  process.env.BACKEND_URL ||
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://localhost:9000";
+import { createSession, destroySession } from "../../lib/data/sessions";
+import { sdk } from "../config";
+import { getAuthHeaders, getCacheHeaders, getCacheTag } from "../data/cookies";
 
 type FormState =
   | {
@@ -68,7 +59,7 @@ export async function signup(prevState: FormState, data: FormData) {
     });
 
     createSession(token);
-    revalidateTag("user");
+    revalidateTag(getCacheTag("users"));
 
     const createUserData: CreateUserType = {
       email,
@@ -95,7 +86,7 @@ export async function signup(prevState: FormState, data: FormData) {
     });
 
     createSession(newToken);
-    revalidateTag("user");
+    revalidateTag(getCacheTag("users"));
   } catch (error) {
     return {
       message: "Error creating user",
@@ -123,7 +114,7 @@ export async function login(prevState: FormState, data: FormData) {
     destroySession();
     createSession(token);
 
-    revalidateTag("user");
+    revalidateTag(getCacheTag("users"));
   } catch (error) {
     return {
       message: "Invalid email or password",
@@ -144,19 +135,18 @@ export async function createAuthUser({
   actor_type: "restaurant" | "driver";
   provider: "emailpass";
 }) {
-  const { token } = await fetch(
-    `${BACKEND_URL}/auth/${actor_type}/${provider}/register`,
+  const { token }: { token: string } = await sdk.client.fetch(
+    `/auth/${actor_type}/${provider}/register`,
     {
       method: "POST",
+      body: { entity_id: email, password, email },
       headers: {
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ entity_id: email, password, email }),
-      next: {
-        tags: ["user"],
+        ...getAuthHeaders(),
+        ...getCacheHeaders("users"),
       },
     }
-  ).then((res) => res.json());
+  );
 
   return token;
 }
@@ -170,21 +160,42 @@ export type CreateUserType = (CreateDriverDTO | CreateRestaurantAdminDTO) & {
 export async function createUser(input: CreateUserType) {
   const { token, ...rest } = input;
 
-  const res = await fetch(`${BACKEND_URL}/users`, {
+  const res = await sdk.client.fetch("/store/users", {
     method: "POST",
+    body: rest,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${input.token}`,
+      ...getAuthHeaders(),
+      ...getCacheHeaders("users"),
     },
-    body: JSON.stringify(rest),
-    next: {
-      tags: ["user"],
-    },
-  })
-    .then((res) => res.json())
-    .catch((error) => {
-      throw new Error("Error creating user");
-    });
+  });
 
   return res;
+}
+
+export async function getToken({
+  email,
+  password,
+  actor_type,
+  provider,
+}: {
+  email: string;
+  password: string;
+  actor_type: "restaurant" | "driver";
+  provider: "emailpass";
+}) {
+  const { token }: { token: string } = await sdk.client.fetch(
+    `/auth/${actor_type}/${provider}`,
+    {
+      method: "POST",
+      body: { email, password: password.toString() },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+        ...getCacheHeaders("users"),
+      },
+    }
+  );
+
+  return token;
 }

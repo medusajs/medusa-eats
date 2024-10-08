@@ -1,9 +1,9 @@
 import { retrieveRestaurant } from "@frontend/lib/data";
-import { CartDTO } from "@medusajs/types";
+import { HttpTypes } from "@medusajs/types";
 import { Container, Heading, Text } from "@medusajs/ui";
 import Image from "next/image";
 
-export async function OrderSummary({ cart }: { cart: CartDTO }) {
+export async function OrderSummary({ cart }: { cart: HttpTypes.StoreCart }) {
   const restaurant = await retrieveRestaurant(
     cart?.metadata?.restaurant_id as string
   );
@@ -20,7 +20,7 @@ export async function OrderSummary({ cart }: { cart: CartDTO }) {
         {cart?.items?.map((item: any) => (
           <div key={item.id} className="flex items-center gap-4">
             <Image
-              src={item.product.thumbnail}
+              src={item.thumbnail}
               alt={item.title}
               className="w-16 h-16 rounded-md"
               width={64}

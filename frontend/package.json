@@ -11,6 +11,7 @@
   "dependencies": {
     "@dotlottie/react-player": "^1.6.19",
     "@medusajs/icons": "^1.2.2-preview-20240925090259",
+    "@medusajs/js-sdk": "^0.0.2-preview-20241008090600",
     "@medusajs/ui": "preview",
     "@next/third-parties": "^14.2.5",
     "eventsource": "^2.0.2",

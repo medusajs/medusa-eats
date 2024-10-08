@@ -4,6 +4,8 @@ import { retrieveSession } from "@frontend/lib/data/sessions";
 import { RestaurantDTO, RestaurantProductDTO } from "@frontend/lib/types";
 import { promises as fs } from "fs";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { sdk } from "../config";
+import { getAuthHeaders, getCacheTag } from "../data/cookies";
 
 const BACKEND_URL =
   process.env.BACKEND_URL ||
@@ -19,23 +21,18 @@ export async function setRestaurantStatus(
   status: boolean
 ): Promise<RestaurantDTO | { message: string }> {
   try {
-    const { restaurant } = await fetch(
-      `${BACKEND_URL}/restaurants/${restaurantId}/status`,
-      {
-        method: "POST",
-        body: JSON.stringify({ is_open: status }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        next: {
-          tags: ["restaurants"],
-        },
-      }
-    ).then((res) => res.json());
+    const { restaurant } = await sdk.client.fetch<{
+      restaurant: RestaurantDTO;
+    }>(`/restaurants/${restaurantId}/status`, {
+      method: "POST",
+      body: { is_open: status },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+    });
 
-    revalidateTag("restaurants");
-    revalidatePath("/dashboard/driver");
-    revalidatePath("/dashboard/restaurant");
+    revalidateTag(getCacheTag("restaurants"));
 
     return restaurant;
   } catch (error) {
@@ -70,23 +67,18 @@ export async function createProduct(
   });
 
   try {
-    const { restaurant_product } = await fetch(
-      `${BACKEND_URL}/restaurants/${restaurantId}/products`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
-        credentials: "include",
-        next: {
-          tags: ["products"],
-        },
-      }
-    ).then((res) => res.json());
+    const { restaurant_product } = await sdk.client.fetch<{
+      restaurant_product: RestaurantProductDTO;
+    }>(`/restaurants/${restaurantId}/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+      body: productData,
+    });
 
-    revalidateTag("products");
+    revalidateTag(getCacheTag("products"));
 
     return restaurant_product;
   } catch (error) {
@@ -102,16 +94,17 @@ async function saveFile(file: File, fileName: string) {
 
 export async function deleteProduct(productId: string, restaurantId: string) {
   try {
-    await fetch(`${BACKEND_URL}/restaurants/${restaurantId}/products`, {
+    await sdk.client.fetch(`/restaurants/${restaurantId}/products`, {
       method: "DELETE",
-      body: JSON.stringify({ product_ids: [productId] }),
-      next: {
-        tags: ["products"],
+      body: { product_ids: [productId] },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
       },
     });
 
-    revalidateTag("products");
-    revalidateTag("restaurants");
+    revalidateTag(getCacheTag("products"));
+    revalidateTag(getCacheTag("restaurants"));
 
     return true;
   } catch (error) {

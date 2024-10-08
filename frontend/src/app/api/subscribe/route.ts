@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const driverId = req.nextUrl.searchParams.get("driver_id");
   const deliveryId = req.nextUrl.searchParams.get("delivery_id");
 
-  let serverUrl = BACKEND_URL + "/deliveries/subscribe";
+  let serverUrl = BACKEND_URL + "/store/deliveries/subscribe";
 
   if (restaurantId) {
     serverUrl += `?restaurant_id=${restaurantId}`;

@@ -52,7 +52,7 @@ function CartItem({ item }: { item: Record<string, any> }) {
   return (
     <div className="flex items-center gap-4">
       <Image
-        src={item.product.thumbnail}
+        src={item.thumbnail}
         alt={item.title}
         className="w-16 h-16 rounded-md"
         width={64}

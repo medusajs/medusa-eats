@@ -1,15 +1,21 @@
-import { DriverDTO } from "@frontend/lib/types";
+import { sdk } from "../config";
 
-const BACKEND_URL =
-  process.env.BACKEND_URL ||
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://localhost:9000";
+import { DriverDTO } from "@frontend/lib/types";
+import { getAuthHeaders, getCacheHeaders } from "./cookies";
 
 export async function retrieveDriver(driverId: string): Promise<DriverDTO> {
-  const { driver } = await fetch(`${BACKEND_URL}/drivers/${driverId}`, {
-    next: {
-      tags: ["drivers"],
+  const {
+    driver,
+  }: {
+    driver: DriverDTO;
+  } = await sdk.client.fetch(`/store/drivers/${driverId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeaders(),
+      ...getCacheHeaders("drivers"),
     },
-  }).then((res) => res.json());
+  });
+
   return driver;
 }

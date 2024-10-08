@@ -1,32 +1,38 @@
-import { DeliveryDTO } from "@frontend/lib/types";
-
-const BACKEND_URL =
-  process.env.BACKEND_URL ||
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://localhost:9000";
-
-export async function retrieveDelivery(
-  deliveryId: string
-): Promise<DeliveryDTO> {
-  const { delivery } = await fetch(`${BACKEND_URL}/deliveries/${deliveryId}`, {
-    next: {
-      tags: ["deliveries"],
-    },
-  }).then((res) => res.json());
-
-  return delivery;
-}
+import { sdk } from "../config";
+import { DeliveryDTO } from "../types";
+import { getAuthHeaders, getCacheHeaders } from "./cookies";
 
 export async function listDeliveries(
   filter?: Record<string, string>
 ): Promise<DeliveryDTO[]> {
-  const query = new URLSearchParams(filter).toString();
-
-  const { deliveries } = await fetch(`${BACKEND_URL}/deliveries?${query}`, {
-    next: {
-      tags: ["deliveries"],
-    },
-  }).then((res) => res.json());
+  const { deliveries }: { deliveries: DeliveryDTO[] } = await sdk.client.fetch(
+    "/store/deliveries",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+        ...getCacheHeaders("deliveries"),
+      },
+    }
+  );
 
   return deliveries;
+}
+
+export async function retrieveDelivery(
+  deliveryId: string
+): Promise<DeliveryDTO> {
+  const { delivery }: { delivery: DeliveryDTO } = await sdk.client.fetch(
+    `/store/deliveries/${deliveryId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+        ...getCacheHeaders("deliveries"),
+      },
+    }
+  );
+  return delivery;
 }

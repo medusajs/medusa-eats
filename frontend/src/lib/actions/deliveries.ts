@@ -2,6 +2,8 @@
 
 import { DeliveryDTO, DeliveryStatus } from "@frontend/lib/types";
 import { revalidateTag } from "next/cache";
+import { getAuthHeaders, getCacheTag } from "../data/cookies";
+import { sdk } from "../config";
 
 const BACKEND_URL =
   process.env.BACKEND_URL ||
@@ -46,21 +48,18 @@ export async function claimDelivery(
   driverId: string
 ): Promise<DeliveryDTO | { message: string }> {
   try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/claim`,
+    const { delivery } = await sdk.client.fetch<{ delivery: DeliveryDTO }>(
+      `/store/deliveries/${deliveryId}/claim`,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ driver_id: driverId }),
         method: "POST",
-        next: {
-          tags: ["deliveries"],
+        body: { driver_id: driverId },
+        headers: {
+          ...getAuthHeaders(),
         },
       }
-    ).then((res) => res.json());
+    );
 
-    revalidateTag("deliveries");
+    revalidateTag(getCacheTag("deliveries"));
 
     return delivery;
   } catch (error) {
@@ -73,20 +72,20 @@ export async function passDelivery(
   driverId: string
 ): Promise<{ message: string } | null> {
   try {
-    await fetch(`${BACKEND_URL}/deliveries/${deliveryId}/pass`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        driver_id: driverId,
-      }),
-      method: "DELETE",
-      next: {
-        tags: ["deliveries"],
-      },
-    }).then((res) => res.json());
+    await sdk.client.fetch<{ message: string }>(
+      `/store/deliveries/${deliveryId}/pass`,
+      {
+        method: "DELETE",
+        headers: {
+          ...getAuthHeaders(),
+        },
+        body: {
+          driver_id: driverId,
+        },
+      }
+    );
 
-    revalidateTag("deliveries");
+    revalidateTag(getCacheTag("deliveries"));
 
     return { message: "Delivery passed" };
   } catch (error) {
@@ -98,20 +97,17 @@ export async function pickUpDelivery(
   deliveryId: string
 ): Promise<DeliveryDTO | { message: string }> {
   try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/pick-up`,
+    const { delivery } = await sdk.client.fetch<{ delivery: DeliveryDTO }>(
+      `/store/deliveries/${deliveryId}/pick-up`,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
         method: "POST",
-        next: {
-          tags: ["deliveries"],
+        headers: {
+          ...getAuthHeaders(),
         },
       }
-    ).then((res) => res.json());
+    );
 
-    revalidateTag("deliveries");
+    revalidateTag(getCacheTag("deliveries"));
 
     return delivery;
   } catch (error) {
@@ -123,18 +119,15 @@ export async function completeDelivery(
   deliveryId: string
 ): Promise<DeliveryDTO | { message: string }> {
   try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/complete`,
+    const { delivery } = await sdk.client.fetch<{ delivery: DeliveryDTO }>(
+      `/store/deliveries/${deliveryId}/complete`,
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
         method: "POST",
-        next: {
-          tags: ["deliveries"],
+        headers: {
+          ...getAuthHeaders(),
         },
       }
-    ).then((res) => res.json());
+    );
 
     revalidateTag("deliveries");
 
@@ -148,17 +141,17 @@ export async function acceptDelivery(
   deliveryId: string
 ): Promise<DeliveryDTO | { message: string }> {
   try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/accept`,
+    const { delivery } = await sdk.client.fetch<{ delivery: DeliveryDTO }>(
+      `/store/deliveries/${deliveryId}/accept`,
       {
         method: "POST",
-        next: {
-          tags: ["deliveries"],
+        headers: {
+          ...getAuthHeaders(),
         },
       }
-    ).then((res) => res.json());
+    );
 
-    revalidateTag("deliveries");
+    revalidateTag(getCacheTag("deliveries"));
 
     return delivery;
   } catch (error) {
@@ -170,17 +163,17 @@ export async function declineDelivery(
   deliveryId: string
 ): Promise<DeliveryDTO | { message: string }> {
   try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/decline`,
+    const { delivery } = await sdk.client.fetch<{ delivery: DeliveryDTO }>(
+      `/store/deliveries/${deliveryId}/decline`,
       {
         method: "POST",
-        next: {
-          tags: ["deliveries"],
+        headers: {
+          ...getAuthHeaders(),
         },
       }
-    ).then((res) => res.json());
+    );
 
-    revalidateTag("deliveries");
+    revalidateTag(getCacheTag("deliveries"));
 
     return delivery;
   } catch (error) {
@@ -192,17 +185,17 @@ export async function prepareDelivery(
   deliveryId: string
 ): Promise<DeliveryDTO | { message: string }> {
   try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/prepare`,
+    const { delivery } = await sdk.client.fetch<{ delivery: DeliveryDTO }>(
+      `/store/deliveries/${deliveryId}/prepare`,
       {
         method: "POST",
-        next: {
-          tags: ["deliveries"],
+        headers: {
+          ...getAuthHeaders(),
         },
       }
-    ).then((res) => res.json());
+    );
 
-    revalidateTag("deliveries");
+    revalidateTag(getCacheTag("deliveries"));
 
     return delivery;
   } catch (error) {
@@ -214,17 +207,17 @@ export async function preparationReady(
   deliveryId: string
 ): Promise<DeliveryDTO | { message: string }> {
   try {
-    const { delivery } = await fetch(
-      `${BACKEND_URL}/deliveries/${deliveryId}/ready`,
+    const { delivery } = await sdk.client.fetch<{ delivery: DeliveryDTO }>(
+      `/store/deliveries/${deliveryId}/ready`,
       {
         method: "POST",
-        next: {
-          tags: ["deliveries"],
+        headers: {
+          ...getAuthHeaders(),
         },
       }
-    ).then((res) => res.json());
+    );
 
-    revalidateTag("deliveries");
+    revalidateTag(getCacheTag("deliveries"));
 
     return delivery;
   } catch (error) {

@@ -1,55 +1,43 @@
 "use server";
 
-import { metadata } from "@frontend/app/layout";
 import { retrieveUser } from "@frontend/lib/data";
-import { CartDTO, CreateCartDTO } from "@medusajs/types";
+import { CartDTO, HttpTypes } from "@medusajs/types";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-
-const BACKEND_URL =
-  process.env.BACKEND_URL ||
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://localhost:9000";
+import { sdk } from "../config";
+import { getAuthHeaders, getCacheTag } from "../data/cookies";
 
 export async function createCart(
-  data: CreateCartDTO,
+  data: HttpTypes.StoreCreateCart,
   restaurant_id: string
 ): Promise<CartDTO | undefined> {
   const user = await retrieveUser();
 
-  const { regions } = await fetch(`${BACKEND_URL}/store/regions`).then((res) =>
-    res.json()
-  );
+  const { regions } = await sdk.store.region.list();
 
   const region = regions[0];
 
   const body = {
-    email: user?.email || null,
+    email: user?.email,
     region_id: region.id,
     metadata: {
       restaurant_id,
     },
     ...data,
-  };
+  } as HttpTypes.StoreCreateCart & { items: HttpTypes.StoreAddCartLineItem[] };
 
   try {
-    const { cart } = await fetch(
-      `${BACKEND_URL}/store/carts?fields=%2Bmetadata`,
+    const { cart } = await sdk.store.cart.create(
+      body,
+      {},
       {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        next: {
-          tags: ["cart"],
-        },
+        ...getAuthHeaders(),
       }
-    ).then((res) => res.json());
+    );
 
     cookies().set("_medusa_cart_id", cart.id);
 
-    revalidateTag("cart");
+    revalidateTag(getCacheTag("carts"));
 
     return cart as CartDTO;
   } catch (e) {
@@ -60,7 +48,7 @@ export async function createCart(
 export async function addToCart(
   variantId: string,
   restaurantId: string
-): Promise<CartDTO | { message: string }> {
+): Promise<HttpTypes.StoreCart | { message: string }> {
   let cartId = cookies().get("_medusa_cart_id")?.value;
   let cart;
 
@@ -80,23 +68,14 @@ export async function addToCart(
   }
 
   try {
-    cart = await fetch(`${BACKEND_URL}/store/carts/${cartId}/line-items`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        variant_id: variantId,
-        quantity: 1,
-      }),
-      next: {
-        tags: ["cart"],
-      },
-    }).then((res) => res.json());
+    const { cart } = await sdk.store.cart.createLineItem(cartId, {
+      variant_id: variantId,
+      quantity: 1,
+    });
 
-    revalidateTag("cart");
+    revalidateTag(getCacheTag("carts"));
 
-    return cart;
+    return cart as HttpTypes.StoreCart;
   } catch (error) {
     return { message: "Error adding item to cart" };
   }
@@ -104,22 +83,17 @@ export async function addToCart(
 
 export async function removeItemFromCart(
   lineItemId: string
-): Promise<CartDTO | { message: string }> {
+): Promise<void | { message: string }> {
   try {
     const cartId = cookies().get("_medusa_cart_id")?.value;
 
-    const cart = await fetch(
-      `${BACKEND_URL}/store/carts/${cartId}/line-items/${lineItemId}`,
-      {
-        method: "DELETE",
-        next: {
-          tags: ["cart"],
-        },
-      }
-    ).then((res) => res.json());
+    if (!cartId) {
+      return { message: "Error removing item from cart" };
+    }
 
-    revalidateTag("cart");
-    return cart;
+    await sdk.store.cart.deleteLineItem(cartId, lineItemId);
+
+    revalidateTag(getCacheTag("carts"));
   } catch (error) {
     return { message: "Error removing item from cart" };
   }

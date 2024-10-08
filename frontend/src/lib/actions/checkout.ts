@@ -1,13 +1,13 @@
 "use server";
 
 import { UpsertAddressDTO } from "@medusajs/types";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-const BACKEND_URL =
-  process.env.BACKEND_URL ||
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://localhost:9000";
+import { sdk } from "../config";
+import { retrieveCart } from "../data";
+import { getAuthHeaders, getCacheTag } from "../data/cookies";
+import { DeliveryDTO } from "../types";
 
 export async function updateCart(data: Record<string, unknown>) {
   const cartId = cookies().get("_medusa_cart_id")?.value;
@@ -16,15 +16,16 @@ export async function updateCart(data: Record<string, unknown>) {
     throw new Error("No cart found");
   }
 
-  const response = await fetch(`${BACKEND_URL}/store/carts/${cartId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  }).catch(() => {
-    throw new Error("Error updating cart");
-  });
+  const response = await sdk.store.cart.update(
+    cartId,
+    data,
+    {},
+    {
+      ...getAuthHeaders(),
+    }
+  );
+
+  revalidateTag(getCacheTag("carts"));
 
   return response;
 }
@@ -36,48 +37,47 @@ export async function completeCart() {
     throw new Error("No cart found");
   }
 
-  const response = await fetch(
-    `${BACKEND_URL}/store/carts/${cartId}/complete`,
+  const response = await sdk.store.cart.complete(
+    cartId,
+    {},
     {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
+      ...getAuthHeaders(),
     }
-  ).catch((error) => {
-    throw new Error("Error completing cart");
-  });
+  );
+
+  revalidateTag(getCacheTag("carts"));
 
   return response;
 }
 
 export async function addPaymentSession(cartId: string) {
-  const response = await fetch(
-    `${BACKEND_URL}/store/carts/${cartId}/payment-sessions`,
-    {
-      method: "POST",
-    }
-  )
-    .then((res) => res.json())
-    .catch((error) => {
-      throw new Error("Error adding payment session");
-    });
+  const cart = await retrieveCart(cartId);
 
-  return response;
+  const res = await sdk.store.payment.initiatePaymentSession(
+    cart,
+    {},
+    undefined,
+    {
+      ...getAuthHeaders(),
+    }
+  );
+
+  return res;
 }
 
 export async function createDelivery(cartId: string, restaurantId: string) {
-  const { delivery } = await fetch(`${BACKEND_URL}/deliveries`, {
+  const { delivery } = await sdk.client.fetch<{
+    delivery: DeliveryDTO;
+  }>("/store/deliveries", {
     method: "POST",
+    body: { cart_id: cartId, restaurant_id: restaurantId },
     headers: {
       "Content-Type": "application/json",
+      ...getAuthHeaders(),
     },
-    body: JSON.stringify({ cart_id: cartId, restaurant_id: restaurantId }),
-  })
-    .then((res) => res.json())
-    .catch((error) => {
-      throw new Error("Error creating delivery");
-    });
+  });
+
+  revalidateTag(getCacheTag("deliveries"));
 
   return delivery;
 }
@@ -123,11 +123,11 @@ export async function placeOrder(prevState: any, data: FormData) {
   try {
     const updatedCart = await updateCart({
       shipping_address: shippingAddress,
-    })
-      .then((res) => res.json())
-      .catch((error) => {
-        return { message: "Error updating cart" };
-      });
+    });
+
+    if (!updatedCart) {
+      return { message: "Error updating cart" };
+    }
 
     const delivery = await createDelivery(cartId, restaurantId);
 

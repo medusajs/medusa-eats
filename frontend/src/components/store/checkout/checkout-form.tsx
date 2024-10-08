@@ -1,7 +1,7 @@
 "use client";
 
 import { placeOrder } from "@frontend/lib/actions";
-import { CartDTO } from "@medusajs/types";
+import { HttpTypes } from "@medusajs/types";
 import { Badge, Button, Heading, Input, Label, Textarea } from "@medusajs/ui";
 import { useFormState, useFormStatus } from "react-dom";
 
@@ -20,7 +20,7 @@ function Submit() {
   );
 }
 
-export default function CheckoutForm({ cart }: { cart: CartDTO }) {
+export default function CheckoutForm({ cart }: { cart: HttpTypes.StoreCart }) {
   const [state, action] = useFormState(placeOrder, { message: "" });
 
   const restaurantId = cart.metadata?.restaurant_id as string;

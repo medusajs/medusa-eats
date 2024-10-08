@@ -25,7 +25,7 @@ export default defineMiddlewares({
   routes: [
     {
       method: ["GET"],
-      matcher: "/users/me",
+      matcher: "/store/users/me",
       middlewares: [
         authenticate(["driver", "restaurant"], "bearer"),
         isAllowed,
@@ -33,7 +33,7 @@ export default defineMiddlewares({
     },
     {
       method: ["POST"],
-      matcher: "/users",
+      matcher: "/store/users",
       middlewares: [
         authenticate(["driver", "restaurant"], "bearer", {
           allowUnregistered: true,
@@ -42,16 +42,12 @@ export default defineMiddlewares({
     },
     {
       method: ["POST", "DELETE"],
-      matcher: "/restaurants/:id/**",
-      middlewares: [
-        authenticate(["restaurant", "admin"], "bearer"),
-      ],
+      matcher: "/store/restaurants/:id/**",
+      middlewares: [authenticate(["restaurant", "admin"], "bearer")],
     },
     {
-      matcher: "/restaurants/:id/admin/**",
-      middlewares: [
-        authenticate(["restaurant", "admin"], "bearer"),
-      ],
+      matcher: "/store/restaurants/:id/admin/**",
+      middlewares: [authenticate(["restaurant", "admin"], "bearer")],
     },
   ],
 });
