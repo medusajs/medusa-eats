@@ -23,6 +23,14 @@ export default function DishCard({
     setIsAdding(false);
   };
 
+  const thumbnail =
+    process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+      ? product.thumbnail?.replace(
+          "http://localhost:3000",
+          "https://medusa-eats.vercel.app"
+        )
+      : product.thumbnail;
+
   return (
     <div className="flex items-center justify-between shadow-sm border rounded-xl h-fit">
       <div className="flex flex-col gap-2 px-4">
@@ -38,7 +46,7 @@ export default function DishCard({
       </div>
       <div className="relative h-fit">
         <Image
-          src={product.thumbnail!}
+          src={thumbnail!}
           width={100}
           height={100}
           alt={`Thumbnail of ${product.title}`}
