@@ -3,6 +3,9 @@ import { loadEnv, defineConfig, Modules } from "@medusajs/utils";
 loadEnv(process.env.NODE_ENV, process.cwd());
 
 module.exports = defineConfig({
+  admin: {
+    backendUrl: "https://medusa-eats.medusajs.app",
+  },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     http: {
