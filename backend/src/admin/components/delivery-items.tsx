@@ -38,10 +38,18 @@ const DeliveryItems = ({ delivery }: { delivery: DeliveryDTO }) => {
 };
 
 const DeliveryItem = ({ item }: { item: Record<string, any> }) => {
+  const thumbnail =
+    process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+      ? item.thumbnail?.replace(
+          "http://localhost:3000",
+          "https://medusa-eats.vercel.app"
+        )
+      : item.thumbnail;
+
   return (
     <div className="flex items-center gap-4">
       <img
-        src={item.thumbnail}
+        src={thumbnail}
         alt={item.title}
         className="w-16 h-16 rounded-md"
         width={64}

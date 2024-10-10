@@ -66,13 +66,20 @@ export default async function MenuPage() {
                   price_set: any;
                   price: any;
                 })[];
+                const thumbnail =
+                  process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+                    ? product.thumbnail?.replace(
+                        "http://localhost:3000",
+                        "https://medusa-eats.vercel.app"
+                      )
+                    : product.thumbnail;
 
                 return (
                   <Table.Row key={product.id}>
                     <Table.Cell>
-                      {product.thumbnail && (
+                      {thumbnail && (
                         <Image
-                          src={product.thumbnail}
+                          src={thumbnail!}
                           className="h-12 w-12 rounded-md m-2"
                           width={48}
                           height={48}

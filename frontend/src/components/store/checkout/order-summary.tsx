@@ -17,25 +17,34 @@ export async function OrderSummary({ cart }: { cart: HttpTypes.StoreCart }) {
         Your order from {restaurant.name}
       </Heading>
       <div className="flex gap-4 justify-between flex-wrap">
-        {cart?.items?.map((item: any) => (
-          <div key={item.id} className="flex items-center gap-4">
-            <Image
-              src={item.thumbnail}
-              alt={item.title}
-              className="w-16 h-16 rounded-md"
-              width={64}
-              height={64}
-            />
-            <div className="flex flex-col gap-2base">
-              <Heading level="h3" className="text-sm text-ui-fg-subtle">
-                {item.title}
-              </Heading>
-              <Text className="text-sm text-ui-fg-subtle">
-                {item.quantity} x €{item.unit_price}
-              </Text>
+        {cart?.items?.map((item: any) => {
+          const image =
+            process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+              ? item.thumbnail?.replace(
+                  "http://localhost:3000",
+                  "https://medusa-eats.vercel.app"
+                )
+              : item.thumbnail;
+          return (
+            <div key={item.id} className="flex items-center gap-4">
+              <Image
+                src={image}
+                alt={item.title}
+                className="w-16 h-16 rounded-md"
+                width={64}
+                height={64}
+              />
+              <div className="flex flex-col gap-2base">
+                <Heading level="h3" className="text-sm text-ui-fg-subtle">
+                  {item.title}
+                </Heading>
+                <Text className="text-sm text-ui-fg-subtle">
+                  {item.quantity} x €{item.unit_price}
+                </Text>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div className="w-full border-t border-ui-fg-muted"></div>
         <div className="flex justify-between w-full">
           <Text className="text-md text-ui-fg-subtle">Order total</Text>

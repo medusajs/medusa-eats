@@ -1,10 +1,7 @@
 import AccountBadge from "@frontend/components/dashboard/account-badge";
 import RealtimeClient from "@frontend/components/dashboard/realtime-client";
 import OrderStatus from "@frontend/components/store/order/order-status";
-import {
-  retrieveDelivery,
-  retrieveDriver,
-} from "@frontend/lib/data";
+import { retrieveDelivery, retrieveDriver } from "@frontend/lib/data";
 import { Clock } from "@medusajs/icons";
 import { Container, Heading, Text } from "@medusajs/ui";
 import { cookies } from "next/headers";
@@ -75,25 +72,34 @@ export default async function YourOrderPage() {
       <section className="flex flex-col justify-between gap-4 h-fit md:flex-row">
         <Container className="flex flex-col gap-4 flex-wrap md:w-1/3 overflow-auto">
           <Heading>Order {delivery.id.slice(-4)}</Heading>
-          {delivery.cart?.items?.map((item: any) => (
-            <div key={item.id} className="flex items-center gap-4 h-fit">
-              <Image
-                src={item.thumbnail}
-                alt={item.title}
-                className="w-16 h-16 rounded-md"
-                width={64}
-                height={64}
-              />
-              <div className="flex justify-between w-full gap-2 items-center">
-                <Text className="text-sm font-semibold text-ui-fg-subtle">
-                  {item.title}
-                </Text>
-                <Text className="text-sm text-ui-fg-subtle text-nowrap">
-                  {item.quantity} x €{item.unit_price}
-                </Text>
+          {delivery.cart?.items?.map((item: any) => {
+            const thumbnail =
+              process.env.NEXT_PUBLIC_DEMO_MODE === "true"
+                ? item.thumbnail?.replace(
+                    "http://localhost:3000",
+                    "https://medusa-eats.vercel.app"
+                  )
+                : item.thumbnail;
+            return (
+              <div key={item.id} className="flex items-center gap-4 h-fit">
+                <Image
+                  src={thumbnail!}
+                  alt={item.title}
+                  className="w-16 h-16 rounded-md"
+                  width={64}
+                  height={64}
+                />
+                <div className="flex justify-between w-full gap-2 items-center">
+                  <Text className="text-sm font-semibold text-ui-fg-subtle">
+                    {item.title}
+                  </Text>
+                  <Text className="text-sm text-ui-fg-subtle text-nowrap">
+                    {item.quantity} x €{item.unit_price}
+                  </Text>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </Container>
         <OrderStatus delivery={delivery} />
       </section>
