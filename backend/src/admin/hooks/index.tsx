@@ -16,7 +16,7 @@ export const useDrivers = (
     const fetchDrivers = async () => {
       try {
         const response = await fetch(
-          "/drivers" + (query ? `?${filterQuery}` : "")
+          "/admin/drivers" + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);
@@ -48,7 +48,7 @@ export const useDeliveries = (
     const fetchDeliveries = async () => {
       try {
         const response = await fetch(
-          "/deliveries" + (query ? `?${filterQuery}` : "")
+          "/admin/deliveries" + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);
@@ -79,7 +79,7 @@ export const useRestaurants = (
     const fetchRestaurants = async () => {
       try {
         const response = await fetch(
-          "/restaurants" + (query ? `?${filterQuery}` : "")
+          "/admin/restaurants" + (query ? `?${filterQuery}` : "")
         );
         const result = await response.json();
         setData(result);
