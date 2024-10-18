@@ -49,13 +49,7 @@ function CartItem({ item }: { item: Record<string, any> }) {
     setDeleting(false);
   };
 
-  const thumbnail =
-    process.env.NEXT_PUBLIC_DEMO_MODE === "true"
-      ? item.thumbnail?.replace(
-          "http://localhost:3000",
-          "https://medusa-eats.vercel.app"
-        )
-      : item.thumbnail;
+  const thumbnail = item.thumbnail;
 
   return (
     <div className="flex items-center gap-4">

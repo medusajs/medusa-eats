@@ -55,7 +55,7 @@ export async function addToCart(
   if (!cartId) {
     cart = await createCart(
       {
-        currency_code: "EUR",
+        currency_code: "eur",
       },
       restaurantId
     );

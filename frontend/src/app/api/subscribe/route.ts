@@ -56,7 +56,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
     );
   }
 
-  const source = new EventSource(serverUrl);
+  const source = new EventSource(serverUrl, {
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
+  });
 
   source.onmessage = (message: Record<string, any>) => {
     writer.write(encoder.encode("data: " + message.data + "\n\n"));
