@@ -31,9 +31,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  // Note: currency code should be small letter. However, since
-  // the seed data is using capital letters I've set it here as well.
-  const { currency_code = "EUR", ...queryFilters } = req.query;
+  const { currency_code = "eur", ...queryFilters } = req.query;
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 

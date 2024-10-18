@@ -46,11 +46,11 @@
           "prices": [
             {
               "amount": 12.99,
-              "currency_code": "USD"
+              "currency_code": "usd"
             },
             {
               "amount": 9.99,
-              "currency_code": "EUR"
+              "currency_code": "eur"
             }
           ]
         }
@@ -73,11 +73,11 @@
           "prices": [
             {
               "amount": 14.99,
-              "currency_code": "USD"
+              "currency_code": "usd"
             },
             {
               "amount": 11.99,
-              "currency_code": "EUR"
+              "currency_code": "eur"
             }
           ]
         }
@@ -100,11 +100,11 @@
           "prices": [
             {
               "amount": 9.99,
-              "currency_code": "USD"
+              "currency_code": "usd"
             },
             {
               "amount": 7.99,
-              "currency_code": "EUR"
+              "currency_code": "eur"
             }
           ]
         }
@@ -127,11 +127,11 @@
           "prices": [
             {
               "amount": 11.99,
-              "currency_code": "USD"
+              "currency_code": "usd"
             },
             {
               "amount": 8.99,
-              "currency_code": "EUR"
+              "currency_code": "eur"
             }
           ]
         }
@@ -154,11 +154,11 @@
           "prices": [
             {
               "amount": 5.99,
-              "currency_code": "USD"
+              "currency_code": "usd"
             },
             {
               "amount": 4.99,
-              "currency_code": "EUR"
+              "currency_code": "eur"
             }
           ]
         }
@@ -181,11 +181,11 @@
           "prices": [
             {
               "amount": 2.99,
-              "currency_code": "USD"
+              "currency_code": "usd"
             },
             {
               "amount": 1.99,
-              "currency_code": "EUR"
+              "currency_code": "eur"
             }
           ]
         }

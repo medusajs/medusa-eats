@@ -18,13 +18,7 @@ export async function OrderSummary({ cart }: { cart: HttpTypes.StoreCart }) {
       </Heading>
       <div className="flex gap-4 justify-between flex-wrap">
         {cart?.items?.map((item: any) => {
-          const image =
-            process.env.NEXT_PUBLIC_DEMO_MODE === "true"
-              ? item.thumbnail?.replace(
-                  "http://localhost:3000",
-                  "https://medusa-eats.vercel.app"
-                )
-              : item.thumbnail;
+          const image = item.thumbnail;
           return (
             <div key={item.id} className="flex items-center gap-4">
               <Image

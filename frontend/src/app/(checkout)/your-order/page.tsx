@@ -73,13 +73,7 @@ export default async function YourOrderPage() {
         <Container className="flex flex-col gap-4 flex-wrap md:w-1/3 overflow-auto">
           <Heading>Order {delivery.id.slice(-4)}</Heading>
           {delivery.cart?.items?.map((item: any) => {
-            const thumbnail =
-              process.env.NEXT_PUBLIC_DEMO_MODE === "true"
-                ? item.thumbnail?.replace(
-                    "http://localhost:3000",
-                    "https://medusa-eats.vercel.app"
-                  )
-                : item.thumbnail;
+            const thumbnail = item.thumbnail;
             return (
               <div key={item.id} className="flex items-center gap-4 h-fit">
                 <Image
