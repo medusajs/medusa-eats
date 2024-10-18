@@ -4,7 +4,7 @@ import { DeliveryStatus } from "../../../../../modules/delivery/types/common";
 import { notifyRestaurantStepId } from "../../../../../workflows/delivery/steps";
 import { updateDeliveryWorkflow } from "../../../../../workflows/delivery/workflows";
 
-const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000; // 30 minutes
+const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000; // 30 min
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { id } = req.params;
