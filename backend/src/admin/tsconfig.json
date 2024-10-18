@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "esnext"
+    "module": "Node16"
   },
   "include": ["."],
   "exclude": ["**/*.spec.js"]
