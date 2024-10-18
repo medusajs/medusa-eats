@@ -54,7 +54,6 @@ export interface DeliveryDriverDTO {
   driver_id: string;
 }
 
-
 declare module "@medusajs/types" {
   export interface ModuleImplementations {
     deliveryModuleService: DeliveryModuleService;

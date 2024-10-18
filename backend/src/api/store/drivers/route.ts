@@ -1,19 +1,20 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { ContainerRegistrationKeys } from "@medusajs/utils";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+
   try {
-    const driverQuery = remoteQueryObjectFromString({
-      entryPoint: "drivers",
+    const driverQuery = {
+      entity: "driver",
       fields: ["*"],
       variables: {
         take: null,
         skip: 0,
       },
-    });
+    };
 
-    const { rows: drivers } = await remoteQuery(driverQuery);
+    const { data: drivers } = await query.graph(driverQuery);
 
     return res.status(200).json({ drivers });
   } catch (error) {

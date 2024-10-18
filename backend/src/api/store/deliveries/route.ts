@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { ContainerRegistrationKeys } from "@medusajs/utils";
 import zod from "zod";
 import {
   createDeliveryWorkflow,
@@ -33,7 +33,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 }
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
   const filters = {} as Record<string, any>;
   let take = parseInt(req.query.take as string) || null;
@@ -44,21 +44,21 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
     filters[key] = req.query[key];
   }
-  const deliveryQuery = remoteQueryObjectFromString({
-    entryPoint: "deliveries",
+  const deliveryQuery = {
+    entity: "delivery",
     fields: ["*", "cart.*", "cart.items.*", "order.*", "order.items.*"],
     variables: {
       filters,
       take,
       skip,
     },
-  });
+  };
 
-  const { rows: deliveries } = await remoteQuery(deliveryQuery);
+  const { data: deliveries } = await query.graph(deliveryQuery);
 
   if (filters.hasOwnProperty("driver_id")) {
-    const driverQuery = remoteQueryObjectFromString({
-      entryPoint: "delivery_driver",
+    const driverQuery = {
+      entity: "delivery_driver",
       fields: ["driver_id", "delivery_id"],
       variables: {
         filters: {
@@ -66,21 +66,23 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
           driver_id: filters["driver_id"],
         },
       },
-    });
+    };
 
-    const availableDeliveriesIds = await remoteQuery(driverQuery);
+    const { data: availableDeliveriesIds } = await query.graph(driverQuery);
 
-    const availableDeliveriesQuery = remoteQueryObjectFromString({
-      entryPoint: "deliveries",
+    const availableDeliveriesQuery = {
+      entity: "delivery",
       fields: ["*", "cart.*", "cart.items.*", "order.*", "order.items.*"],
       variables: {
         filters: {
           id: availableDeliveriesIds.map((d) => d.delivery_id),
         },
       },
-    });
+    };
 
-    const availableDeliveries = await remoteQuery(availableDeliveriesQuery);
+    const { data: availableDeliveries } = await query.graph(
+      availableDeliveriesQuery
+    );
 
     deliveries.push(...availableDeliveries);
   }

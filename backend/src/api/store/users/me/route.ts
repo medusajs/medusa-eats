@@ -2,8 +2,6 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework";
-import RestaurantModuleService from "../../../../modules/restaurant/service";
-import DeliveryModuleService from "../../../../modules/delivery/service";
 import { RESTAURANT_MODULE } from "../../../../modules/restaurant";
 import { DELIVERY_MODULE } from "../../../../modules/delivery";
 
@@ -17,14 +15,13 @@ export const GET = async (
   };
 
   if (actor_type === "restaurant") {
-    const service: RestaurantModuleService =
-      req.scope.resolve(RESTAURANT_MODULE);
+    const service = req.scope.resolve(RESTAURANT_MODULE);
     const user = await service.retrieveRestaurantAdmin(user_id);
     return res.json({ user });
   }
 
   if (actor_type === "driver") {
-    const service: DeliveryModuleService = req.scope.resolve(DELIVERY_MODULE);
+    const service = req.scope.resolve(DELIVERY_MODULE);
     const user = await service.retrieveDriver(user_id);
     return res.json({ user });
   }

@@ -1,5 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import { remoteQueryObjectFromString } from "@medusajs/utils";
+import { ContainerRegistrationKeys } from "@medusajs/utils";
 import zod from "zod";
 import { DeliveryStatus } from "../../../../modules/delivery/types/common";
 import { UpdateDeliveryDTO } from "../../../../modules/delivery/types/mutations";
@@ -43,10 +43,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const deliveryId = req.params.id;
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
-  const deliveryQuery = remoteQueryObjectFromString({
-    entryPoint: "deliveries",
+  const deliveryQuery = {
+    entity: "delivery",
     fields: [
       "*",
       "cart.*",
@@ -60,9 +60,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         id: deliveryId,
       },
     },
-  });
+  };
 
-  const delivery = await remoteQuery(deliveryQuery).then((r) => r[0]);
+  const {
+    data: [delivery],
+  } = await query.graph(deliveryQuery);
 
   if (!delivery) {
     return res.status(404).json({ message: "Delivery not found" });
