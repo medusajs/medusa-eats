@@ -1,16 +1,13 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils";
+import { ContainerRegistrationKeys } from "@medusajs/utils";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
   const restaurantId = req.params.id;
 
-  const restaurantQuery = remoteQueryObjectFromString({
-    entryPoint: "restaurants",
+  const restaurantQuery = {
+    entity: "restaurant",
     fields: [
       "*",
       "products.*",
@@ -34,9 +31,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         },
       },
     },
-  });
+  };
 
-  const restaurant = await remoteQuery(restaurantQuery).then((r) => r[0]);
+  const {
+    data: [restaurant],
+  } = await query.graph(restaurantQuery);
 
   return res.status(200).json({ restaurant });
 }

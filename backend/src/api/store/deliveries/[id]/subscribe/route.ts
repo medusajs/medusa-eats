@@ -1,14 +1,11 @@
 import { MedusaResponse } from "@medusajs/framework";
+import { IEventBusModuleService } from "@medusajs/types";
 import {
+  ContainerRegistrationKeys,
   ModuleRegistrationName,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../../../workflows/delivery/workflows";
 import { AuthUserScopedMedusaRequest } from "../../../../types";
-import {
-  IWorkflowEngineService,
-  IEventBusModuleService,
-} from "@medusajs/types";
 
 type RestaurantNotificationData = {
   data: {
@@ -32,19 +29,21 @@ export const GET = async (
   const restaurantId = req.query.restaurant_id as string;
   const driverId = req.query.driver_id as string;
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
-  const deliveryQuery = remoteQueryObjectFromString({
-    entryPoint: "deliveries",
+  const deliveryQuery = {
+    entity: "delivery",
     fields: ["*"],
     variables: {
       filters: {
         id: deliveryId,
       },
     },
-  });
+  };
 
-  const delivery = await remoteQuery(deliveryQuery).then((r) => r[0]);
+  const {
+    data: [delivery],
+  } = await query.graph(deliveryQuery);
 
   if (!delivery) {
     return res.status(404).json({ message: "No deliveries found" });
@@ -59,7 +58,7 @@ export const GET = async (
 
   res.writeHead(200, headers);
 
-  const workflowEngine: IWorkflowEngineService = req.scope.resolve(
+  const workflowEngine = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE
   );
 
@@ -93,17 +92,19 @@ export const GET = async (
         return;
       }
 
-      const deliveryQuery = remoteQueryObjectFromString({
-        entryPoint: "deliveries",
+      const deliveryQuery = {
+        entity: "delivery",
         fields: ["*"],
         variables: {
           filters: {
             id: data.delivery_id,
           },
         },
-      });
+      };
 
-      const delivery = await remoteQuery(deliveryQuery).then((r) => r[0]);
+      const {
+        data: [delivery],
+      } = await query.graph(deliveryQuery);
 
       await workflowEngine.subscribe({
         workflowId: handleDeliveryWorkflowId,
@@ -130,17 +131,19 @@ export const GET = async (
         return;
       }
 
-      const deliveryQuery = remoteQueryObjectFromString({
-        entryPoint: "deliveries",
+      const deliveryQuery = {
+        entity: "delivery",
         fields: ["*"],
         variables: {
           filters: {
             id: data.delivery_id,
           },
         },
-      });
+      };
 
-      const delivery = await remoteQuery(deliveryQuery).then((r) => r[0]);
+      const {
+        data: [delivery],
+      } = await query.graph(deliveryQuery);
 
       await workflowEngine.subscribe({
         workflowId: handleDeliveryWorkflowId,

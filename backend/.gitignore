@@ -24,3 +24,6 @@ gh-private-key.pem
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+.medusa/*
+.medusa/

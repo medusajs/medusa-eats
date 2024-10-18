@@ -1,8 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
-import { createRestaurantWorkflow } from "../../../workflows/restaurant/workflows";
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils";
 import zod from "zod";
 import { CreateRestaurantDTO } from "../../../modules/restaurant/types/mutations";
+import { createRestaurantWorkflow } from "../../../workflows/restaurant/workflows";
 
 const schema = zod.object({
   name: zod.string(),
@@ -34,10 +34,10 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   // the seed data is using capital letters I've set it here as well.
   const { currency_code = "EUR", ...queryFilters } = req.query;
 
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
-  const restaurantsQuery = remoteQueryObjectFromString({
-    entryPoint: "restaurants",
+  const restaurantsQuery = {
+    entity: "restaurant",
     fields: [
       "id",
       "handle",
@@ -60,9 +60,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         },
       },
     },
-  });
+  };
 
-  const restaurants = await remoteQuery(restaurantsQuery);
+  const { data: restaurants } = await query.graph(restaurantsQuery);
 
   return res.status(200).json({ restaurants });
 }

@@ -1,6 +1,6 @@
-import { loadEnv, defineConfig, Modules } from "@medusajs/utils";
+import { loadEnv, defineConfig, Modules } from "@medusajs/framework/utils";
 
-loadEnv(process.env.NODE_ENV, process.cwd());
+loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
 module.exports = defineConfig({
   admin: {

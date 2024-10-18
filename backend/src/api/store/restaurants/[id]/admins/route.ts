@@ -10,7 +10,6 @@ import {
 } from "@medusajs/utils";
 import zod from "zod";
 import { createUserWorkflow } from "../../../../../workflows/user/workflows/create-user";
-import RestaurantModuleService from "../../../../../modules/restaurant/service";
 import { RESTAURANT_MODULE } from "../../../../../modules/restaurant";
 
 const schema = zod
@@ -85,8 +84,7 @@ export async function DELETE(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.INVALID_DATA;
   }
 
-  const restaurantModuleService: RestaurantModuleService =
-    req.scope.resolve(RESTAURANT_MODULE);
+  const restaurantModuleService = req.scope.resolve(RESTAURANT_MODULE);
 
   await restaurantModuleService.deleteRestaurantAdmins(adminId);
 

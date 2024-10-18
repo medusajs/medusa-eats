@@ -1,9 +1,5 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils";
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils";
 import { deleteProductsWorkflow } from "@medusajs/core-flows";
 import { createRestaurantProductsWorkflow } from "../../../../../workflows/restaurant/workflows";
 import { AdminCreateProduct } from "@medusajs/types";
@@ -36,10 +32,10 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     return MedusaError.Types.NOT_FOUND;
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
-  const restaurantProductsQuery = remoteQueryObjectFromString({
-    entryPoint: "products",
+  const restaurantProductsQuery = {
+    entity: "product",
     // variables: {
     //   filters: {
     //     restaurant: restaurantId,
@@ -50,18 +46,20 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "title",
       "description",
       "thumbnail",
-      "categories",
+      "categories.*",
       "categories.id",
       "categories.name",
-      "variants",
+      "variants.*",
       "variants.id",
-      "variants.price_set",
+      "variants.price_set.*",
       "variants.price_set.id",
       "restaurant.*",
     ],
-  });
+  };
 
-  const restaurantProducts = await remoteQuery(restaurantProductsQuery);
+  const { data: restaurantProducts } = await query.graph(
+    restaurantProductsQuery
+  );
 
   return res.status(200).json({ restaurant_products: restaurantProducts });
 }
