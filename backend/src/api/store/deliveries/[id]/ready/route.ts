@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
 import { MedusaError } from "@medusajs/utils";
 import { DeliveryStatus } from "../../../../../modules/delivery/types/common";
 import { awaitPreparationStepId } from "../../../../../workflows/delivery/steps";

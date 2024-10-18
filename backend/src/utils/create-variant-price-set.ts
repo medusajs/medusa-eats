@@ -1,4 +1,4 @@
-import { MedusaContainer, RemoteQueryFunction } from "@medusajs/modules-sdk";
+import { MedusaContainer } from "@medusajs/framework";
 import {
   CreatePriceSetDTO,
   IPricingModuleService,
@@ -16,7 +16,7 @@ export const createVariantPriceSet = async ({
   prices: CreatePriceSetDTO["prices"];
 }): Promise<PriceSetDTO> => {
   const remoteLink = container.resolve("remoteLink");
-  const remoteQuery: RemoteQueryFunction = container.resolve("remoteQuery");
+  const remoteQuery = container.resolve("remoteQuery");
   const pricingModuleService: IPricingModuleService = container.resolve(
     "pricingModuleService"
   );

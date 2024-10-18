@@ -15,5 +15,5 @@ export const Restaurant = model.define("restaurant", {
   email: model.text(),
   address: model.text(),
   image_url: model.text().nullable(),
-  admins: model.hasMany(() => RestaurantAdmin)
+  admins: model.hasMany(() => RestaurantAdmin),
 });

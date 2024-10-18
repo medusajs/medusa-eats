@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
 import zod from "zod";
 import RestaurantModuleService from "../../../../../modules/restaurant/service";
 import { RESTAURANT_MODULE } from "../../../../../modules/restaurant";

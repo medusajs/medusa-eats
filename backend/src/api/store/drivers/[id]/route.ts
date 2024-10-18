@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import zod from "zod";
 import DeliveryModuleService from "../../../../modules/delivery/service";

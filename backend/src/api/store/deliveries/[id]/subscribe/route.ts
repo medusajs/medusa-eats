@@ -1,4 +1,4 @@
-import { MedusaResponse } from "@medusajs/medusa";
+import { MedusaResponse } from "@medusajs/framework";
 import {
   ModuleRegistrationName,
   remoteQueryObjectFromString,

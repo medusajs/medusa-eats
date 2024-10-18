@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
 import { MedusaError, remoteQueryObjectFromString } from "@medusajs/utils";
 import { createRestaurantWorkflow } from "../../../workflows/restaurant/workflows";
 import zod from "zod";

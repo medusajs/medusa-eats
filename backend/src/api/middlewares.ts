@@ -1,5 +1,4 @@
-import { defineMiddlewares } from "@medusajs/medusa";
-import { authenticate } from "@medusajs/medusa/dist/utils";
+import { defineMiddlewares, authenticate } from "@medusajs/framework";
 
 const isAllowed = (req, res, next) => {
   const { restaurant_id, driver_id } = req.auth_context.app_metadata;

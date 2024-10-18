@@ -1,6 +1,6 @@
-import { AuthenticatedMedusaRequest } from "@medusajs/medusa"
+import { AuthenticatedMedusaRequest } from "@medusajs/framework";
 
 export interface AuthUserScopedMedusaRequest
   extends AuthenticatedMedusaRequest {
-  auth_user_id: string
+  auth_user_id: string;
 }

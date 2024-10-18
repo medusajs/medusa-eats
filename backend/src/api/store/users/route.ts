@@ -1,4 +1,7 @@
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework";
 import zod from "zod";
 
 import {

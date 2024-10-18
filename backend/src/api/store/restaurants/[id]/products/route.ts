@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -6,11 +6,11 @@ import {
 } from "@medusajs/utils";
 import { deleteProductsWorkflow } from "@medusajs/core-flows";
 import { createRestaurantProductsWorkflow } from "../../../../../workflows/restaurant/workflows";
-import { AdminCreateProduct } from "@medusajs/medusa/dist/api/admin/products/validators";
+import { AdminCreateProduct } from "@medusajs/types";
 import { z } from "zod";
 
 const createSchema = z.object({
-  products: AdminCreateProduct().array(),
+  products: z.array(z.custom<AdminCreateProduct>()),
 });
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
