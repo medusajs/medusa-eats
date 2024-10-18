@@ -1,8 +1,12 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
+import { QueryContext } from "@medusajs/framework/utils";
 import { ContainerRegistrationKeys } from "@medusajs/utils";
+import { query } from "express";
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+
+  const { currency_code = "eur", ...reqQuery } = req.query;
 
   const restaurantId = req.params.id;
 
@@ -21,13 +25,15 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "deliveries.order.*",
       "deliveries.order.items.*",
     ],
-    variables: {
-      filters: {
-        id: restaurantId,
-      },
-      "products.variants.calculated_price": {
-        context: {
-          currency_code: "eur",
+    filters: {
+      id: restaurantId,
+    },
+    context: {
+      products: {
+        variants: {
+          calculated_price: QueryContext({
+            currency_code,
+          }),
         },
       },
     },

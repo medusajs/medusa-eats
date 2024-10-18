@@ -4,7 +4,7 @@ import {
 } from "@medusajs/framework";
 import {
   ModuleRegistrationName,
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils";
 import { handleDeliveryWorkflowId } from "../../../../workflows/delivery/workflows";
 import { DeliveryDTO } from "../../../../modules/delivery/types/common";
@@ -27,7 +27,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery");
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
   const { restaurant_id, driver_id, delivery_id } = req.query as {
     restaurant_id: string;
@@ -38,21 +38,19 @@ export const GET = async (
   let deliveries: DeliveryDTO[] = [];
 
   if (restaurant_id) {
-    const restaurantQuery = remoteQueryObjectFromString({
-      entryPoint: "restaurants",
+    const restaurantQuery = {
+      entity: "restaurant",
       fields: ["deliveries.*"],
-      variables: {
-        filters: {
-          id: restaurant_id,
-        },
+      filters: {
+        id: restaurant_id,
       },
-    });
+    };
 
-    const { deliveries: restDeliveries } = await remoteQuery(
-      restaurantQuery
-    ).then((r) => r[0]);
+    const {
+      data: [restaurant],
+    } = await query.graph(restaurantQuery);
 
-    deliveries.push(...restDeliveries);
+    deliveries.push(...restaurant.deliveries);
   } else {
     const filters = {
       ...(driver_id && { driver_id }),
@@ -62,19 +60,19 @@ export const GET = async (
     const take = parseInt(req.query.take as string) || null,
       skip = parseInt(req.query.skip as string) || 0;
 
-    const deliveriesQuery = remoteQueryObjectFromString({
-      entryPoint: "deliveries",
+    const deliveriesQuery = {
+      entity: "delivery",
       fields: ["*"],
-      variables: {
-        filters,
+      filters,
+      pagination: {
         take,
         skip,
       },
-    });
+    };
 
-    const { rows } = await remoteQuery(deliveriesQuery);
+    const { data } = await query.graph(deliveriesQuery);
 
-    deliveries.push(...rows);
+    deliveries.push(...data);
   }
 
   if (!deliveries) {
@@ -124,17 +122,17 @@ export const GET = async (
         return;
       }
 
-      const deliveryQuery = remoteQueryObjectFromString({
-        entryPoint: "deliveries",
+      const deliveryQuery = {
+        entity: "delivery",
         fields: ["*"],
-        variables: {
-          filters: {
-            id: data.delivery_id,
-          },
+        filters: {
+          id: data.delivery_id,
         },
-      });
+      };
 
-      const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
+      const {
+        data: [delivery],
+      } = await query.graph(deliveryQuery);
 
       await workflowEngine.subscribe({
         workflowId: handleDeliveryWorkflowId,
@@ -161,17 +159,17 @@ export const GET = async (
         return;
       }
 
-      const deliveryQuery = remoteQueryObjectFromString({
-        entryPoint: "deliveries",
+      const deliveryQuery = {
+        entity: "delivery",
         fields: ["*"],
-        variables: {
-          filters: {
-            id: data.delivery_id,
-          },
+        filters: {
+          id: data.delivery_id,
         },
-      });
+      };
 
-      const delivery = await remoteQuery(deliveryQuery).then((res) => res[0]);
+      const {
+        data: [delivery],
+      } = await query.graph(deliveryQuery);
 
       await workflowEngine.subscribe({
         workflowId: handleDeliveryWorkflowId,

@@ -47,7 +47,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const driverQuery = {
     entity: "driver",
-    variables: {
+    filters: {
       id: driverId,
     },
     fields: ["id", "first_name", "last_name", "email", "phone", "avatar_url"],

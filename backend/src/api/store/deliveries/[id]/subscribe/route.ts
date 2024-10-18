@@ -34,10 +34,8 @@ export const GET = async (
   const deliveryQuery = {
     entity: "delivery",
     fields: ["*"],
-    variables: {
-      filters: {
-        id: deliveryId,
-      },
+    filters: {
+      id: deliveryId,
     },
   };
 
@@ -95,10 +93,8 @@ export const GET = async (
       const deliveryQuery = {
         entity: "delivery",
         fields: ["*"],
-        variables: {
-          filters: {
-            id: data.delivery_id,
-          },
+        filters: {
+          id: data.delivery_id,
         },
       };
 
@@ -134,10 +130,8 @@ export const GET = async (
       const deliveryQuery = {
         entity: "delivery",
         fields: ["*"],
-        variables: {
-          filters: {
-            id: data.delivery_id,
-          },
+        filters: {
+          id: data.delivery_id,
         },
       };
 
