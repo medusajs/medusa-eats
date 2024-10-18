@@ -33,10 +33,8 @@ export const createVariantPriceSet = async ({
   const pricingQuery = remoteQueryObjectFromString({
     entryPoint: "price",
     fields: ["*"],
-    variables: {
-      filters: {
-        id: priceSet.id,
-      },
+    filters: {
+      id: priceSet.id,
     },
   });
 

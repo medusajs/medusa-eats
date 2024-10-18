@@ -3,6 +3,7 @@ import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils";
 import zod from "zod";
 import { CreateRestaurantDTO } from "../../../modules/restaurant/types/mutations";
 import { createRestaurantWorkflow } from "../../../workflows/restaurant/workflows";
+import { QueryContext } from "@medusajs/framework/utils";
 
 const schema = zod.object({
   name: zod.string(),
@@ -52,11 +53,13 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "products.variants.*",
       "products.variants.calculated_price.*",
     ],
-    variables: {
-      filters: queryFilters,
-      "products.variants.calculated_price": {
-        context: {
-          currency_code,
+    filters: queryFilters,
+    context: {
+      products: {
+        variants: {
+          calculated_price: QueryContext({
+            currency_code,
+          }),
         },
       },
     },

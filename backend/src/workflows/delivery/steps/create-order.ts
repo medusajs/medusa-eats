@@ -14,10 +14,8 @@ export const createOrderStep = createStep(
 
     const deliveryQuery = {
       entity: "delivery",
-      variables: {
-        filters: {
-          id: deliveryId,
-        },
+      filters: {
+        id: deliveryId,
       },
       fields: ["id", "cart.id", "delivery_status", "driver_id"],
     };
@@ -29,10 +27,8 @@ export const createOrderStep = createStep(
     const cartQuery = {
       entity: "cart",
       fields: ["*", "items.*"],
-      variables: {
-        filters: {
-          id: delivery.cart.id,
-        },
+      filters: {
+        id: delivery.cart.id,
       },
     };
 

@@ -47,8 +47,8 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const deliveryQuery = {
     entity: "delivery",
     fields: ["*", "cart.*", "cart.items.*", "order.*", "order.items.*"],
-    variables: {
-      filters,
+    filters,
+    pagination: {
       take,
       skip,
     },
@@ -60,11 +60,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     const driverQuery = {
       entity: "delivery_driver",
       fields: ["driver_id", "delivery_id"],
-      variables: {
-        filters: {
-          deleted_at: null,
-          driver_id: filters["driver_id"],
-        },
+      filters: {
+        deleted_at: null,
+        driver_id: filters["driver_id"],
       },
     };
 
@@ -73,10 +71,8 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     const availableDeliveriesQuery = {
       entity: "delivery",
       fields: ["*", "cart.*", "cart.items.*", "order.*", "order.items.*"],
-      variables: {
-        filters: {
-          id: availableDeliveriesIds.map((d) => d.delivery_id),
-        },
+      filters: {
+        id: availableDeliveriesIds.map((d) => d.delivery_id),
       },
     };
 

@@ -5,7 +5,7 @@ import { DELIVERY_MODULE } from "../../../modules/delivery";
 
 export type DeleteDeliveryDriversStepInput = {
   delivery_id: string;
-  driver_id?: string
+  driver_id?: string;
 };
 
 export const deleteDeliveryDriversStepId = "delete-delivery-drivers-step";
@@ -16,8 +16,8 @@ export const deleteDeliveryDriversStep = createStep(
 
     const driverQuery = remoteQueryObjectFromString({
       entryPoint: "delivery_driver",
-      variables: {
-        filters: input,
+      filters: {
+        id: input.driver_id,
       },
       fields: ["id"],
     });
@@ -32,9 +32,5 @@ export const deleteDeliveryDriversStep = createStep(
 
     return new StepResponse(drivers, drivers);
   },
-  (deletedDrivers: string[], { container }) => {
-    const service = container.resolve(DELIVERY_MODULE);
-
-    return service.restoreDeliveryDrivers(deletedDrivers);
-  }
+  (deletedDrivers: string[], { container }) => {}
 );

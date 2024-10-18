@@ -17,10 +17,8 @@ export const notifyRestaurantStep = createStep(
 
     const deliveryQuery = remoteQueryObjectFromString({
       entryPoint: "deliveries",
-      variables: {
-        filters: {
-          id: deliveryId,
-        },
+      filters: {
+        id: deliveryId,
       },
       fields: ["id", "restaurant.id"],
     });

@@ -15,7 +15,7 @@ export const findDriverStep = createStep<string, DriverDTO, string>(
     const driversQuery = remoteQueryObjectFromString({
       entryPoint: "drivers",
       fields: ["id"],
-      variables: {
+      pagination: {
         skip: 0,
         take: null,
       },

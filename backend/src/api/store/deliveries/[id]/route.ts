@@ -55,10 +55,8 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "order.items.*",
       "restaurant.*",
     ],
-    variables: {
-      filters: {
-        id: deliveryId,
-      },
+    filters: {
+      id: deliveryId,
     },
   };
 

@@ -36,11 +36,9 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 
   const restaurantProductsQuery = {
     entity: "product",
-    // variables: {
-    //   filters: {
-    //     restaurant: restaurantId,
-    //   },
-    // },
+    filters: {
+      restaurant: restaurantId,
+    },
     fields: [
       "id",
       "title",

@@ -8,7 +8,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     const driverQuery = {
       entity: "driver",
       fields: ["*"],
-      variables: {
+      pagination: {
         take: null,
         skip: 0,
       },
