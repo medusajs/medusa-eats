@@ -54,7 +54,25 @@
             }
           ]
         }
-      ]
+      ], 
+      "options": [
+      {
+        "title": "Dough",
+        "values": ["Thin Crust", "Thick Crust"]
+      },
+      {
+        "title": "Sauce",
+        "values": ["Classic", "Garlic-Infused"]
+      },
+      {
+        "title": "Cheese & Toppings",
+        "values": ["Mozzarella & Tomatoes", "Vegan Option"]
+      },
+      {
+        "title": "Baking Style",
+        "values": ["Stone Oven", "Conventional Oven"]
+      }
+    ]
     },
     {
       "title": "Spicy Pepperoni Extravaganza",
@@ -81,7 +99,25 @@
             }
           ]
         }
-      ]
+      ], 
+      "options": [
+      {
+        "title": "Dough",
+        "values": ["Traditional", "Stuffed Crust"]
+      },
+      {
+        "title": "Sauce",
+        "values": ["Spicy Tomato", "BBQ Base"]
+      },
+      {
+        "title": "Toppings",
+        "values": ["Classic", "Deluxe"]
+      },
+      {
+        "title": "Baking Style",
+        "values": ["Crisp", "Soft & Chewy"]
+      }
+    ]
     },
     {
       "title": "Falafel Wrap Supreme",
@@ -108,7 +144,25 @@
             }
           ]
         }
-      ]
+      ], 
+      "options": [
+      {
+        "title": "Falafel",
+        "values": ["Crispy", "Baked"]
+      },
+      {
+        "title": "Wrap Base",
+        "values": ["Tortilla", "Pita"]
+      },
+      {
+        "title": "Fillings",
+        "values": ["Traditional", "Deluxe"]
+      },
+      {
+        "title": "Finishing Touch",
+        "values": ["Tahini Sauce", "Hot Sauce"]
+      }
+    ]
     },
     {
       "title": "Mediterranean Falafel Salad",
@@ -135,7 +189,25 @@
             }
           ]
         }
-      ]
+      ],
+      "options": [
+      {
+        "title": "Salad Base",
+        "values": ["Classic Greens", "Kale & Spinach"]
+      },
+      {
+        "title": "Falafel",
+        "values": ["Crispy", "Soft"]
+      },
+      {
+        "title": "Dressings",
+        "values": ["Tahini", "Vinaigrette"]
+      },
+      {
+        "title": "Toppings",
+        "values": ["Feta & Pita Chips", "Avocado & Sunflower Seeds"]
+      }
+    ]
     },
     {
       "title": "Craft Lager Beer",
@@ -162,7 +234,21 @@
             }
           ]
         }
-      ]
+      ],
+      "options": [
+      {
+        "title": "Ingredients",
+        "values": ["Malted Barley", "Gluten-Free"]
+      },
+      {
+        "title": "Fermentation",
+        "values": ["Classic Lager", "Dry Hopped"]
+      },
+      {
+        "title": "Serving Options",
+        "values": ["Bottle", "On Tap"]
+      }
+    ]
     },
     {
       "title": "Chilled Coke Zero",
@@ -189,7 +275,17 @@
             }
           ]
         }
-      ]
+      ],
+      "options": [
+      {
+        "title": "Temperature",
+        "values": ["Fridge-Cold", "Over Ice"]
+      },
+      {
+        "title": "Packaging",
+        "values": ["Bottle", "Can"]
+      }
+    ]
     }
   ]
 }
