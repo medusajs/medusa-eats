@@ -75,21 +75,12 @@ export async function signup(prevState: FormState, data: FormData) {
     }
 
     await createUser(createUserData).catch((error) => {
-      throw new Error("Error creating user");
+      throw new Error("Error creating user: " + error);
     });
-
-    const newToken = await createAuthUser({
-      email,
-      password,
-      actor_type,
-      provider: "emailpass",
-    });
-
-    createSession(newToken);
-    revalidateTag(getCacheTag("users"));
+    
   } catch (error) {
     return {
-      message: "Error creating user",
+      message: "Error creating user: " + error,
     };
   }
 
