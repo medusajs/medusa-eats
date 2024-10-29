@@ -14,6 +14,8 @@ export default async function DeliveryCard({
   driver?: DriverDTO;
   type: "restaurant" | "driver";
 }) {
+  if (!delivery || delivery === null) return null;
+
   const items = delivery.order?.items || delivery.cart?.items;
 
   return (
