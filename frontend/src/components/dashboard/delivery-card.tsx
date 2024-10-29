@@ -22,7 +22,7 @@ export default async function DeliveryCard({
     <Container className="flex flex-col gap-6 p-4 shadow-elevation-card-rest hover:shadow-elevation-card-hover w-full">
       <div className="flex justify-between gap-2 flex-wrap">
         <Heading className="text-large font-bold">
-          Order {delivery.id.slice(-4)}
+          Order {delivery?.id?.slice(-4)}
         </Heading>
         {type === "driver" && <DriverDeliveryStatusBadge delivery={delivery} />}
         {type === "restaurant" && (
@@ -39,9 +39,7 @@ export default async function DeliveryCard({
           </Table.Header>
           <Table.Body>
             {items?.map((item) => (
-              <Table.Row
-                key={delivery.transaction_id.slice(-4) + "_" + item.id}
-              >
+              <Table.Row key={delivery?.id?.slice(-4) + "_" + item.id}>
                 <Table.Cell className="text-wrap">{item.title}</Table.Cell>
                 <Table.Cell className="text-right">
                   {item.quantity as number}
