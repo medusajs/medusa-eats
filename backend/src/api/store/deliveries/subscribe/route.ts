@@ -50,7 +50,7 @@ export const GET = async (
       data: [restaurant],
     } = await query.graph(restaurantQuery);
 
-    deliveries.push(...restaurant.deliveries);
+    deliveries.push(...restaurant.deliveries.filter((d) => d));
   } else {
     const filters = {
       ...(driver_id && { driver_id }),
@@ -75,7 +75,7 @@ export const GET = async (
     deliveries.push(...data);
   }
 
-  if (!deliveries) {
+  if (!deliveries.length) {
     return res.status(404).json({ message: "No deliveries found" });
   }
 
