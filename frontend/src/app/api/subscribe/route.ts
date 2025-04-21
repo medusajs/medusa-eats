@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import EventSource from "eventsource";
+import {NextRequest, NextResponse} from "next/server";
+import {EventSource} from "eventsource";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       encoder.encode(
         "data: " +
           JSON.stringify({
-            message: "Subscribing to restaurant " + restaurantId,
+            message: "Subscribing to restaurant " + restaurantId
           }) +
           "\n\n"
       )
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     writer.write(
       encoder.encode(
         "data: " +
-          JSON.stringify({ message: "Subscribing to driver " + driverId }) +
+          JSON.stringify({message: "Subscribing to driver " + driverId}) +
           "\n\n"
       )
     );
@@ -50,17 +50,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
     writer.write(
       encoder.encode(
         "data: " +
-          JSON.stringify({ message: "Subscribing to delivery " + deliveryId }) +
+          JSON.stringify({message: "Subscribing to delivery " + deliveryId}) +
           "\n\n"
       )
     );
   }
-
   const source = new EventSource(serverUrl, {
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
-    },
-  });
+      "x-publishable-api-key": process.env
+        .NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY as string
+    }
+  } as any);
 
   source.onmessage = (message: Record<string, any>) => {
     writer.write(encoder.encode("data: " + message.data + "\n\n"));
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     headers: {
       "Content-Type": "text/event-stream",
       Connection: "keep-alive",
-      "Cache-Control": "no-cache, no-transform",
-    },
+      "Cache-Control": "no-cache, no-transform"
+    }
   });
 }
