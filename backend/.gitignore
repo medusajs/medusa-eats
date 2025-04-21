@@ -31,3 +31,5 @@ gh-private-key.pem
 yarn.lock
 
 .medusa
+
+bun.lockb
