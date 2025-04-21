@@ -27,3 +27,7 @@ gh-private-key.pem
 
 .medusa/*
 .medusa/
+
+yarn.lock
+
+.medusa

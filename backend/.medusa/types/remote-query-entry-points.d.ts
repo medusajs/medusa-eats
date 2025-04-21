@@ -1813,6 +1813,8 @@ declare module '@medusajs/framework/types' {
     order_claims: OrderClaim
     order_exchange: OrderExchange
     order_exchanges: OrderExchange
+    order_item: OrderItem
+    order_items: OrderItem
     order_line_item: OrderLineItem
     order_line_items: OrderLineItem
     order_shipping_method: OrderShippingMethod
