@@ -21,8 +21,7 @@
     "setup-db": "npx medusa db:create && npx medusa db:migrate && npx medusa db:sync-links && medusa exec ./src/scripts/seed.ts && npx medusa user -e admin@email.com -p supersecret",
     "test:integration:http": "TEST_TYPE=integration:http NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
     "test:integration:modules": "TEST_TYPE=integration:modules NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit",
-    "test:unit": "TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit",
-    "postinstall": "node ./fix-import.js"
+    "test:unit": "TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.7.0",
@@ -41,7 +40,8 @@
     "lucide-react": "^0.379.0",
     "pg": "^8.13.0",
     "prism-react-renderer": "^2.0.4",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.8.1",
+    "react-remove-scroll": "^2.6.3"
   },
   "devDependencies": {
     "@medusajs/test-utils": "2.7.0",
