@@ -1,21 +1,21 @@
 import Footer from "@frontend/components/common/footer";
-import { ProfileBadge } from "@frontend/components/common/profile-badge";
+import {ProfileBadge} from "@frontend/components/common/profile-badge";
 import NavCart from "@frontend/components/store/cart/nav-cart";
-import { retrieveUser } from "@frontend/lib/data";
-import { FlyingBox, ShoppingBag } from "@medusajs/icons";
-import { IconButton, Text } from "@medusajs/ui";
-import type { Metadata } from "next";
-import { Link } from "next-view-transitions";
+import {retrieveUser} from "@frontend/lib/data";
+import {FlyingBox, ShoppingBag} from "@medusajs/icons";
+import {IconButton, Text} from "@medusajs/ui";
+import type {Metadata} from "next";
+import {Link} from "next-view-transitions";
 import Image from "next/image";
-import { Suspense } from "react";
+import {Suspense} from "react";
 
 export const metadata: Metadata = {
   title: "Medusa Eats",
-  description: "Order food from your favorite restaurants",
+  description: "Order food from your favorite restaurants"
 };
 
 export default async function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

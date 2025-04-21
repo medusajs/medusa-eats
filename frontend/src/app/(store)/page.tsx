@@ -1,7 +1,7 @@
 import DemoModal from "@frontend/components/common/demo-modal";
 import RestaurantCategory from "@frontend/components/store/restaurant/restaurant-category";
-import { listRestaurants } from "@frontend/lib/data/restaurants";
-import { Heading } from "@medusajs/ui";
+import {listRestaurants} from "@frontend/lib/data/restaurants";
+import {Heading} from "@medusajs/ui";
 
 export default async function Home() {
   const restaurants = await listRestaurants();
