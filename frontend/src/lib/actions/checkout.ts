@@ -68,7 +68,7 @@ export async function createDelivery(cartId: string, restaurantId: string) {
     "/store/deliveries",
     {
       method: "POST",
-      body: JSON.stringify({cart_id: cartId, restaurant_id: restaurantId}),
+      body: {cart_id: cartId, restaurant_id: restaurantId},
       headers: {
         "Content-Type": "application/json",
         ...(await getAuthHeaders())
