@@ -1,9 +1,11 @@
-import { retrieveCart } from "@frontend/lib/data";
-import { cookies } from "next/headers";
+import {retrieveCart} from "@frontend/lib/data";
+import {cookies} from "next/headers";
 import CartButton from "./cart-button";
 
 export default async function NavCart() {
-  const cartId = cookies().get("_medusa_cart_id")?.value;
+  const cookieStore = await cookies();
+  const cartId = cookieStore.get("_medusa_cart_id")?.value;
+
   let cart;
 
   if (cartId) {

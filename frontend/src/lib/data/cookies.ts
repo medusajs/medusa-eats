@@ -1,18 +1,22 @@
 import "server-only";
-import { cookies, headers } from "next/headers";
+import {cookies, headers} from "next/headers";
 
-export const getAuthHeaders = (): { authorization: string } | {} => {
-  const token = cookies().get("_medusa_jwt")?.value;
+export const getAuthHeaders = async (): Promise<
+  {authorization: string} | {}
+> => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("_medusa_jwt")?.value;
 
   if (token) {
-    return { authorization: `Bearer ${token}` };
+    return {authorization: `Bearer ${token}`};
   }
 
   return {};
 };
 
-export const getCacheTag = (tag: string): string => {
-  const cacheId = headers().get("_medusa_cache_id");
+export const getCacheTag = async (tag: string): Promise<string> => {
+  const headerStore = await headers();
+  const cacheId = headerStore.get("_medusa_cache_id");
 
   if (cacheId) {
     return `${tag}-${cacheId}`;
@@ -21,13 +25,13 @@ export const getCacheTag = (tag: string): string => {
   return "";
 };
 
-export const getCacheHeaders = (
+export const getCacheHeaders = async (
   tag: string
-): { next: { tags: string[] } } | {} => {
-  const cacheTag = getCacheTag(tag);
+): Promise<{next: {tags: string[]}} | {}> => {
+  const cacheTag = await getCacheTag(tag);
 
   if (cacheTag) {
-    return { next: { tags: [`${cacheTag}`] } };
+    return {next: {tags: [`${cacheTag}`]}};
   }
 
   return {};
