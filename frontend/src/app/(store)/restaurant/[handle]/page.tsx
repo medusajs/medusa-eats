@@ -6,9 +6,10 @@ import {notFound} from "next/navigation";
 export default async function RestaurantPage({
   params
 }: {
-  params: {handle: string};
+  params: Promise<{handle: string}>;
 }) {
-  const restaurant = await retrieveRestaurantByHandle(params.handle);
+  const {handle} = await params;
+  const restaurant = await retrieveRestaurantByHandle(handle);
 
   if (!restaurant) return notFound();
 
