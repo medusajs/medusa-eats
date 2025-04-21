@@ -1,11 +1,11 @@
 "use server";
 
-import { CreateDriverDTO, CreateRestaurantAdminDTO } from "@frontend/lib/types";
-import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
-import { createSession, destroySession } from "../../lib/data/sessions";
-import { sdk } from "../config";
-import { getAuthHeaders, getCacheHeaders, getCacheTag } from "../data/cookies";
+import {CreateDriverDTO, CreateRestaurantAdminDTO} from "@frontend/lib/types";
+import {revalidateTag} from "next/cache";
+import {redirect} from "next/navigation";
+import {createSession, destroySession} from "../../lib/data/sessions";
+import {sdk} from "../config";
+import {getAuthHeaders, getCacheHeaders, getCacheTag} from "../data/cookies";
 
 type FormState =
   | {
@@ -42,7 +42,7 @@ export async function signup(prevState: FormState, data: FormData) {
 
   if (password !== repeat_password) {
     return {
-      message: "Passwords do not match",
+      message: "Passwords do not match"
     };
   }
 
@@ -53,13 +53,13 @@ export async function signup(prevState: FormState, data: FormData) {
       email,
       password,
       actor_type,
-      provider: "emailpass",
+      provider: "emailpass"
     }).catch((error) => {
       throw new Error("Error creating auth user");
     });
 
     createSession(token);
-    revalidateTag(getCacheTag("users"));
+    revalidateTag(await getCacheTag("users"));
 
     const createUserData: CreateUserType = {
       email,
@@ -67,7 +67,7 @@ export async function signup(prevState: FormState, data: FormData) {
       last_name,
       phone,
       actor_type,
-      token,
+      token
     };
 
     if (actor_type === "restaurant" && restaurant_id) {
@@ -82,14 +82,14 @@ export async function signup(prevState: FormState, data: FormData) {
       email,
       password,
       actor_type,
-      provider: "emailpass",
+      provider: "emailpass"
     });
 
     createSession(newToken);
-    revalidateTag(getCacheTag("users"));
+    revalidateTag(await getCacheTag("users"));
   } catch (error) {
     return {
-      message: "Error creating user",
+      message: "Error creating user"
     };
   }
 
@@ -108,16 +108,16 @@ export async function login(prevState: FormState, data: FormData) {
       email,
       password,
       actor_type,
-      provider: "emailpass",
+      provider: "emailpass"
     });
 
     destroySession();
     createSession(token);
 
-    revalidateTag(getCacheTag("users"));
+    revalidateTag(await getCacheTag("users"));
   } catch (error) {
     return {
-      message: "Invalid email or password",
+      message: "Invalid email or password"
     };
   }
 
@@ -128,23 +128,23 @@ export async function createAuthUser({
   email,
   password,
   actor_type,
-  provider,
+  provider
 }: {
   email: string;
   password: string;
   actor_type: "restaurant" | "driver";
   provider: "emailpass";
 }) {
-  const { token }: { token: string } = await sdk.client.fetch(
+  const {token}: {token: string} = await sdk.client.fetch(
     `/auth/${actor_type}/${provider}/register`,
     {
       method: "POST",
-      body: { entity_id: email, password, email },
+      body: {entity_id: email, password, email},
       headers: {
         "Content-Type": "application/json",
-        ...getAuthHeaders(),
-        ...getCacheHeaders("users"),
-      },
+        ...(await getAuthHeaders()),
+        ...(await getCacheHeaders("users"))
+      }
     }
   );
 
@@ -158,16 +158,16 @@ export type CreateUserType = (CreateDriverDTO | CreateRestaurantAdminDTO) & {
 };
 
 export async function createUser(input: CreateUserType) {
-  const { token, ...rest } = input;
+  const {token, ...rest} = input;
 
   const res = await sdk.client.fetch("/store/users", {
     method: "POST",
     body: rest,
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeaders(),
-      ...getCacheHeaders("users"),
-    },
+      ...(await getAuthHeaders()),
+      ...(await getCacheHeaders("users"))
+    }
   });
 
   return res;
@@ -177,23 +177,23 @@ export async function getToken({
   email,
   password,
   actor_type,
-  provider,
+  provider
 }: {
   email: string;
   password: string;
   actor_type: "restaurant" | "driver";
   provider: "emailpass";
 }) {
-  const { token }: { token: string } = await sdk.client.fetch(
+  const {token}: {token: string} = await sdk.client.fetch(
     `/auth/${actor_type}/${provider}`,
     {
       method: "POST",
-      body: { email, password: password.toString() },
+      body: {email, password: password.toString()},
       headers: {
         "Content-Type": "application/json",
-        ...getAuthHeaders(),
-        ...getCacheHeaders("users"),
-      },
+        ...(await getAuthHeaders()),
+        ...(await getCacheHeaders("users"))
+      }
     }
   );
 

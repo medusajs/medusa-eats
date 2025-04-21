@@ -1,52 +1,48 @@
 "use server";
 
-import { UpsertAddressDTO } from "@medusajs/types";
-import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { sdk } from "../config";
-import { retrieveCart } from "../data";
-import { getAuthHeaders, getCacheTag } from "../data/cookies";
-import { DeliveryDTO } from "../types";
+import {UpsertAddressDTO} from "@medusajs/types";
+import {revalidateTag} from "next/cache";
+import {cookies as getCookies} from "next/headers";
+import {redirect} from "next/navigation";
+import {sdk} from "../config";
+import {retrieveCart} from "../data";
+import {getAuthHeaders, getCacheTag} from "../data/cookies";
+import {DeliveryDTO} from "../types";
 
 export async function updateCart(data: Record<string, unknown>) {
-  const cartId = cookies().get("_medusa_cart_id")?.value;
+  const cookies = await getCookies();
+  const cartId = cookies.get("_medusa_cart_id")?.value;
 
-  if (!cartId) {
-    throw new Error("No cart found");
-  }
+  if (!cartId) throw new Error("No cart found");
 
   const response = await sdk.store.cart.update(
     cartId,
     data,
     {},
     {
-      ...getAuthHeaders(),
+      ...(await getAuthHeaders())
     }
   );
 
-  revalidateTag(getCacheTag("carts"));
-
+  revalidateTag(await getCacheTag("carts"));
   return response;
 }
 
 export async function completeCart() {
-  const cartId = cookies().get("_medusa_cart_id")?.value;
+  const cookies = await getCookies();
+  const cartId = cookies.get("_medusa_cart_id")?.value;
 
-  if (!cartId) {
-    throw new Error("No cart found");
-  }
+  if (!cartId) throw new Error("No cart found");
 
   const response = await sdk.store.cart.complete(
     cartId,
     {},
     {
-      ...getAuthHeaders(),
+      ...(await getAuthHeaders())
     }
   );
 
-  revalidateTag(getCacheTag("carts"));
-
+  revalidateTag(await getCacheTag("carts"));
   return response;
 }
 
@@ -55,10 +51,12 @@ export async function addPaymentSession(cartId: string) {
 
   const res = await sdk.store.payment.initiatePaymentSession(
     cart,
-    {},
+    {
+      provider_id: "manual"
+    },
     undefined,
     {
-      ...getAuthHeaders(),
+      ...(await getAuthHeaders())
     }
   );
 
@@ -66,28 +64,27 @@ export async function addPaymentSession(cartId: string) {
 }
 
 export async function createDelivery(cartId: string, restaurantId: string) {
-  const { delivery } = await sdk.client.fetch<{
-    delivery: DeliveryDTO;
-  }>("/store/deliveries", {
-    method: "POST",
-    body: { cart_id: cartId, restaurant_id: restaurantId },
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeaders(),
-    },
-  });
+  const {delivery} = await sdk.client.fetch<{delivery: DeliveryDTO}>(
+    "/store/deliveries",
+    {
+      method: "POST",
+      body: JSON.stringify({cart_id: cartId, restaurant_id: restaurantId}),
+      headers: {
+        "Content-Type": "application/json",
+        ...(await getAuthHeaders())
+      }
+    }
+  );
 
-  revalidateTag(getCacheTag("deliveries"));
-
+  revalidateTag(await getCacheTag("deliveries"));
   return delivery;
 }
 
 export async function placeOrder(prevState: any, data: FormData) {
-  const cartId = cookies().get("_medusa_cart_id")?.value;
+  const cookies = await getCookies();
+  const cartId = cookies.get("_medusa_cart_id")?.value;
 
-  if (!cartId) {
-    return { message: "No cart found" };
-  }
+  if (!cartId) return {message: "No cart found"};
 
   const firstName = data.get("first-name")?.toString();
   const lastName = data.get("last-name")?.toString();
@@ -108,7 +105,7 @@ export async function placeOrder(prevState: any, data: FormData) {
     !email ||
     !restaurantId
   ) {
-    return { message: "Please fill in all fields" };
+    return {message: "Please fill in all fields"};
   }
 
   const shippingAddress: UpsertAddressDTO = {
@@ -117,24 +114,19 @@ export async function placeOrder(prevState: any, data: FormData) {
     address_1: address,
     city,
     postal_code: zip,
-    phone,
+    phone
   };
 
   try {
-    const updatedCart = await updateCart({
-      shipping_address: shippingAddress,
-    });
-
-    if (!updatedCart) {
-      return { message: "Error updating cart" };
-    }
+    const updatedCart = await updateCart({shipping_address: shippingAddress});
+    if (!updatedCart) return {message: "Error updating cart"};
 
     const delivery = await createDelivery(cartId, restaurantId);
 
-    cookies().set("_medusa_cart_id", "", { maxAge: 0 });
-    cookies().set("_medusa_delivery_id", delivery.id);
+    cookies.set("_medusa_cart_id", "", {maxAge: 0});
+    cookies.set("_medusa_delivery_id", delivery.id);
   } catch (error) {
-    return { message: "Error placing order" };
+    return {message: "Error placing order"};
   }
 
   redirect("/your-order");
