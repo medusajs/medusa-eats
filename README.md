@@ -13,9 +13,15 @@
 </h1>
 
 <p align="center">
-Medusa Eats ia a fullstack food delivery platform, inspired by Uber Eats, running on Medusa 2.0 and Next.js 14.</p>
+Medusa Eats is a fullstack food delivery platform, inspired by Uber Eats, running on Medusa 2.0 and Next.js 14.</p>
 
-<p align="center">This repo was built as an example demo. It is not actively maintained by the core team.</p>
+<p align="center">
+<strong>⚠️ This repo was built as an example demo to showcase Medusa 2.0's capabilities. It is not actively maintained by the core team and is intended as an architectural reference, not a starter project.</strong>
+</p>
+
+<p align="center">
+<a href="https://medusajs.com/blog/announcing-medusa-eats/">📖 Read the announcement blog post</a>
+</p>
 
 <p align="center">
   <a href="https://discord.gg/xpCwq3Kfn8">
@@ -30,13 +36,7 @@ Medusa Eats ia a fullstack food delivery platform, inspired by Uber Eats, runnin
 
 1. [Overview](#overview)
 2. [Project Structure](#project-structure)
-3. [Quickstart](#quickstart)
-   - [Install dependencies](#install-dependencies)
-   - [Set up environment variables](#set-up-environment-variables)
-   - [Set up and seed the database](#set-up-and-seed-the-database)
-   - [Start developing](#start-developing)
-   - [Create User Accounts](#create-user-accounts)
-   - [Place an Order and Handle a Delivery](#place-an-order-and-handle-a-delivery)
+3. [Key Features & Architecture](#key-features--architecture)
 4. [Resources](#resources)
    - [Learn more about Medusa](#learn-more-about-medusa)
    - [Learn more about Next.js](#learn-more-about-nextjs)
@@ -67,121 +67,35 @@ The project consists of two main directories:
 - `/backend` contains the Medusa 2.0 project with all the customizations.
   - This handles core functionalities, including user authentication, order management, and more.
 - `/frontend` contains the Next.js project.
-  - This handles the user interface, restaruant storefronts, dashboards, and more.
+  - This handles the user interface, restaurant storefronts, dashboards, and more.
 
-# Quickstart
+# Key Features & Architecture
 
-### Install dependencies
+This demo showcases Medusa 2.0's capabilities as a three-sided food delivery platform built during Paris hackathon:
 
-Use Yarn to install dependencies in both directories.
+## Three-Sided Platform Architecture
+- **Customers**: Browse restaurant menus and place orders
+- **Restaurants**: Receive order notifications, track food preparation, and update menus
+- **Drivers**: Get job notifications and claim delivery routes
 
-In `/frontend` run:
+## Real-time Order Workflow
+- **Long-running Medusa Workflow**: Handles the complete order lifecycle from customer selection through delivery
+- **Automatic notifications**: Restaurants get notified of new orders
+- **Driver matching**: System finds available drivers for delivery assignments
+- **Live order tracking**: Customers receive real-time status updates throughout the process
 
-```shell
-yarn
-```
+## Custom Module Implementation
+- **Restaurant module**: Custom entities and business logic for restaurant management
+- **Driver module**: Driver profiles and delivery assignment handling
+- **Delivery module**: Order fulfillment and tracking capabilities
 
-In `/backend` run:
+## Development Speed Demonstration
+Built by one developer in just a few days, showcasing:
+- Medusa 2.0's flexibility for rapid prototyping
+- The framework's ability to handle complex, multi-sided commerce scenarios
+- How custom modules can extend core commerce functionality
 
-```shell
-yarn
-```
-
-### Set up environment variables
-
-The project comes with `.env.template` files to quickly set up your environment variables. Copy them to a `.env` file by running the following commands:
-
-In `/frontend` run:
-
-```shell
-cp .env.template .env
-```
-
-In `/backend` run:
-
-```shell
-cp .env.template .env
-```
-
-### Set up and seed the database
-
-Create a Postgres database called `medusa-eats`.
-
-The repo contains a setup script to build the project, run migrations and seed dummy data.
-
-> Make sure your local Postgres server is running.
-
-In `/backend` run:
-
-```shell
-yarn setup-db
-```
-
-This will also create an admin user with the following credentials:
-
-```
-email: admin@email.com
-pasword: supersecret
-```
-
-### Start developing
-
-You are now ready to start up your project.
-
-**Start Medusa dev server**
-
-Make sure that Redis and Postgres servers are running locally on their default ports.
-
-In `/backend` run:
-
-```shell
-yarn dev
-```
-
-The Medusa server is now running on http://localhost:9000.
-
-**Start Next.js dev server**
-
-In a separate terminal, cd to `/frontend` and run:
-
-```shell
-yarn dev
-```
-
-The Next.js frontend is now running on http://localhost:3000.
-
-### Create user accounts
-
-We're gonna create a restaurant admin and driver account so we'll have access to both sides of the platform.
-
-**Create restaurant admin account**
-
-1. Go to http://localhost:3000/signup.
-2. Select 'I'm a restaurant'.
-3. Select the restaurant you want to create an admin for.
-4. Fill out the remaining form fields and click 'Create account'.
-5. You can now log in as a restaurant admin and access the restaurant dashboard at http://localhost:3000/dashboard/restaurant.
-
-**Create driver account**
-
-1. Repeat above steps, but this time select 'I'm a driver'.
-2. You can now log in as a driver and access the driver dashboard at http://localhost:3000/dashboard/driver.
-
-### Place an order and handle a delivery
-
-> To go through the entire delivery workflow in realtime, you'll need to log into both a restaurant and a driver account. To do so, use an icognito window or second browser.
-
-1. Go to the storefront at http://localhost:3000/.
-2. Select a restaurant from the list.
-3. Add menu items to you delivery by clicking the + buttons.
-4. Click the shopping bag button on the top right.
-5. Click 'Go to checkout'.
-6. Complete the form and place you order. A live order status dashboard will show up.
-7. In a new tab, go to http://localhost:3000/dashboard/restaurant and log in as an admin for the restaurant you just placed an order at.
-8. Your order should be visible in the "Incoming orders" column. Click the button to accept the incoming order.
-9. In an incognito window, go to http://localhost:3000/dashboard/driver and log in as a driver.
-10. The accepted order will show up on your dashboard. Click the button to claim it.
-11. The order will go through the different stages on all dashboards in realtime. You can progress the order by marking each stage as complete on the relevant dashboard.
+> **Note**: This project was created as a hackathon demo to demonstrate Medusa 2.0's potential for building advanced commerce applications. It serves as an architectural reference for understanding how to implement multi-sided platforms with Medusa.
 
 # Resources
 
