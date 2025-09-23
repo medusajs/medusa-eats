@@ -15,10 +15,9 @@
 <p align="center">
 Medusa Eats ia a fullstack food delivery platform, inspired by Uber Eats, running on Medusa 2.0 and Next.js 14.</p>
 
+<p align="center">This repo was built as an example demo. It is not actively maintained by the core team.</p>
+
 <p align="center">
-  <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs welcome!" />
-  </a>
   <a href="https://discord.gg/xpCwq3Kfn8">
     <img src="https://img.shields.io/badge/chat-on%20discord-7289DA.svg" alt="Discord Chat" />
   </a>
@@ -38,8 +37,7 @@ Medusa Eats ia a fullstack food delivery platform, inspired by Uber Eats, runnin
    - [Start developing](#start-developing)
    - [Create User Accounts](#create-user-accounts)
    - [Place an Order and Handle a Delivery](#place-an-order-and-handle-a-delivery)
-4. [Contribute](#contribute)
-5. [Resources](#resources)
+4. [Resources](#resources)
    - [Learn more about Medusa](#learn-more-about-medusa)
    - [Learn more about Next.js](#learn-more-about-nextjs)
 
@@ -184,37 +182,6 @@ We're gonna create a restaurant admin and driver account so we'll have access to
 9. In an incognito window, go to http://localhost:3000/dashboard/driver and log in as a driver.
 10. The accepted order will show up on your dashboard. Click the button to claim it.
 11. The order will go through the different stages on all dashboards in realtime. You can progress the order by marking each stage as complete on the relevant dashboard.
-
-# Contribute
-
-We happily welcome contributions to this project!
-<p style="font-size: smaller;">Note: Please review the source code and ensure you have a thorough understanding of it before making any changes </p>
-
-Follow the steps below to contribute to this project:
-
-### 1. Fork the Repository
-
-- Start by forking the repository to create your own copy. 
-
-### 2. Browse the Issues
-
-- Head over to the [Issues tab](link-to-issues) to view open issues. 
-- If you find an issue you want to work on, leave a comment to request being assigned to it. 
-
-### 3. Open a New Issue 
-
-- If you find a bug or have a feature idea that isn’t already listed, [open a new issue](link-to-create-an-issue).
-- In your issue, provide a clear description and reasoning behind the bug or idea. 
-
-### 4. Make Changes in Your Fork
-
-- After being assigned an issue, clone your forked repository to your local machine.
-- Create a new branch for your changes, using a descriptive name.
-
-### 6. Merging Code
-
-- Make sure your changes don't conflict with existing functionalities
-- Push your changes to your forked repository and raise a pull request to the original repository
 
 # Resources
 
