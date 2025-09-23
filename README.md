@@ -121,7 +121,7 @@ This will also create an admin user with the following credentials:
 
 ```
 email: admin@email.com
-pasword: supersecret
+password: supersecret
 ```
 
 ### Start developing
