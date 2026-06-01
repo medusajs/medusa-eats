@@ -1,14 +1,15 @@
 import RestaurantCategories from "@frontend/components/store/restaurant/restaurant-categories";
-import { retrieveRestaurantByHandle } from "@frontend/lib/data";
-import { Heading, Text } from "@medusajs/ui";
-import { notFound } from "next/navigation";
+import {retrieveRestaurantByHandle} from "@frontend/lib/data";
+import {Heading, Text} from "@medusajs/ui";
+import {notFound} from "next/navigation";
 
 export default async function RestaurantPage({
-  params,
+  params
 }: {
-  params: { handle: string };
+  params: Promise<{handle: string}>;
 }) {
-  const restaurant = await retrieveRestaurantByHandle(params.handle);
+  const {handle} = await params;
+  const restaurant = await retrieveRestaurantByHandle(handle);
 
   if (!restaurant) return notFound();
 
@@ -22,7 +23,7 @@ export default async function RestaurantPage({
         } else {
           categoryProductMap.set(category.id, {
             category_name: category.name,
-            products: [product],
+            products: [product]
           });
         }
       });

@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 
 export const metadata: Metadata = {
   title: "Login | Medusa Eats",
-  description: "Order food from your favorite restaurants",
+  description: "Order food from your favorite restaurants"
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

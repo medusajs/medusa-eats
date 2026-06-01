@@ -1,11 +1,12 @@
 import CheckoutForm from "@frontend/components/store/checkout/checkout-form";
-import { OrderSummary } from "@frontend/components/store/checkout/order-summary";
-import { retrieveCart } from "@frontend/lib/data";
-import { HttpTypes } from "@medusajs/types";
-import { cookies } from "next/headers";
+import {OrderSummary} from "@frontend/components/store/checkout/order-summary";
+import {retrieveCart} from "@frontend/lib/data";
+import {HttpTypes} from "@medusajs/types";
+import {cookies as getCookies} from "next/headers";
 
 export default async function CheckoutPage() {
-  const cartId = cookies().get("_medusa_cart_id")?.value;
+  const cookies = await getCookies();
+  const cartId = cookies.get("_medusa_cart_id")?.value;
 
   if (!cartId) {
     return null;

@@ -1,5 +1,5 @@
-import { LoginForm } from "@frontend/components/dashboard/login-form";
-import { Container, Heading, Text } from "@medusajs/ui";
+import {LoginForm} from "@frontend/components/dashboard/login-form";
+import {Container, Heading} from "@medusajs/ui";
 
 export default function LoginPage() {
   return (

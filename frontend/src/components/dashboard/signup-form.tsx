@@ -1,11 +1,11 @@
 "use client";
 
-import { signup } from "@frontend/lib/actions";
-import { RestaurantDTO } from "@frontend/lib/types";
-import { Badge, Button, Input, Label, Select } from "@medusajs/ui";
-import { Link } from "next-view-transitions";
-import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import {signup} from "@frontend/lib/actions";
+import {RestaurantDTO} from "@frontend/lib/types";
+import {Badge, Button, Input, Label, Select} from "@medusajs/ui";
+import {Link} from "next-view-transitions";
+import {useState, useActionState} from "react";
+import {useFormStatus} from "react-dom";
 
 function Submit() {
   const status = useFormStatus();
@@ -23,16 +23,12 @@ function Submit() {
 }
 
 const userTypes = [
-  { value: "driver", label: "Driver" },
-  { value: "restaurant", label: "Restaurant" },
+  {value: "driver", label: "Driver"},
+  {value: "restaurant", label: "Restaurant"}
 ];
 
-export function SignupForm({
-  restaurants = [],
-}: {
-  restaurants: RestaurantDTO[];
-}) {
-  const [state, action] = useFormState(signup, { message: "" });
+export function SignupForm({restaurants = []}: {restaurants: RestaurantDTO[]}) {
+  const [state, action] = useActionState(signup, {message: ""});
   const [userType, setUserType] = useState("");
 
   return (

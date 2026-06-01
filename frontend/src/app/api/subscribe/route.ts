@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import EventSource from "eventsource";
+import {NextRequest} from "next/server";
+import {EventSource} from "eventsource";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,80 +10,83 @@ const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ||
   "http://localhost:9000";
 
-export async function GET(req: NextRequest, res: NextResponse) {
-  let responseStream = new TransformStream();
-  const writer = responseStream.writable.getWriter();
+export async function GET(req: NextRequest) {
+  const stream = new TransformStream();
+  const writer = stream.writable.getWriter();
   const encoder = new TextEncoder();
 
   const restaurantId = req.nextUrl.searchParams.get("restaurant_id");
   const driverId = req.nextUrl.searchParams.get("driver_id");
   const deliveryId = req.nextUrl.searchParams.get("delivery_id");
 
-  let serverUrl = BACKEND_URL + "/store/deliveries/subscribe";
-
+  const params = new URLSearchParams();
   if (restaurantId) {
-    serverUrl += `?restaurant_id=${restaurantId}`;
+    params.append("restaurant_id", restaurantId);
     writer.write(
       encoder.encode(
-        "data: " +
-          JSON.stringify({
-            message: "Subscribing to restaurant " + restaurantId,
-          }) +
-          "\n\n"
+        `data: ${JSON.stringify({
+          message: "Subscribing to restaurant " + restaurantId
+        })}\n\n`
       )
     );
   }
-
   if (driverId) {
-    serverUrl += `?driver_id=${driverId}`;
+    params.append("driver_id", driverId);
     writer.write(
       encoder.encode(
-        "data: " +
-          JSON.stringify({ message: "Subscribing to driver " + driverId }) +
-          "\n\n"
+        `data: ${JSON.stringify({
+          message: "Subscribing to driver " + driverId
+        })}\n\n`
       )
     );
   }
-
   if (deliveryId) {
-    serverUrl += `?delivery_id=${deliveryId}`;
+    params.append("delivery_id", deliveryId);
     writer.write(
       encoder.encode(
-        "data: " +
-          JSON.stringify({ message: "Subscribing to delivery " + deliveryId }) +
-          "\n\n"
+        `data: ${JSON.stringify({
+          message: "Subscribing to delivery " + deliveryId
+        })}\n\n`
       )
     );
   }
 
-  const source = new EventSource(serverUrl, {
-    headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
-    },
+  const url = `${BACKEND_URL}/store/deliveries/subscribe?${params.toString()}`;
+
+  const source = new EventSource(url, {
+    fetch: (input, init) =>
+      fetch(input, {
+        ...init,
+        headers: {
+          ...init?.headers,
+          "x-publishable-api-key":
+            process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY!
+        }
+      })
   });
 
-  source.onmessage = (message: Record<string, any>) => {
-    writer.write(encoder.encode("data: " + message.data + "\n\n"));
+  source.onmessage = (event) => {
+    writer.write(encoder.encode(`data: ${event.data}\n\n`));
   };
 
-  source.onerror = (error) => {
+  source.onerror = (err) => {
     writer.write(
-      encoder.encode(`event: error\ndata: ${JSON.stringify(error)}\n\n`)
+      encoder.encode(`event: error\ndata: ${JSON.stringify(err)}\n\n`)
     );
     source.close();
     writer.close();
   };
 
-  req.signal.onabort = () => {
+  req.signal.addEventListener("abort", () => {
     source.close();
     writer.close();
-  };
+  });
 
-  return new Response(responseStream.readable, {
+  return new Response(stream.readable, {
     headers: {
       "Content-Type": "text/event-stream",
       Connection: "keep-alive",
-      "Cache-Control": "no-cache, no-transform",
-    },
+      "Cache-Control": "no-cache, no-transform"
+    }
   });
 }

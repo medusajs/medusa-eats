@@ -1,6 +1,6 @@
-import { SignupForm } from "@frontend/components/dashboard/signup-form";
-import { Container, Heading } from "@medusajs/ui";
-import { listRestaurants } from "@frontend/lib/data";
+import {SignupForm} from "@frontend/components/dashboard/signup-form";
+import {Container, Heading} from "@medusajs/ui";
+import {listRestaurants} from "@frontend/lib/data";
 
 export default async function SignupPage() {
   const restaurants = await listRestaurants();

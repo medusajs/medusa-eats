@@ -1,12 +1,12 @@
 "use client";
 
-import { BikeIcon, PizzaIcon } from "@frontend/components/common/icons";
-import { login } from "@frontend/lib/actions";
-import { Spinner } from "@medusajs/icons";
-import { Badge, Button, Input, Label, Select } from "@medusajs/ui";
-import { Link } from "next-view-transitions";
-import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import {BikeIcon, PizzaIcon} from "@frontend/components/common/icons";
+import {login} from "@frontend/lib/actions";
+import {Spinner} from "@medusajs/icons";
+import {Badge, Button, Input, Label, Select} from "@medusajs/ui";
+import {Link} from "next-view-transitions";
+import {useState, useActionState} from "react";
+import {useFormStatus} from "react-dom";
 
 function Submit() {
   const status = useFormStatus();
@@ -24,7 +24,7 @@ function Submit() {
 }
 
 function DefaultLoginForm() {
-  const [state, action] = useFormState(login, { message: "" });
+  const [state, action] = useActionState(login, {message: ""});
 
   return (
     <form action={action} className="flex flex-col gap-4 max-w-96">
@@ -68,20 +68,18 @@ function DefaultLoginForm() {
 function DemoLoginForm() {
   const [isLoading, setIsLoading] = useState({
     restaurant: false,
-    driver: false,
+    driver: false
   });
 
   const loginAs = async (actor_type: "restaurant" | "driver") => {
-    setIsLoading((prev) => ({ ...prev, [actor_type]: true }));
+    setIsLoading((prev) => ({...prev, [actor_type]: true}));
 
     const credentials = new FormData();
     credentials.set("email", `${actor_type}@account.com`);
     credentials.set("password", "123");
     credentials.set("actor_type", actor_type);
 
-    await login({}, credentials).catch((error) => {
-      console.error(error);
-    });
+    await login({}, credentials).catch(console.error);
   };
 
   return (
